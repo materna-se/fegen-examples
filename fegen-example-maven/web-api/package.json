@@ -1,0 +1,34 @@
+{
+  "name": "web-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && npm run compileTypescript",
+    "compileTypescript": "tsc",
+    "clean": "shx rm -rf dist",
+    "test": "mocha -r ts-node/register -r jsdom-global/register src/tests/**/*.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fegen-runtime": "file:../../../fegen-web/fegen-web-runtime"
+  },
+  "devDependencies": {
+    "@pollyjs/adapter-fetch": "^4.0.0",
+    "@pollyjs/core": "^4.0.0",
+    "@pollyjs/persister-fs": "^4.0.0",
+    "@types/chai": "^4.2.8",
+    "@types/mocha": "^7.0.1",
+    "@types/node-fetch": "^2.5.4",
+    "chai": "^4.2.0",
+    "jsdom": "^16.1.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^7.0.1",
+    "node-fetch": "^2.6.0",
+    "shx": "^0.3.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}

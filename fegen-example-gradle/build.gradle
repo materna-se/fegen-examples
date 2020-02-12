@@ -1,0 +1,27 @@
+import de.materna.fegen.test.plugin.SpringBackgroundRunner
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.squareup.okhttp3:okhttp:4.3.1"
+        classpath "com.github.node-gradle:gradle-node-plugin:2.0.0"
+    }
+}
+
+apply plugin: SpringBackgroundRunner
+
+startBackend {
+    dependsOn "backend:build"
+    springProject = project(":fegen-example-gradle:backend")
+    finalizedBy "stopBackend"
+}
+
+stopBackend {
+    springProject = project(":fegen-example-gradle:backend")
+}
+

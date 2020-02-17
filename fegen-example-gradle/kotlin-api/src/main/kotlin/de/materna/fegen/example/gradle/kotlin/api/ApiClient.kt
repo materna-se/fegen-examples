@@ -25,8 +25,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
         open val addressRepository by lazy { AddressRepository(client = addressClient) }
         open val contactClient by lazy { ContactClient(apiClient = this, requestAdapter = adapter) }
         open val contactRepository by lazy { ContactRepository(client = contactClient) }
-        open val testEntityClient by lazy { TestEntityClient(apiClient = this, requestAdapter = adapter) }
-        open val testEntityRepository by lazy { TestEntityRepository(client = testEntityClient) }
+        open val primitiveTestEntityClient by lazy { PrimitiveTestEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val primitiveTestEntityRepository by lazy { PrimitiveTestEntityRepository(client = primitiveTestEntityClient) }
+        open val relTestEntityClient by lazy { RelTestEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val relTestEntityRepository by lazy { RelTestEntityRepository(client = relTestEntityClient) }
         open val userClient by lazy { UserClient(apiClient = this, requestAdapter = adapter) }
         open val userRepository by lazy { UserRepository(client = userClient) }
     }
@@ -340,18 +342,18 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
     }
     
-    open class TestEntityClient(
+    open class PrimitiveTestEntityClient(
             override val apiClient: ApiClient,
             override val requestAdapter: RequestAdapter
     ): BaseClient<ApiClient>(apiClient, requestAdapter) {
     
-        suspend fun create(obj: TestEntityBase) = requestAdapter.createObject(
+        suspend fun create(obj: PrimitiveTestEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "/testEntities"
+            createURI = "/primitiveTestEntities"
         )
     
         @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
-        fun build() = TestEntityBase(
+        fun build() = PrimitiveTestEntityBase(
                 id = -1L,
                 booleanTrue = false,
                 date2000_6_12 = LocalDate.parse("1970-01-01"),
@@ -366,12 +368,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
-            readProjections<TestEntity, TestEntityDto>(
+            readProjections<PrimitiveTestEntity, PrimitiveTestEntityDto>(
                 projectionName = null,
                 page = page,
                 size = size,
                 sort = sort,
-                type = object : TypeReference<ApiHateoasPage<TestEntityDto, TestEntity>>() {}
+                type = object : TypeReference<ApiHateoasPage<PrimitiveTestEntityDto, PrimitiveTestEntity>>() {}
             )
     
         
@@ -381,8 +383,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "/testEntities",
-                embeddedPropName = "testEntities",
+                url = "/primitiveTestEntities",
+                embeddedPropName = "primitiveTestEntities",
                 projectionName = projectionName,
                 page = page,
                 size = size,
@@ -390,138 +392,236 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type = type
             )
     
-        suspend fun readOne(id: Long) = requestAdapter.readProjection<TestEntity, TestEntityDto>(
+        suspend fun readOne(id: Long) = requestAdapter.readProjection<PrimitiveTestEntity, PrimitiveTestEntityDto>(
             id = id,
-            uri = "/testEntities"
+            uri = "/primitiveTestEntities"
         )
     
     
         
     
-        suspend fun update(obj: TestEntity) = requestAdapter.updateObject(obj)
+        suspend fun update(obj: PrimitiveTestEntity) = requestAdapter.updateObject(obj)
     
-        suspend fun delete(obj: TestEntity) = requestAdapter.deleteObject(obj)
+        suspend fun delete(obj: PrimitiveTestEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/testEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/primitiveTestEntities")
     
-    
-        
     
         
     
-        suspend fun customPostMixedCreateByInt32(int32: Int, body: TestEntity, long64: Long): Unit {
         
-            val url = "/api/custom/testEntities/mixedCreate/$int32".appendParams("long64=${URLEncoder.encode(long64.toString(), "UTF-8")}")
+    
         
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
+    
+    }
+    
+    open class RelTestEntityClient(
+            override val apiClient: ApiClient,
+            override val requestAdapter: RequestAdapter
+    ): BaseClient<ApiClient>(apiClient, requestAdapter) {
+    
+        suspend fun create(obj: RelTestEntityBase) = requestAdapter.createObject(
+            newObject = obj,
+            createURI = "/relTestEntities"
+        )
+    
+        @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
+        fun build() = RelTestEntityBase(
+                id = -1L,
+                _links = null
             )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostNoBodyCreateByInt32(int32: Int, long64: Long): Unit {
-        
-            val url = "/api/custom/testEntities/noBodyCreate/$int32".appendParams("long64=${URLEncoder.encode(long64.toString(), "UTF-8")}")
-        
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "POST",
-                ignoreBasePath = true
+    
+        suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            readProjections<RelTestEntity, RelTestEntityDto>(
+                projectionName = null,
+                page = page,
+                size = size,
+                sort = sort,
+                type = object : TypeReference<ApiHateoasPage<RelTestEntityDto, RelTestEntity>>() {}
             )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostNoPathVariableCreate(body: TestEntity, long64: Long): Unit {
-        
-            val url = "/api/custom/testEntities/noPathVariableCreate".appendParams("long64=${URLEncoder.encode(long64.toString(), "UTF-8")}")
-        
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
+    
+        suspend fun readAllFullRelTestEntity(page: Int? = null, size: Int? = null, sort: String? = null) =
+            readProjections<FullRelTestEntity, FullRelTestEntityDto>(
+                projectionName = "full",
+                page = page,
+                size = size,
+                sort = sort,
+                type = object : TypeReference<ApiHateoasPage<FullRelTestEntityDto, FullRelTestEntity>>() {}
             )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostNoRequestParamCreateByInt32(int32: Int, body: TestEntity): Unit {
-        
-            val url = "/api/custom/testEntities/noRequestParamCreate/$int32".appendParams()
-        
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
+    
+        private suspend inline fun <reified T: ApiObj<U>, reified U: ApiDto<T>> readProjections(
+                projectionName: String?, page: Int?, size: Int?, sort: String?,
+                type: TypeReference<ApiHateoasPage<U, T>>
+        ) =
+            requestAdapter.doPageRequest<T, U>(
+                url = "/relTestEntities",
+                embeddedPropName = "relTestEntities",
+                projectionName = projectionName,
+                page = page,
+                size = size,
+                sort = sort,
+                type = type
             )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate): Unit {
-        
-            val url = "/api/custom/testEntities/pathVariableCreate/$int32/$long64Custom/$intMinusBillion/$stringText/$booleanTrue/$dateCustom".appendParams()
-        
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "POST",
-                ignoreBasePath = true
+    
+        suspend fun readOne(id: Long) = requestAdapter.readProjection<RelTestEntity, RelTestEntityDto>(
+            id = id,
+            uri = "/relTestEntities"
+        )
+    
+    
+        suspend fun readOneFullRelTestEntity(id: Long) =
+            requestAdapter.readProjection<FullRelTestEntity, FullRelTestEntityDto>(
+                id = id,
+                uri = "/fullRelTestEntities",
+                projectionName = "full"
             )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostRequestParamCreate(int32: Int, long64Custom: Long, optionalIntNull: Int, optionalIntBillion: Int, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate, dateTime2000_1_1_12_30: LocalDateTime): Unit {
-        
-            val url = "/api/custom/testEntities/requestParamCreate".appendParams("int32=${URLEncoder.encode(int32.toString(), "UTF-8")}",
-                    "long64Custom=${URLEncoder.encode(long64Custom.toString(), "UTF-8")}",
-                    "optionalIntNull=${URLEncoder.encode(optionalIntNull.toString(), "UTF-8") ?: ""}",
-                    "optionalIntBillion=${URLEncoder.encode(optionalIntBillion.toString(), "UTF-8") ?: ""}",
-                    "intMinusBillion=${URLEncoder.encode(intMinusBillion.toString(), "UTF-8")}",
-                    "stringText=${URLEncoder.encode(stringText.toString(), "UTF-8")}",
-                    "booleanTrue=${URLEncoder.encode(booleanTrue.toString(), "UTF-8")}",
-                    "dateCustom=${URLEncoder.encode(dateCustom.toString(), "UTF-8")}",
-                    "dateTime2000_1_1_12_30=${URLEncoder.encode(dateTime2000_1_1_12_30.toString(), "UTF-8") ?: ""}")
-        
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "POST",
-                ignoreBasePath = true
+    
+        suspend fun update(obj: RelTestEntity) = requestAdapter.updateObject(obj)
+    
+        suspend fun delete(obj: RelTestEntity) = requestAdapter.deleteObject(obj)
+    
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/relTestEntities")
+    
+    
+        suspend fun readManyToMany(obj: RelTestEntity) =
+            requestAdapter.readListAssociationProjection<RelTestEntity, User, UserDto>(
+                obj = obj,
+                linkName = "manyToMany",
+                property = "users",
+                type = object: TypeReference<ApiHateoasList<UserDto, User>>() {}
             )
-        }
         
         
         
-        
-        
-        suspend fun customPostRequestBodyCreate(body: TestEntity): Unit {
-        
-            val url = "/api/custom/testEntities/requestBodyCreate".appendParams()
-        
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
+        suspend fun setManyToMany(obj: RelTestEntity, children: List<User>) =
+            requestAdapter.updateObjectCollection(
+                nextCollection = children,
+                objectWithCollection = obj,
+                property = "manyToMany"
             )
-        }
         
+        suspend fun addToManyToMany(obj: RelTestEntity, childToAdd: User) =
+            requestAdapter.addObjectToCollection(
+                objToBeAdd = childToAdd,
+                objectWithCollection = obj,
+                property = "manyToMany"
+            )
+        
+        suspend fun deleteFromManyToMany(obj: RelTestEntity, childToDelete: User) =
+            requestAdapter.request.delete(
+                url = "/relTestEntities/${obj.id}/manyToMany/${childToDelete.id}"
+            )
+        
+        
+        suspend fun readManyToOneOptional(obj: RelTestEntity) =
+            requestAdapter.readAssociationProjection<RelTestEntity, User, UserDto>(
+                obj = obj,
+                linkName = "manyToOneOptional"
+            )
+        
+        
+        
+        suspend fun setManyToOneOptional(obj: RelTestEntity, child: User) =
+            requestAdapter.updateAssociation(
+                objToBeSetted = child,
+                objWithAssociation = obj,
+                property = "manyToOneOptional"
+            )
+        
+        suspend fun deleteFromManyToOneOptional(obj: RelTestEntity, childToDelete: User) =
+            requestAdapter.request.delete(
+                url = "/relTestEntities/${obj.id}/manyToOneOptional/${childToDelete.id}"
+            )
+        
+        
+        suspend fun readManyToOneRequired(obj: RelTestEntity) =
+            requestAdapter.readAssociationProjection<RelTestEntity, User, UserDto>(
+                obj = obj,
+                linkName = "manyToOneRequired"
+            )
+        
+        
+        
+        suspend fun setManyToOneRequired(obj: RelTestEntity, child: User) =
+            requestAdapter.updateAssociation(
+                objToBeSetted = child,
+                objWithAssociation = obj,
+                property = "manyToOneRequired"
+            )
+        
+        
+        
+        
+        suspend fun readOneToMany(obj: RelTestEntity) =
+            requestAdapter.readListAssociationProjection<RelTestEntity, User, UserDto>(
+                obj = obj,
+                linkName = "oneToMany",
+                property = "users",
+                type = object: TypeReference<ApiHateoasList<UserDto, User>>() {}
+            )
+        
+        
+        
+        suspend fun setOneToMany(obj: RelTestEntity, children: List<User>) =
+            requestAdapter.updateObjectCollection(
+                nextCollection = children,
+                objectWithCollection = obj,
+                property = "oneToMany"
+            )
+        
+        suspend fun addToOneToMany(obj: RelTestEntity, childToAdd: User) =
+            requestAdapter.addObjectToCollection(
+                objToBeAdd = childToAdd,
+                objectWithCollection = obj,
+                property = "oneToMany"
+            )
+        
+        suspend fun deleteFromOneToMany(obj: RelTestEntity, childToDelete: User) =
+            requestAdapter.request.delete(
+                url = "/relTestEntities/${obj.id}/oneToMany/${childToDelete.id}"
+            )
+        
+        
+        suspend fun readOneToOneOptional(obj: RelTestEntity) =
+            requestAdapter.readAssociationProjection<RelTestEntity, User, UserDto>(
+                obj = obj,
+                linkName = "oneToOneOptional"
+            )
+        
+        
+        
+        suspend fun setOneToOneOptional(obj: RelTestEntity, child: User) =
+            requestAdapter.updateAssociation(
+                objToBeSetted = child,
+                objWithAssociation = obj,
+                property = "oneToOneOptional"
+            )
+        
+        suspend fun deleteFromOneToOneOptional(obj: RelTestEntity, childToDelete: User) =
+            requestAdapter.request.delete(
+                url = "/relTestEntities/${obj.id}/oneToOneOptional/${childToDelete.id}"
+            )
+        
+        
+        suspend fun readOneToOneRequired(obj: RelTestEntity) =
+            requestAdapter.readAssociationProjection<RelTestEntity, User, UserDto>(
+                obj = obj,
+                linkName = "oneToOneRequired"
+            )
+        
+        
+        
+        suspend fun setOneToOneRequired(obj: RelTestEntity, child: User) =
+            requestAdapter.updateAssociation(
+                objToBeSetted = child,
+                objWithAssociation = obj,
+                property = "oneToOneRequired"
+            )
+        
+        
+    
+        
+    
         
     
     }
@@ -749,9 +849,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
     }
     
-    open class TestEntityRepository( val client: TestEntityClient ) {
+    open class PrimitiveTestEntityRepository( val client: PrimitiveTestEntityClient ) {
     
-        fun create(obj: TestEntityBase) =
+        fun create(obj: PrimitiveTestEntityBase) =
             runBlocking { client.create(obj) }
     
         fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -764,10 +864,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
-        fun update(obj: TestEntity) =
+        fun update(obj: PrimitiveTestEntity) =
             runBlocking { client.update(obj) }
     
-        fun delete(obj: TestEntity) =
+        fun delete(obj: PrimitiveTestEntity) =
             runBlocking { client.delete(obj) }
     
         fun delete(id: Long) =
@@ -778,51 +878,114 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
-        fun customPostMixedCreateByInt32(int32: Int, body: TestEntity, long64: Long): Unit =
-                runBlocking { client.customPostMixedCreateByInt32(int32, body, long64) }
+        
+    
+    }
+    
+    open class RelTestEntityRepository( val client: RelTestEntityClient ) {
+    
+        fun create(obj: RelTestEntityBase) =
+            runBlocking { client.create(obj) }
+    
+        fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            runBlocking { client.readAll(page, size, sort) }
+    
+        fun readAllFullRelTestEntity(page: Int? = null, size: Int? = null, sort: String? = null) =
+            runBlocking { client.readAllFullRelTestEntity(page, size, sort) }
+    
+        fun readOne(id: Long) =
+            runBlocking { client.readOne(id) }
+    
+        fun readOneFullRelTestEntity(id: Long) =
+            runBlocking { client.readOneFullRelTestEntity(id) }
+    
+        fun update(obj: RelTestEntity) =
+            runBlocking { client.update(obj) }
+    
+        fun delete(obj: RelTestEntity) =
+            runBlocking { client.delete(obj) }
+    
+        fun delete(id: Long) =
+            runBlocking { client.delete(id) }
+    
+    
+        fun readManyToMany(obj: RelTestEntity) =
+            runBlocking { client.readManyToMany(obj) }
+        
+        
+        
+        fun setManyToMany(obj: RelTestEntity, children: List<User>) =
+            runBlocking { client.setManyToMany(obj, children) }
+        
+        fun addToManyToMany(obj: RelTestEntity, childToAdd: User) =
+            runBlocking { client.addToManyToMany(obj, childToAdd) }
+        
+        fun deleteFromManyToMany(obj: RelTestEntity, childToDelete: User) =
+            runBlocking { client.deleteFromManyToMany(obj, childToDelete) }
+        
+        
+        fun readManyToOneOptional(obj: RelTestEntity) =
+            runBlocking { client.readManyToOneOptional(obj) }
+        
+        
+        
+        fun setManyToOneOptional(obj: RelTestEntity, child: User) =
+            runBlocking { client.setManyToOneOptional(obj, child) }
+        
+        fun deleteFromManyToOneOptional(obj: RelTestEntity, childToDelete: User) =
+            runBlocking { client.deleteFromManyToOneOptional(obj, childToDelete) }
+        
+        
+        fun readManyToOneRequired(obj: RelTestEntity) =
+            runBlocking { client.readManyToOneRequired(obj) }
+        
+        
+        
+        fun setManyToOneRequired(obj: RelTestEntity, child: User) =
+            runBlocking { client.setManyToOneRequired(obj, child) }
         
         
         
         
-        
-        fun customPostNoBodyCreateByInt32(int32: Int, long64: Long): Unit =
-                runBlocking { client.customPostNoBodyCreateByInt32(int32, long64) }
-        
+        fun readOneToMany(obj: RelTestEntity) =
+            runBlocking { client.readOneToMany(obj) }
         
         
         
+        fun setOneToMany(obj: RelTestEntity, children: List<User>) =
+            runBlocking { client.setOneToMany(obj, children) }
         
-        fun customPostNoPathVariableCreate(body: TestEntity, long64: Long): Unit =
-                runBlocking { client.customPostNoPathVariableCreate(body, long64) }
+        fun addToOneToMany(obj: RelTestEntity, childToAdd: User) =
+            runBlocking { client.addToOneToMany(obj, childToAdd) }
         
-        
-        
-        
-        
-        fun customPostNoRequestParamCreateByInt32(int32: Int, body: TestEntity): Unit =
-                runBlocking { client.customPostNoRequestParamCreateByInt32(int32, body) }
+        fun deleteFromOneToMany(obj: RelTestEntity, childToDelete: User) =
+            runBlocking { client.deleteFromOneToMany(obj, childToDelete) }
         
         
-        
-        
-        
-        fun customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate): Unit =
-                runBlocking { client.customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32, long64Custom, intMinusBillion, stringText, booleanTrue, dateCustom) }
+        fun readOneToOneOptional(obj: RelTestEntity) =
+            runBlocking { client.readOneToOneOptional(obj) }
         
         
         
+        fun setOneToOneOptional(obj: RelTestEntity, child: User) =
+            runBlocking { client.setOneToOneOptional(obj, child) }
+        
+        fun deleteFromOneToOneOptional(obj: RelTestEntity, childToDelete: User) =
+            runBlocking { client.deleteFromOneToOneOptional(obj, childToDelete) }
         
         
-        fun customPostRequestParamCreate(int32: Int, long64Custom: Long, optionalIntNull: Int, optionalIntBillion: Int, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate, dateTime2000_1_1_12_30: LocalDateTime): Unit =
-                runBlocking { client.customPostRequestParamCreate(int32, long64Custom, optionalIntNull, optionalIntBillion, intMinusBillion, stringText, booleanTrue, dateCustom, dateTime2000_1_1_12_30) }
+        fun readOneToOneRequired(obj: RelTestEntity) =
+            runBlocking { client.readOneToOneRequired(obj) }
         
         
         
+        fun setOneToOneRequired(obj: RelTestEntity, child: User) =
+            runBlocking { client.setOneToOneRequired(obj, child) }
         
         
-        fun customPostRequestBodyCreate(body: TestEntity): Unit =
-                runBlocking { client.customPostRequestBodyCreate(body) }
+    
         
+    
         
     
     }

@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 import {apiClient, setupFetch, setupTest} from "./util";
-import {TestEntityBase} from "../Entities";
 import { expect } from "chai";
+import {FullRelTestEntity, PrimitiveTestEntityBase} from "../Entities";
 
 
 describe("Data types", () => {
@@ -42,13 +42,13 @@ describe("Data types", () => {
     };
 
     it("can be read", async () => {
-        const entity = (await apiClient.testEntityClient.readAll()).items[0];
+        const entity = (await apiClient.primitiveTestEntityClient.readAll()).items[0];
 
         expect(entity).to.include(defaultEntity);
     });
 
     it("can be written", async () => {
-        const entity: TestEntityBase = {
+        const entity: PrimitiveTestEntityBase = {
             booleanTrue: false,
             date2000_6_12: "1900-04-08",
             dateTime2000_1_1_12_30: "1950-12-31T23:59:00",
@@ -59,8 +59,8 @@ describe("Data types", () => {
             optionalIntNull: 0,
             stringText: "27"
         };
-        const createReturn = await apiClient.testEntityClient.create(entity);
-        const testEntities = (await apiClient.testEntityClient.readAll()).items;
+        const createReturn = await apiClient.primitiveTestEntityClient.create(entity);
+        const testEntities = (await apiClient.primitiveTestEntityClient.readAll()).items;
 
         expect(createReturn).to.exist;
         expect(createReturn).to.include(entity);
@@ -68,9 +68,42 @@ describe("Data types", () => {
     });
 
     it("can use default values", async () => {
-        const entity: Partial<TestEntityBase> = {};
-        const createReturn = await apiClient.testEntityClient.create(entity);
+        const entity: Partial<PrimitiveTestEntityBase> = {};
+        const createReturn = await apiClient.primitiveTestEntityClient.create(entity);
 
         expect(createReturn).to.include(defaultEntity);
     });
+
+    it("has correct nullability for primitive types", () => {
+        const obj: PrimitiveTestEntityBase = {
+            booleanTrue: false,
+            date2000_6_12: "",
+            dateTime2000_1_1_12_30: null,
+            int32: 0,
+            intMinusBillion: 0,
+            long64: 0,
+            optionalIntBillion: null,
+            optionalIntNull: null,
+            stringText: ""
+        };
+
+        assertNonNullable(obj.booleanTrue);
+        assertNonNullable(obj.date2000_6_12);
+        assertNonNullable(obj.int32);
+        assertNonNullable(obj.intMinusBillion);
+        assertNonNullable(obj.long64);
+        assertNonNullable(obj.stringText);
+    });
+
+    // Test nullability of fields of FullRelTestEntity
+    function testFullRelTestEntityNullability(entity: FullRelTestEntity) {
+        entity.oneToOneOptional = null;
+        entity.manyToOneOptional = null;
+        assertNonNullable(entity.oneToOneRequired);
+        assertNonNullable(entity.manyToOneRequired);
+        assertNonNullable(entity.oneToMany);
+        assertNonNullable(entity.manyToMany);
+    }
+
+    function assertNonNullable<T>(obj: NonNullable<T>) {}
 });

@@ -24,7 +24,7 @@ package de.materna.fegen.example.gradle.controller
 import de.materna.fegen.example.gradle.component.ShutdownComponent
 import de.materna.fegen.example.gradle.entity.Address
 import de.materna.fegen.example.gradle.entity.Contact
-import de.materna.fegen.example.gradle.entity.TestEntity
+import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.entity.User
 import de.materna.fegen.example.gradle.repository.AddressRepository
 import de.materna.fegen.example.gradle.repository.ContactRepository
@@ -135,7 +135,7 @@ open class TestController(
             })
         })
 
-        testEntityRepository.save(TestEntity())
+        testEntityRepository.save(PrimitiveTestEntity())
     }
 
     @RequestMapping("/exit", method = [RequestMethod.POST])

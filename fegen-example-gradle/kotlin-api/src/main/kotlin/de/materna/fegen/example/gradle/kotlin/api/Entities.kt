@@ -276,7 +276,7 @@ data class Address(
  * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
-data class TestEntityBase(
+data class PrimitiveTestEntityBase(
 
     override val id: Long? = -1L,
     val booleanTrue: Boolean = false,
@@ -289,8 +289,8 @@ data class TestEntityBase(
     val optionalIntNull: Int? = 0,
     val stringText: String = "",
 
-    override val _links: TestEntityLinks? = null
-): ApiBase<TestEntity, TestEntityDto> {
+    override val _links: PrimitiveTestEntityLinks? = null
+): ApiBase<PrimitiveTestEntity, PrimitiveTestEntityDto> {
 
     data class Builder(
         private var id: Long? = -1L,
@@ -303,10 +303,10 @@ data class TestEntityBase(
         private var optionalIntBillion: Int? = 0,
         private var optionalIntNull: Int? = 0,
         private var stringText: String = "",
-        private var _links: TestEntityLinks? = null
+        private var _links: PrimitiveTestEntityLinks? = null
     ) {
 
-        constructor(base: TestEntityBase): this() {
+        constructor(base: PrimitiveTestEntityBase): this() {
             this.id = base.id
             this.booleanTrue = base.booleanTrue
             this.date2000_6_12 = base.date2000_6_12
@@ -330,8 +330,8 @@ data class TestEntityBase(
         fun optionalIntBillion(optionalIntBillion: Int?) = apply { this.optionalIntBillion = optionalIntBillion }
         fun optionalIntNull(optionalIntNull: Int?) = apply { this.optionalIntNull = optionalIntNull }
         fun stringText(stringText: String) = apply { this.stringText = stringText }
-        fun _links(_links: TestEntityLinks) = apply { this._links = _links }
-        fun build() = TestEntityBase(id, booleanTrue, date2000_6_12, dateTime2000_1_1_12_30, int32, intMinusBillion, long64, optionalIntBillion, optionalIntNull, stringText, _links)
+        fun _links(_links: PrimitiveTestEntityLinks) = apply { this._links = _links }
+        fun build() = PrimitiveTestEntityBase(id, booleanTrue, date2000_6_12, dateTime2000_1_1_12_30, int32, intMinusBillion, long64, optionalIntBillion, optionalIntNull, stringText, _links)
     }
 
     fun toBuilder() = Builder(this)
@@ -343,7 +343,7 @@ data class TestEntityBase(
     /**
      * Create a DTO from a base value
      */
-    fun toDto(_links: TestEntityLinks) = TestEntityDto(
+    fun toDto(_links: PrimitiveTestEntityLinks) = PrimitiveTestEntityDto(
         id = id, 
         booleanTrue = booleanTrue, 
         date2000_6_12 = date2000_6_12, 
@@ -361,24 +361,24 @@ data class TestEntityBase(
      * A convenience method for the creation of a dto from a base value for testing.
      * Don't use this method in production code.
      */
-    fun toDto(id: Long) = toDto(TestEntityLinks(mapOf(
-        "self" to ApiNavigationLink("/testEntities/$id", false)
+    fun toDto(id: Long) = toDto(PrimitiveTestEntityLinks(mapOf(
+        "self" to ApiNavigationLink("/primitiveTestEntities/$id", false)
     )))
 }
 
-@JsonDeserialize(using = TestEntityLinksDeserializer::class)
-data class TestEntityLinks(
+@JsonDeserialize(using = PrimitiveTestEntityLinksDeserializer::class)
+data class PrimitiveTestEntityLinks(
     override val linkMap: Map<String, ApiNavigationLink>
 ): BaseApiNavigationLinks(linkMap) {
     
 }
 
-class TestEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<TestEntityLinks>(vc) {
-    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): TestEntityLinks {
+class PrimitiveTestEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<PrimitiveTestEntityLinks>(vc) {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): PrimitiveTestEntityLinks {
         val jacksonType = ctxt.typeFactory.constructType(object : TypeReference<Map<String, ApiNavigationLink>>() {})
         val deserializer = ctxt.findRootValueDeserializer(jacksonType)
         val map = deserializer.deserialize(p, ctxt)
-        return TestEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
+        return PrimitiveTestEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
     }
 }
 
@@ -387,7 +387,7 @@ class TestEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeseria
  * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
  * this type will be returned.
  */
-data class TestEntityDto(
+data class PrimitiveTestEntityDto(
     override val id: Long?,
     val booleanTrue: Boolean,
     val date2000_6_12: LocalDate,
@@ -399,10 +399,10 @@ data class TestEntityDto(
     val optionalIntNull: Int?,
     val stringText: String,
 
-    override val _links: TestEntityLinks
-): ApiDto<TestEntity> {
+    override val _links: PrimitiveTestEntityLinks
+): ApiDto<PrimitiveTestEntity> {
 
-    override fun toObj() = TestEntity(
+    override fun toObj() = PrimitiveTestEntity(
             id = objId, 
             booleanTrue = booleanTrue, 
             date2000_6_12 = date2000_6_12, 
@@ -418,10 +418,10 @@ data class TestEntityDto(
 }
 
 /**
- * This type is the default type of choice in the frontend as it has an id (which can be added to the `TestEntityDto`
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `PrimitiveTestEntityDto`
  * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
  */
-data class TestEntity(
+data class PrimitiveTestEntity(
     override val id: Long,
     val booleanTrue: Boolean,
     val date2000_6_12: LocalDate,
@@ -433,9 +433,9 @@ data class TestEntity(
     val optionalIntNull: Int?,
     val stringText: String,
 
-    override val _links: TestEntityLinks
-): ApiObj<TestEntityDto> {
-        fun toBuilder() = TestEntityBase.Builder(
+    override val _links: PrimitiveTestEntityLinks
+): ApiObj<PrimitiveTestEntityDto> {
+        fun toBuilder() = PrimitiveTestEntityBase.Builder(
             id = id, 
             booleanTrue = booleanTrue, 
             date2000_6_12 = date2000_6_12, 
@@ -449,6 +449,115 @@ data class TestEntity(
             _links = _links
         )
 }
+
+
+ /**
+  * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
+  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+  */
+ data class RelTestEntityBase(
+
+     override val id: Long? = -1L,
+
+     override val _links: RelTestEntityLinks? = null
+ ): ApiBase<RelTestEntity, RelTestEntityDto> {
+
+     data class Builder(
+         private var id: Long? = -1L,
+         private var _links: RelTestEntityLinks? = null
+     ) {
+
+         constructor(base: RelTestEntityBase): this() {
+             this.id = base.id
+             this._links = base._links
+         }
+
+         fun id(id: Long?) = apply { this.id = id }
+         fun _links(_links: RelTestEntityLinks) = apply { this._links = _links }
+         fun build() = RelTestEntityBase(id, _links)
+     }
+
+     fun toBuilder() = Builder(this)
+
+     companion object {
+         @JvmStatic fun builder() = Builder()
+     }
+
+     /**
+      * Create a DTO from a base value
+      */
+     fun toDto(_links: RelTestEntityLinks) = RelTestEntityDto(
+         id = id,
+         _links = _links
+     )
+     
+     /**
+      * A convenience method for the creation of a dto from a base value for testing.
+      * Don't use this method in production code.
+      */
+     fun toDto(id: Long) = toDto(RelTestEntityLinks(mapOf(
+         "self" to ApiNavigationLink("/relTestEntities/$id", false),
+"manyToMany" to ApiNavigationLink("/relTestEntities/$id/manyToMany", false),
+         "manyToOneOptional" to ApiNavigationLink("/relTestEntities/$id/manyToOneOptional", false),
+         "manyToOneRequired" to ApiNavigationLink("/relTestEntities/$id/manyToOneRequired", false),
+         "oneToMany" to ApiNavigationLink("/relTestEntities/$id/oneToMany", false),
+         "oneToOneOptional" to ApiNavigationLink("/relTestEntities/$id/oneToOneOptional", false),
+         "oneToOneRequired" to ApiNavigationLink("/relTestEntities/$id/oneToOneRequired", false)
+     )))
+ }
+
+ @JsonDeserialize(using = RelTestEntityLinksDeserializer::class)
+ data class RelTestEntityLinks(
+     override val linkMap: Map<String, ApiNavigationLink>
+ ): BaseApiNavigationLinks(linkMap) {
+     val manyToMany: ApiNavigationLink by linkMap
+     val manyToOneOptional: ApiNavigationLink by linkMap
+     val manyToOneRequired: ApiNavigationLink by linkMap
+     val oneToMany: ApiNavigationLink by linkMap
+     val oneToOneOptional: ApiNavigationLink by linkMap
+     val oneToOneRequired: ApiNavigationLink by linkMap
+ }
+
+ class RelTestEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<RelTestEntityLinks>(vc) {
+     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): RelTestEntityLinks {
+         val jacksonType = ctxt.typeFactory.constructType(object : TypeReference<Map<String, ApiNavigationLink>>() {})
+         val deserializer = ctxt.findRootValueDeserializer(jacksonType)
+         val map = deserializer.deserialize(p, ctxt)
+         return RelTestEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
+     }
+ }
+
+
+ /**
+  * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+  * this type will be returned.
+  */
+ data class RelTestEntityDto(
+     override val id: Long?,
+
+     override val _links: RelTestEntityLinks
+ ): ApiDto<RelTestEntity> {
+
+     override fun toObj() = RelTestEntity(
+             id = objId,
+             _links = _links
+         )
+ }
+
+ /**
+  * This type is the default type of choice in the frontend as it has an id (which can be added to the `RelTestEntityDto`
+  * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+  */
+ data class RelTestEntity(
+     override val id: Long,
+
+     override val _links: RelTestEntityLinks
+ ): ApiObj<RelTestEntityDto> {
+         fun toBuilder() = RelTestEntityBase.Builder(
+             id = id,
+             _links = _links
+         )
+ }
 
 
  /**
@@ -602,3 +711,47 @@ data class ContactFull(
 }
 
 
+
+
+
+data class FullRelTestEntityDto(
+    override val id: Long?,
+    val manyToMany: List<UserDto>,
+    val manyToOneOptional: UserDto?,
+    val manyToOneRequired: UserDto,
+    val oneToMany: List<UserDto>,
+    val oneToOneOptional: UserDto?,
+    val oneToOneRequired: UserDto,
+
+    override val _links: RelTestEntityLinks
+): ApiDto<FullRelTestEntity> {
+
+    override fun toObj() = FullRelTestEntity(
+            id = objId,
+            manyToMany = manyToMany.map { it.toObj() }, 
+            manyToOneOptional = manyToOneOptional?.toObj(), 
+            manyToOneRequired = manyToOneRequired.toObj(), 
+            oneToMany = oneToMany.map { it.toObj() }, 
+            oneToOneOptional = oneToOneOptional?.toObj(), 
+            oneToOneRequired = oneToOneRequired.toObj(),
+            _links = _links
+        )
+}
+
+data class FullRelTestEntity(
+    override val id: Long,
+    val manyToMany: List<User>,
+    val manyToOneOptional: User?,
+    val manyToOneRequired: User,
+    val oneToMany: List<User>,
+    val oneToOneOptional: User?,
+    val oneToOneRequired: User,
+
+    override val _links: RelTestEntityLinks
+): ApiProjection<FullRelTestEntityDto, RelTestEntity> {
+
+    override fun toObj() = RelTestEntity(
+            id = id,
+            _links = _links
+        )
+}

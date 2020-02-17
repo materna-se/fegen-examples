@@ -23,8 +23,8 @@ package de.materna.fegen.test.kotlin
 
 import de.materna.fegen.runtime.FetchRequestWrapper
 import de.materna.fegen.example.gradle.kotlin.api.ApiClient
-import de.materna.fegen.example.gradle.kotlin.api.TestEntity
-import de.materna.fegen.example.gradle.kotlin.api.TestEntityBase
+import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntity
+import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityBase
 import io.kotlintest.TestCase
 import io.kotlintest.provided.SERVER_ADDRESS
 import io.kotlintest.shouldBe
@@ -54,7 +54,7 @@ open class ApiSpec(body: ApiSpec.() -> Unit = {}) : StringSpec() {
     val userCountBefore =
             apiClient().userRepository.readAll(null, null, null).page.totalElements
 
-    val defaultEntity = TestEntityBase(
+    val defaultEntity = PrimitiveTestEntityBase(
             booleanTrue = true,
             date2000_6_12 = LocalDate.of(2000, 6, 12),
             dateTime2000_1_1_12_30 = LocalDateTime.of(2000, 1, 1, 12, 30),
@@ -66,7 +66,7 @@ open class ApiSpec(body: ApiSpec.() -> Unit = {}) : StringSpec() {
             stringText = "text"
     )
 
-    val customEntity = TestEntityBase(
+    val customEntity = PrimitiveTestEntityBase(
             booleanTrue = false,
             date2000_6_12 = LocalDate.of(1900, 4, 8),
             dateTime2000_1_1_12_30 = LocalDateTime.of(1950, 12, 31, 23, 59),
@@ -89,7 +89,7 @@ open class ApiSpec(body: ApiSpec.() -> Unit = {}) : StringSpec() {
         setupTest()
     }
 
-    fun compareTestEntities(actual: TestEntity, expected: TestEntityBase) {
+    fun compareTestEntities(actual: PrimitiveTestEntity, expected: PrimitiveTestEntityBase) {
         actual.booleanTrue shouldBe expected.booleanTrue
         actual.date2000_6_12 shouldBe expected.date2000_6_12
         actual.dateTime2000_1_1_12_30 shouldBe expected.dateTime2000_1_1_12_30

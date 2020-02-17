@@ -21,7 +21,7 @@
  */
 package de.materna.fegen.example.gradle.controller
 
-import de.materna.fegen.example.gradle.entity.TestEntity
+import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.repository.TestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
@@ -46,7 +46,7 @@ open class TestRestController(
             @PathVariable booleanTrue: Boolean,
             @PathVariable(name = "dateCustom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date2000_6_12: LocalDate
     ): ResponseEntity<String> {
-        testEntityRepository.save(TestEntity().also {
+        testEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
             it.intMinusBillion = intMinusBillion
@@ -70,7 +70,7 @@ open class TestRestController(
             @RequestParam(name = "dateCustom") date2000_6_12: LocalDate,
             @RequestParam(required = false) dateTime2000_1_1_12_30: LocalDateTime?
     ): ResponseEntity<String> {
-        testEntityRepository.save(TestEntity().also {
+        testEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
             it.optionalIntNull = optionalIntNull
@@ -87,9 +87,9 @@ open class TestRestController(
     @RequestMapping("requestBodyCreate", method = [RequestMethod.POST])
     @ResponseBody
     fun responseBody(
-            @RequestBody testEntity: TestEntity
+            @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<String> {
-        testEntityRepository.save(testEntity)
+        testEntityRepository.save(primitiveTestEntity)
         return ResponseEntity.ok("")
     }
 
@@ -98,9 +98,9 @@ open class TestRestController(
     fun mixed(
             @PathVariable int32: Int,
             @RequestParam long64: Long,
-            @RequestBody testEntity: TestEntity
+            @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<String> {
-        testEntityRepository.save(testEntity.also {
+        testEntityRepository.save(primitiveTestEntity.also {
             it.int32 = int32
             it.long64 = long64
         })
@@ -113,7 +113,7 @@ open class TestRestController(
             @PathVariable int32: Int,
             @RequestParam long64: Long
     ): ResponseEntity<String> {
-        testEntityRepository.save(TestEntity().also {
+        testEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
         })
@@ -124,9 +124,9 @@ open class TestRestController(
     @ResponseBody
     fun noRequestParam(
             @PathVariable int32: Int,
-            @RequestBody testEntity: TestEntity
+            @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<String> {
-        testEntityRepository.save(testEntity.also {
+        testEntityRepository.save(primitiveTestEntity.also {
             it.int32 = int32
         })
         return ResponseEntity.ok("")
@@ -136,9 +136,9 @@ open class TestRestController(
     @ResponseBody
     fun noPathVariable(
             @RequestParam long64: Long,
-            @RequestBody testEntity: TestEntity
+            @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<String> {
-        testEntityRepository.save(testEntity.also {
+        testEntityRepository.save(primitiveTestEntity.also {
             it.long64 = long64
         })
         return ResponseEntity.ok("")

@@ -78,7 +78,7 @@ export interface Contact extends ContactDto {
  * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
-export interface TestEntityBase extends ApiBase {
+export interface PrimitiveTestEntityBase extends ApiBase {
     booleanTrue: boolean
     date2000_6_12: string
     dateTime2000_1_1_12_30: string | null
@@ -99,7 +99,7 @@ export interface TestEntityBase extends ApiBase {
  * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
  * this type will be returned.
  */
-export interface TestEntityDto extends TestEntityBase {
+export interface PrimitiveTestEntityDto extends PrimitiveTestEntityBase {
     _links: {
         self: ApiNavigationLink
         
@@ -107,10 +107,57 @@ export interface TestEntityDto extends TestEntityBase {
 }
 
 /**
- * This type is the default type of choice in the frontend as it has an id (which can be added to the `TestEntityDto`
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `PrimitiveTestEntityDto`
  * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
  */
-export interface TestEntity extends TestEntityDto {
+export interface PrimitiveTestEntity extends PrimitiveTestEntityDto {
+    id: number
+}
+
+/**
+ * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+export interface RelTestEntityBase extends ApiBase {
+    
+    manyToMany: User[]
+    manyToOneOptional: User | null
+    manyToOneRequired: User
+    oneToMany: User[]
+    oneToOneOptional: User | null
+    oneToOneRequired: User
+    _links?: {
+        self: ApiNavigationLink
+        manyToMany: ApiNavigationLink
+        manyToOneOptional: ApiNavigationLink
+        manyToOneRequired: ApiNavigationLink
+        oneToMany: ApiNavigationLink
+        oneToOneOptional: ApiNavigationLink
+        oneToOneRequired: ApiNavigationLink
+    }
+}
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+export interface RelTestEntityDto extends RelTestEntityBase {
+    _links: {
+        self: ApiNavigationLink
+        manyToMany: ApiNavigationLink
+        manyToOneOptional: ApiNavigationLink
+        manyToOneRequired: ApiNavigationLink
+        oneToMany: ApiNavigationLink
+        oneToOneOptional: ApiNavigationLink
+        oneToOneRequired: ApiNavigationLink
+    }
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `RelTestEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+export interface RelTestEntity extends RelTestEntityDto {
     id: number
 }
 
@@ -158,8 +205,21 @@ export interface ContactFull extends Contact {
     address: AddressBaseProjection | null
 }
 
-export interface TestEntityBaseProjection extends TestEntity {
+export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
     
+}
+
+export interface RelTestEntityBaseProjection extends RelTestEntity {
+    
+}
+
+export interface FullRelTestEntity extends RelTestEntity {
+    manyToMany: UserBaseProjection[]
+    manyToOneOptional: UserBaseProjection | null
+    manyToOneRequired: UserBaseProjection
+    oneToMany: UserBaseProjection[]
+    oneToOneOptional: UserBaseProjection | null
+    oneToOneRequired: UserBaseProjection
 }
 
 export interface UserBaseProjection extends User {

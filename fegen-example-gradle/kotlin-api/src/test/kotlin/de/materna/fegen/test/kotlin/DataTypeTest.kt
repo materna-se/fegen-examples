@@ -21,10 +21,8 @@
  */
 package de.materna.fegen.test.kotlin
 
-import de.materna.fegen.example.gradle.kotlin.api.TestEntity
-import de.materna.fegen.example.gradle.kotlin.api.TestEntityBase
+import de.materna.fegen.example.gradle.kotlin.api.FullRelTestEntity
 import io.kotlintest.matchers.collections.shouldContain
-import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 
 class DataTypeTest : ApiSpec() {
@@ -33,18 +31,59 @@ class DataTypeTest : ApiSpec() {
         "read datatypes" {
             val expectedEntity = defaultEntity
 
-            val entity = apiClient().testEntityClient.readAll().items.single()
+            val entity = apiClient().primitiveTestEntityClient.readAll().items.single()
 
             compareTestEntities(entity, expectedEntity)
         }
 
         "write datatypes" {
-            val createReturn = apiClient().testEntityClient.create(customEntity)
-            val testEntities = apiClient().testEntityClient.readAll().items
+            val createReturn = apiClient().primitiveTestEntityClient.create(customEntity)
+            val testEntities = apiClient().primitiveTestEntityClient.readAll().items
 
             createReturn shouldNotBe null
             compareTestEntities(createReturn!!, customEntity)
             testEntities shouldContain createReturn
         }
+
+        "primitives nullability" {
+            // The following fields must be nullable
+            val baseEntity = defaultEntity.copy(
+                    id = null,
+                    dateTime2000_1_1_12_30 = null,
+                    optionalIntBillion = null,
+                    optionalIntNull = null
+            )
+            // The following fields must not be nullable
+            assertNotNullable(
+                    baseEntity.booleanTrue,
+                    baseEntity.date2000_6_12,
+                    baseEntity.int32,
+                    baseEntity.intMinusBillion,
+                    baseEntity.long64,
+                    baseEntity.stringText
+            )
+
+            val entity = defaultEntity.toDto(0).toObj()
+            assertNotNullable(entity.id)
+        }
     }
+
+    @Suppress("UNUSED")
+    private fun testFullRelTestEntityNullability(entity: FullRelTestEntity) {
+        entity.copy(
+                oneToOneOptional = null,
+                manyToOneOptional = null
+        )
+        assertNotNullable(
+                entity.oneToOneRequired,
+                entity.manyToOneRequired,
+                entity.oneToMany,
+                entity.manyToMany
+        )
+    }
+
+    /**
+     * Asserts that the parameter's type is not nullable
+     */
+    private fun assertNotNullable(@Suppress("UNUSED_PARAMETER") vararg obj: Any) {}
 }

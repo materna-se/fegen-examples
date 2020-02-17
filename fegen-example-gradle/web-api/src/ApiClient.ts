@@ -5,14 +5,15 @@ import {
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks, ApiBase,
     apiHelper, stringHelper
 } from '@materna-se/fegen-runtime';
-import { AddressBase, AddressDto, Address, ContactBase, ContactDto, Contact, TestEntityBase, TestEntityDto, TestEntity, UserBase, UserDto, User } from './Entities'
+import { AddressBase, AddressDto, Address, ContactBase, ContactDto, Contact, PrimitiveTestEntityBase, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityBase, RelTestEntityDto, RelTestEntity, UserBase, UserDto, User } from './Entities'
 import {  } from './Entities'
-import { AddressBaseProjection, ContactBaseProjection, TestEntityBaseProjection, UserBaseProjection, ContactFull } from './Entities'
+import { AddressBaseProjection, ContactBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection, ContactFull, FullRelTestEntity } from './Entities'
 
 export class ApiClient {
     public readonly addressClient: AddressClient;
     public readonly contactClient: ContactClient;
-    public readonly testEntityClient: TestEntityClient;
+    public readonly primitiveTestEntityClient: PrimitiveTestEntityClient;
+    public readonly relTestEntityClient: RelTestEntityClient;
     public readonly userClient: UserClient;
 
     private readonly baseUrl: string;
@@ -22,7 +23,8 @@ export class ApiClient {
         const adapter = requestAdapter || new RequestAdapter(this.baseUrl);
         this.addressClient = new AddressClient(this, adapter);
         this.contactClient = new ContactClient(this, adapter);
-        this.testEntityClient = new TestEntityClient(this, adapter);
+        this.primitiveTestEntityClient = new PrimitiveTestEntityClient(this, adapter);
+        this.relTestEntityClient = new RelTestEntityClient(this, adapter);
         this.userClient = new UserClient(this, adapter);
     }
 }
@@ -287,16 +289,16 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     }
 }
 
-export class TestEntityClient extends BaseClient<ApiClient, TestEntityBase> {
+export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityBase> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
-        super("/testEntities", "testEntities", apiClient, requestAdapter);
+        super("/primitiveTestEntities", "primitiveTestEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
     }
   
-    public static build(base: Partial<TestEntityBase> = {}): TestEntityBase {
+    public static build(base: Partial<PrimitiveTestEntityBase> = {}): PrimitiveTestEntityBase {
         return {
             booleanTrue: base.booleanTrue !== undefined ? base.booleanTrue : false,
             date2000_6_12: base.date2000_6_12 !== undefined ? base.date2000_6_12 : "1970-01-01",
@@ -310,23 +312,23 @@ export class TestEntityClient extends BaseClient<ApiClient, TestEntityBase> {
         }
     }
   
-    public async readProjectionsTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC") : Promise<PagedItems<TestEntityBaseProjection>> {
-        return this.readProjections<TestEntityBaseProjection>("baseProjection", page, size, sort);
+    public async readProjectionsPrimitiveTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC") : Promise<PagedItems<PrimitiveTestEntityBaseProjection>> {
+        return this.readProjections<PrimitiveTestEntityBaseProjection>("baseProjection", page, size, sort);
     }
             
-    public async readProjectionTestEntityBaseProjection(id: number): Promise<TestEntityBaseProjection| undefined> {
-        return this.readProjection<TestEntityBaseProjection>(id, "baseProjection");
+    public async readProjectionPrimitiveTestEntityBaseProjection(id: number): Promise<PrimitiveTestEntityBaseProjection| undefined> {
+        return this.readProjection<PrimitiveTestEntityBaseProjection>(id, "baseProjection");
     }
     
-    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC") : Promise<PagedItems<TestEntity>> {
-        return await this.readProjections<TestEntity>(undefined, page, size, sort);
+    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC") : Promise<PagedItems<PrimitiveTestEntity>> {
+        return await this.readProjections<PrimitiveTestEntity>(undefined, page, size, sort);
     }
   
-    public toDto(obj: TestEntity): TestEntityDto {
+    public toDto(obj: PrimitiveTestEntity): PrimitiveTestEntityDto {
         return obj;
     }
 
-    public toBase<T extends TestEntityBase>(obj: T): TestEntityBase {
+    public toBase<T extends PrimitiveTestEntityBase>(obj: T): PrimitiveTestEntityBase {
         return {
             booleanTrue: obj.booleanTrue,
             date2000_6_12: obj.date2000_6_12,
@@ -347,182 +349,298 @@ export class TestEntityClient extends BaseClient<ApiClient, TestEntityBase> {
   
     
    
-    public async postMixedCreateByInt32(int32: number, body: TestEntity, long64: number): Promise<void>  {
-        const request = this._requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/testEntities/mixedCreate/${int32}`;
-        
-        const params = {long64};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        
-        const response = await request.fetch(
-            url,
-            {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body:JSON.stringify(body),
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
+}
+
+export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase> {
+
+    constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
+        super("/relTestEntities", "relTestEntities", apiClient, requestAdapter);
+        this.readOne = this.readOne.bind(this);
+        this.readProjection = this.readProjection.bind(this);
+        this.readManyToManyProjection = this.readManyToManyProjection.bind(this);
+            this.readManyToOneOptionalProjection = this.readManyToOneOptionalProjection.bind(this);
+            this.readManyToOneRequiredProjection = this.readManyToOneRequiredProjection.bind(this);
+            this.readOneToManyProjection = this.readOneToManyProjection.bind(this);
+            this.readOneToOneOptionalProjection = this.readOneToOneOptionalProjection.bind(this);
+            this.readOneToOneRequiredProjection = this.readOneToOneRequiredProjection.bind(this);
+    }
+  
+    public static build(base: Partial<RelTestEntityBase> & {manyToOneRequired: User,oneToOneRequired: User}): RelTestEntityBase {
+        return {
+            manyToMany: base.manyToMany !== undefined ? base.manyToMany : [],
+            manyToOneOptional: base.manyToOneOptional !== undefined ? base.manyToOneOptional : null,
+            manyToOneRequired: base.manyToOneRequired,
+            oneToMany: base.oneToMany !== undefined ? base.oneToMany : [],
+            oneToOneOptional: base.oneToOneOptional !== undefined ? base.oneToOneOptional : null,
+            oneToOneRequired: base.oneToOneRequired
         }
-        
+    }
+  
+    public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC") : Promise<PagedItems<RelTestEntityBaseProjection>> {
+        return this.readProjections<RelTestEntityBaseProjection>("baseProjection", page, size, sort);
+    }
+            
+    public async readProjectionRelTestEntityBaseProjection(id: number): Promise<RelTestEntityBaseProjection| undefined> {
+        return this.readProjection<RelTestEntityBaseProjection>(id, "baseProjection");
     }
     
-    public async postNoBodyCreateByInt32(int32: number, long64: number): Promise<void>  {
-        const request = this._requestAdapter.getRequest();
-    
-        const baseUrl = `/api/custom/testEntities/noBodyCreate/${int32}`;
-        
-        const params = {long64};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        
-        const response = await request.fetch(
-            url,
-            {
-                method: "POST"
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
-        }
-        
+
+public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort?: "id,ASC" | "id,DESC") : Promise<PagedItems<FullRelTestEntity>> {
+        return this.readProjections<FullRelTestEntity>("full", page, size, sort);
+    }
+            
+    public async readProjectionFullRelTestEntity(id: number): Promise<FullRelTestEntity| undefined> {
+        return this.readProjection<FullRelTestEntity>(id, "full");
     }
     
-    public async postNoPathVariableCreate(body: TestEntity, long64: number): Promise<void>  {
-        const request = this._requestAdapter.getRequest();
-    
-        const baseUrl = `/api/custom/testEntities/noPathVariableCreate`;
-        
-        const params = {long64};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        
-        const response = await request.fetch(
-            url,
-            {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body:JSON.stringify(body),
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
-        }
-        
+    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC") : Promise<PagedItems<RelTestEntity>> {
+        return await this.readProjections<RelTestEntity>(undefined, page, size, sort);
+    }
+  
+    public toDto(obj: RelTestEntity): RelTestEntityDto {
+        return obj;
+    }
+
+    public toBase<T extends RelTestEntityBase>(obj: T): RelTestEntityBase {
+        return {
+            
+            manyToMany: obj.manyToMany,
+            manyToOneOptional: obj.manyToOneOptional,
+            manyToOneRequired: obj.manyToOneRequired,
+            oneToMany: obj.oneToMany,
+            oneToOneOptional: obj.oneToOneOptional,
+            oneToOneRequired: obj.oneToOneRequired,
+        };
+    }
+  
+    public async deleteFromManyToMany(returnType: RelTestEntity, childToDelete: User) {
+        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToMany/${childToDelete.id}`);
     }
     
-    public async postNoRequestParamCreateByInt32(int32: number, body: TestEntity): Promise<void>  {
-        const request = this._requestAdapter.getRequest();
-    
-        const baseUrl = `/api/custom/testEntities/noRequestParamCreate/${int32}`;
-        
-        const params = {};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        
-        const response = await request.fetch(
-            url,
-            {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body:JSON.stringify(body),
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
-        }
-        
+    public async deleteFromManyToOneOptional(returnType: RelTestEntity, childToDelete: User) {
+        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToOneOptional/${childToDelete.id}`);
     }
     
-    public async postPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string): Promise<void>  {
-        const request = this._requestAdapter.getRequest();
-    
-        const baseUrl = `/api/custom/testEntities/pathVariableCreate/${int32}/${long64Custom}/${intMinusBillion}/${stringText}/${booleanTrue}/${dateCustom}`;
-        
-        const params = {};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        
-        const response = await request.fetch(
-            url,
-            {
-                method: "POST"
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
-        }
-        
+    public async deleteFromManyToOneRequired(returnType: RelTestEntity, childToDelete: User) {
+        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToOneRequired/${childToDelete.id}`);
     }
     
-    public async postRequestParamCreate(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string, optionalIntNull?: number, optionalIntBillion?: number, dateTime2000_1_1_12_30?: string): Promise<void>  {
-        const request = this._requestAdapter.getRequest();
-    
-        const baseUrl = `/api/custom/testEntities/requestParamCreate`;
-        
-        const params = {int32, long64Custom, optionalIntNull, optionalIntBillion, intMinusBillion, stringText, booleanTrue, dateCustom, dateTime2000_1_1_12_30};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        
-        const response = await request.fetch(
-            url,
-            {
-                method: "POST"
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
-        }
-        
+    public async deleteFromOneToMany(returnType: RelTestEntity, childToDelete: User) {
+        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/oneToMany/${childToDelete.id}`);
     }
     
-    public async postRequestBodyCreate(body: TestEntity): Promise<void>  {
-        const request = this._requestAdapter.getRequest();
-    
-        const baseUrl = `/api/custom/testEntities/requestBodyCreate`;
-        
-        const params = {};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        
-        const response = await request.fetch(
-            url,
-            {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body:JSON.stringify(body),
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
-        }
-        
+    public async deleteFromOneToOneOptional(returnType: RelTestEntity, childToDelete: User) {
+        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/oneToOneOptional/${childToDelete.id}`);
     }
+    
+    public async deleteFromOneToOneRequired(returnType: RelTestEntity, childToDelete: User) {
+        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/oneToOneRequired/${childToDelete.id}`);
+    }
+  
+    public async readManyToMany(obj: RelTestEntityDto): Promise<User[]> {
+        return this.readManyToManyProjection<User>(obj);
+    }
+    
+    public async readManyToManyProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection[]> {
+        return this.readManyToManyProjection<UserBaseProjection>(obj, "baseProjection");
+    }
+    
+    public async readManyToManyProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T[]> {
+        const hasProjection = (!!projection);
+        let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.manyToMany);
+        fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
+    
+        const response = await this._requestAdapter.getRequest().get(fullUrl);
+        if(response.status === 404) { return []; }
+        if(!response.ok){ throw response; }
+        return (((await response.json()) as ApiHateoasObjectBase<T[]>)._embedded.users).map(item => (apiHelper.injectIds(item)));
+    }
+    
+    public async setManyToMany(returnType: RelTestEntity, children: User[]) {
+        // eslint-disable-next-line no-throw-literal
+        if(!returnType._links) throw `Parent has no _links: ${returnType.id}`;
+        await this._requestAdapter.adaptAnyToMany(
+            apiHelper.removeParamsFromNavigationHref(returnType._links.manyToMany),
+            children.map(c => {
+                // eslint-disable-next-line no-throw-literal
+                if(!c._links) throw `Child has no _links: ${c.id}`;
+                return c._links.self.href;
+            })
+        )
+    }
+    
+    public async addToManyToMany(returnType: RelTestEntity, childToAdd: User) {
+        await this._requestAdapter.addToObj(childToAdd, returnType, "manyToMany");
+    }
+    
+    public async readManyToOneOptional(obj: RelTestEntityDto): Promise<User | undefined> {
+        return this.readManyToOneOptionalProjection<User>(obj);
+    }
+    
+    public async readManyToOneOptionalProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection | undefined> {
+        return this.readManyToOneOptionalProjection<UserBaseProjection>(obj, "baseProjection");
+    }
+    
+    public async readManyToOneOptionalProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = (!!projection);
+        let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.manyToOneOptional);
+        fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
+    
+        const response = await this._requestAdapter.getRequest().get(fullUrl);
+        if(response.status === 404) { return undefined; }
+        if(!response.ok){ throw response; }
+        
+        const result = (await response.json()) as T;
+        return apiHelper.injectIds(result);
+    }
+    
+    public async setManyToOneOptional(returnType: RelTestEntity, child: User) {
+        // eslint-disable-next-line no-throw-literal
+        if(!returnType._links) throw `Parent has no _links: ${returnType.id}`;
+        // eslint-disable-next-line no-throw-literal
+        if(!child._links) throw `Child has no _links: ${child.id}`;
+        await this._requestAdapter.adaptAnyToOne(
+            apiHelper.removeParamsFromNavigationHref(returnType._links.manyToOneOptional),
+            child._links.self.href
+        );
+    }
+    
+    public async readManyToOneRequired(obj: RelTestEntityDto): Promise<User | undefined> {
+        return this.readManyToOneRequiredProjection<User>(obj);
+    }
+    
+    public async readManyToOneRequiredProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection | undefined> {
+        return this.readManyToOneRequiredProjection<UserBaseProjection>(obj, "baseProjection");
+    }
+    
+    public async readManyToOneRequiredProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = (!!projection);
+        let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.manyToOneRequired);
+        fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
+    
+        const response = await this._requestAdapter.getRequest().get(fullUrl);
+        if(response.status === 404) { return undefined; }
+        if(!response.ok){ throw response; }
+        
+        const result = (await response.json()) as T;
+        return apiHelper.injectIds(result);
+    }
+    
+    public async setManyToOneRequired(returnType: RelTestEntity, child: User) {
+        // eslint-disable-next-line no-throw-literal
+        if(!returnType._links) throw `Parent has no _links: ${returnType.id}`;
+        // eslint-disable-next-line no-throw-literal
+        if(!child._links) throw `Child has no _links: ${child.id}`;
+        await this._requestAdapter.adaptAnyToOne(
+            apiHelper.removeParamsFromNavigationHref(returnType._links.manyToOneRequired),
+            child._links.self.href
+        );
+    }
+    
+    public async readOneToMany(obj: RelTestEntityDto): Promise<User[]> {
+        return this.readOneToManyProjection<User>(obj);
+    }
+    
+    public async readOneToManyProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection[]> {
+        return this.readOneToManyProjection<UserBaseProjection>(obj, "baseProjection");
+    }
+    
+    public async readOneToManyProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T[]> {
+        const hasProjection = (!!projection);
+        let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.oneToMany);
+        fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
+    
+        const response = await this._requestAdapter.getRequest().get(fullUrl);
+        if(response.status === 404) { return []; }
+        if(!response.ok){ throw response; }
+        return (((await response.json()) as ApiHateoasObjectBase<T[]>)._embedded.users).map(item => (apiHelper.injectIds(item)));
+    }
+    
+    public async setOneToMany(returnType: RelTestEntity, children: User[]) {
+        // eslint-disable-next-line no-throw-literal
+        if(!returnType._links) throw `Parent has no _links: ${returnType.id}`;
+        await this._requestAdapter.adaptAnyToMany(
+            apiHelper.removeParamsFromNavigationHref(returnType._links.oneToMany),
+            children.map(c => {
+                // eslint-disable-next-line no-throw-literal
+                if(!c._links) throw `Child has no _links: ${c.id}`;
+                return c._links.self.href;
+            })
+        )
+    }
+    
+    public async addToOneToMany(returnType: RelTestEntity, childToAdd: User) {
+        await this._requestAdapter.addToObj(childToAdd, returnType, "oneToMany");
+    }
+    
+    public async readOneToOneOptional(obj: RelTestEntityDto): Promise<User | undefined> {
+        return this.readOneToOneOptionalProjection<User>(obj);
+    }
+    
+    public async readOneToOneOptionalProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection | undefined> {
+        return this.readOneToOneOptionalProjection<UserBaseProjection>(obj, "baseProjection");
+    }
+    
+    public async readOneToOneOptionalProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = (!!projection);
+        let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.oneToOneOptional);
+        fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
+    
+        const response = await this._requestAdapter.getRequest().get(fullUrl);
+        if(response.status === 404) { return undefined; }
+        if(!response.ok){ throw response; }
+        
+        const result = (await response.json()) as T;
+        return apiHelper.injectIds(result);
+    }
+    
+    public async setOneToOneOptional(returnType: RelTestEntity, child: User) {
+        // eslint-disable-next-line no-throw-literal
+        if(!returnType._links) throw `Parent has no _links: ${returnType.id}`;
+        // eslint-disable-next-line no-throw-literal
+        if(!child._links) throw `Child has no _links: ${child.id}`;
+        await this._requestAdapter.adaptAnyToOne(
+            apiHelper.removeParamsFromNavigationHref(returnType._links.oneToOneOptional),
+            child._links.self.href
+        );
+    }
+    
+    public async readOneToOneRequired(obj: RelTestEntityDto): Promise<User | undefined> {
+        return this.readOneToOneRequiredProjection<User>(obj);
+    }
+    
+    public async readOneToOneRequiredProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection | undefined> {
+        return this.readOneToOneRequiredProjection<UserBaseProjection>(obj, "baseProjection");
+    }
+    
+    public async readOneToOneRequiredProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = (!!projection);
+        let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.oneToOneRequired);
+        fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
+    
+        const response = await this._requestAdapter.getRequest().get(fullUrl);
+        if(response.status === 404) { return undefined; }
+        if(!response.ok){ throw response; }
+        
+        const result = (await response.json()) as T;
+        return apiHelper.injectIds(result);
+    }
+    
+    public async setOneToOneRequired(returnType: RelTestEntity, child: User) {
+        // eslint-disable-next-line no-throw-literal
+        if(!returnType._links) throw `Parent has no _links: ${returnType.id}`;
+        // eslint-disable-next-line no-throw-literal
+        if(!child._links) throw `Child has no _links: ${child.id}`;
+        await this._requestAdapter.adaptAnyToOne(
+            apiHelper.removeParamsFromNavigationHref(returnType._links.oneToOneRequired),
+            child._links.self.href
+        );
+    }
+  
+    
+   
+    
 }
 
 export class UserClient extends BaseClient<ApiClient, UserBase> {

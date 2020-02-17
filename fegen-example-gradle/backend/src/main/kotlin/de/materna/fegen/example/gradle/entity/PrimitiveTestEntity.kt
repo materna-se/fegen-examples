@@ -25,6 +25,7 @@ import org.springframework.data.rest.core.config.Projection
 import org.springframework.lang.Nullable
 import java.time.LocalDate
 import java.time.LocalDateTime
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -35,13 +36,13 @@ import javax.validation.constraints.NotNull
  * to ensure correct transmission of different data types
  */
 @Entity
-class TestEntity {
+class PrimitiveTestEntity {
 
     @Id
     @GeneratedValue
     var id: Long = -1
 
-    @NotNull
+    @Column(nullable = false)
     var int32: Int = 32
 
     @NotNull
@@ -68,7 +69,7 @@ class TestEntity {
     @Nullable
     var dateTime2000_1_1_12_30: LocalDateTime? = LocalDateTime.of(2000, 1, 1, 12, 30)
 
-    @Projection(name = "baseProjection", types = [TestEntity::class])
+    @Projection(name = "baseProjection", types = [PrimitiveTestEntity::class])
     interface BaseProjection {
         val id: Long
         val int32: Int

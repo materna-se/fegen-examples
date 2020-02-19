@@ -27,6 +27,9 @@ import de.materna.fegen.example.gradle.repository.AddressRepository
 import de.materna.fegen.example.gradle.repository.ContactRepository
 import de.materna.fegen.example.gradle.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.projection.ProjectionFactory
+import org.springframework.data.rest.webmvc.mapping.LinkCollector
+import org.springframework.hateoas.EntityModel
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
@@ -36,7 +39,9 @@ import org.springframework.web.bind.annotation.*
 open class CustomEndpointController(
         @Autowired val userRepository: UserRepository,
         @Autowired val contactRepository: ContactRepository,
-        @Autowired val addressRepository: AddressRepository
+        @Autowired val addressRepository: AddressRepository,
+        @Autowired val linkCollector: LinkCollector,
+        @Autowired val projectionFactory: ProjectionFactory
 ) {
     @Transactional
     @RequestMapping("createOrUpdate", method = [RequestMethod.POST])
@@ -49,10 +54,10 @@ open class CustomEndpointController(
             @RequestParam zip: String,
             @RequestParam city: String,
             @RequestParam country: String
-    ): ResponseEntity<String> {
+    ): ResponseEntity<EntityModel<Contact.BaseProjection>> {
         val user = userRepository.findUserByName(userName) ?: return ResponseEntity.notFound().build()
 
-        var contact = contactRepository.findByNames(firstName, lastName) ?: Contact()
+        val contact = contactRepository.findByNames(firstName, lastName) ?: Contact()
 
         contact.owner = user
         contact.firstName = firstName
@@ -75,8 +80,9 @@ open class CustomEndpointController(
             }
         }
 
-        contactRepository.save(contact)
-
-        return ResponseEntity.ok("")
+        val savedEntity = contactRepository.save(contact)
+        val projection = projectionFactory.createProjection(Contact.BaseProjection::class.java, savedEntity)
+        val links = linkCollector.getLinksFor(savedEntity)
+        return ResponseEntity.ok(EntityModel(projection, links))
     }
 }

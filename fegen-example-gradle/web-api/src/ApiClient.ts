@@ -265,7 +265,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         return responseObj;
     }
    
-    public async postCreateOrUpdate(userName: string, firstName: string, lastName: string, number: string, street: string, zip: string, city: string, country: string): Promise<void>  {
+    public async postCreateOrUpdate<T extends Contact>(userName: string, firstName: string, lastName: string, number: string, street: string, zip: string, city: string, country: string): Promise<T>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/contacts/createOrUpdate`;
@@ -286,6 +286,8 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             throw response;
         }
         
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
     }
 }
 

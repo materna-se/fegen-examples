@@ -303,7 +303,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
     
-        suspend fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Unit {
+        suspend fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact? {
         
             val url = "/api/custom/contacts/createOrUpdate".appendParams("userName=${URLEncoder.encode(userName.toString(), "UTF-8")}",
                     "firstName=${URLEncoder.encode(firstName.toString(), "UTF-8")}",
@@ -314,14 +314,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
                     "city=${URLEncoder.encode(city.toString(), "UTF-8")}",
                     "country=${URLEncoder.encode(country.toString(), "UTF-8")}")
         
-            return requestAdapter.doVoidRequest(
+            return requestAdapter.doSingleRequest<Contact, ContactDto>(
                 url = url,
                 method = "POST",
                 ignoreBasePath = true
             )
         }
         
-        suspend fun customPostCreateOrUpdateContactFull(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Unit {
+        suspend fun customPostCreateOrUpdateContactFull(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): ContactFull? {
         
             val url = "/api/custom/contacts/createOrUpdate".appendParams("userName=${URLEncoder.encode(userName.toString(), "UTF-8")}",
                     "firstName=${URLEncoder.encode(firstName.toString(), "UTF-8")}",
@@ -332,7 +332,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                     "city=${URLEncoder.encode(city.toString(), "UTF-8")}",
                     "country=${URLEncoder.encode(country.toString(), "UTF-8")}")
         
-            return requestAdapter.doVoidRequest(
+            return requestAdapter.doSingleRequest<ContactFull, ContactFullDto>(
                 url = url,
                 method = "POST",
                 projectionName = "full",
@@ -841,10 +841,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? =
             runBlocking { client.searchFindByNamesContactFull(firstName, lastName) }
     
-        fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Unit =
+        fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact? =
                 runBlocking { client.customPostCreateOrUpdate(userName, firstName, lastName, number, street, zip, city, country) }
         
-        fun customPostCreateOrUpdateContactFull(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Unit =
+        fun customPostCreateOrUpdateContactFull(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): ContactFull? =
                 runBlocking { client.customPostCreateOrUpdateContactFull(userName, firstName, lastName, number, street, zip, city, country) }
     
     }

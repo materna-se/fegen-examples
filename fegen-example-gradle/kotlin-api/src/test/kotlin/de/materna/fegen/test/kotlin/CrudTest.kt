@@ -42,7 +42,7 @@ class CrudTest : ApiSpec() {
             val newUser = apiClient().userRepository.create(userBase)
 
             newUser shouldNotBe null
-            newUser!!.name shouldBe userBase.name
+            newUser.name shouldBe userBase.name
             newUser.id shouldBeGreaterThanOrEqual 0
             userCount() shouldBe userCountBefore + 1
         }
@@ -53,7 +53,7 @@ class CrudTest : ApiSpec() {
             val changedUser = apiClient().userRepository.update(changeRequest)
 
             changedUser shouldNotBe null
-            changedUser!!.name shouldBe changeRequest.name
+            changedUser.name shouldBe changeRequest.name
             changedUser.id shouldBe changeRequest.id
             userCount() shouldBe userCountBefore
         }

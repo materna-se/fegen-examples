@@ -97,7 +97,7 @@ class RelationshipTest: ApiSpec() {
             val contact = ContactBase(
                     firstName = "Example",
                     lastName = "Contact"
-            ).let { apiClient().contactClient.create(it)!! }
+            ).let { apiClient().contactClient.create(it) }
             val user = getUserOne()
             val contactsBefore = apiClient().userClient.readContacts(user)
 
@@ -128,7 +128,7 @@ class RelationshipTest: ApiSpec() {
                 zip = "12345",
                 city = "ExampleCity",
                 country = "ExampleCountry"
-        ).let { apiClient().addressClient.create(it)!! }
+        ).let { apiClient().addressClient.create(it) }
 
     private suspend fun getAllContacts(): List<Contact> {
         return apiClient().contactClient.readAll(null, null, null).items

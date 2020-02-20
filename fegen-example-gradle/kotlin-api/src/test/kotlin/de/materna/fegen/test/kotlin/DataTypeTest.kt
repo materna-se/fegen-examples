@@ -41,7 +41,7 @@ class DataTypeTest : ApiSpec() {
             val testEntities = apiClient().primitiveTestEntityClient.readAll().items
 
             createReturn shouldNotBe null
-            compareTestEntities(createReturn!!, customEntity)
+            compareTestEntities(createReturn, customEntity)
             testEntities shouldContain createReturn
         }
 

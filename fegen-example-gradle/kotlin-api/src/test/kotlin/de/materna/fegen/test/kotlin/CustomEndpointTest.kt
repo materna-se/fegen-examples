@@ -21,11 +21,15 @@
  */
 package de.materna.fegen.test.kotlin
 
+import io.kotlintest.shouldBe
+import io.kotlintest.shouldNotBe
+import java.time.LocalDate
+
 class CustomEndpointTest : ApiSpec() {
 
     init {
         "custom endpoint" {
-            apiClient().contactRepository.customPostCreateOrUpdate(
+            val result = apiClient().contactRepository.customPostCreateOrUpdate(
                     "UserOne",
                     "firstName",
                     "lastName",
@@ -35,6 +39,87 @@ class CustomEndpointTest : ApiSpec() {
                     "city",
                     "country"
             )
+
+            result shouldNotBe null
+            val owner = apiClient().contactClient.readOwner(result)
+            owner shouldNotBe null
+            owner!!.name shouldBe "UserOne"
+            result.firstName shouldBe "firstName"
+            result.lastName shouldBe "lastName"
+            result.number shouldBe null
+            val address = apiClient().contactClient.readAddress(result)
+            address shouldNotBe null
+            address!!.street shouldBe "street"
+            address.zip shouldBe "12345"
+            address.city shouldBe "city"
+            address.country shouldBe "country"
+        }
+
+        "path variables" {
+            val date = LocalDate.of(1234, 7, 13)
+            val result = apiClient().primitiveTestEntityClient.customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(
+                    1, 12, -123, "fghtejte", false, date
+            )
+
+            result.apply {
+                int32 shouldBe 1
+                long64 shouldBe 12
+                intMinusBillion shouldBe -123
+                stringText shouldBe "fghtejte"
+                booleanTrue shouldBe false
+                date2000_6_12 shouldBe date
+            }
+        }
+
+        "request parameters" {
+            val date = LocalDate.of(2003, 7, 3)
+            val result = apiClient().primitiveTestEntityClient.customPostRequestParamCreate(
+                    1,
+                    12,
+                    -123,
+                    "grshteh",
+                    false,
+                    date,
+                    -541651664,
+                    null,
+                    null
+            )
+            result.apply {
+                int32 shouldBe 1
+                long64 shouldBe 12
+                intMinusBillion shouldBe -123
+                stringText shouldBe "grshteh"
+                booleanTrue shouldBe false
+                date2000_6_12 shouldBe date
+                optionalIntNull shouldBe -541651664
+                optionalIntBillion shouldBe null
+                dateTime2000_1_1_12_30 shouldBe null
+            }
+        }
+
+        "body" {
+            val result = apiClient().primitiveTestEntityClient.customPostRequestBodyCreate(customEntity)
+
+            compareTestEntities(result, customEntity)
+        }
+
+        "path variables and request parameters" {
+            val result = apiClient().primitiveTestEntityClient.customPostNoBodyCreateByInt32(684, 848)
+
+            result.int32 shouldBe 684
+            result.long64 shouldBe 848
+        }
+
+        "path variables and request body" {
+            val result = apiClient().primitiveTestEntityClient.customPostNoRequestParamCreateByInt32(789, customEntity)
+
+            compareTestEntities(result, customEntity.copy(int32 = 789))
+        }
+
+        "request parameters and request body" {
+            val result = apiClient().primitiveTestEntityClient.customPostNoPathVariableCreate(customEntity, -65446545)
+
+            compareTestEntities(result, customEntity.copy(long64 = -65446545))
         }
     }
 }

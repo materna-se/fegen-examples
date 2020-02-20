@@ -75,7 +75,7 @@ data class AddressBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(AddressLinks(mapOf(
-        "self" to ApiNavigationLink("/addresses/$id", false)
+        "self" to ApiNavigationLink("/contactAddresses/$id", false)
     )))
 }
 

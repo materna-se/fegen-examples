@@ -32,7 +32,7 @@ export class ApiClient {
 export class AddressClient extends BaseClient<ApiClient, AddressBase> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
-        super("/addresses", "addresses", apiClient, requestAdapter);
+        super("/contactAddresses", "contactAddresses", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         

@@ -40,7 +40,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: AddressBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "/addresses"
+            createURI = "/contactAddresses"
         )
     
         @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
@@ -69,8 +69,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "/addresses",
-                embeddedPropName = "addresses",
+                url = "/contactAddresses",
+                embeddedPropName = "contactAddresses",
                 projectionName = projectionName,
                 page = page,
                 size = size,
@@ -80,7 +80,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<Address, AddressDto>(
             id = id,
-            uri = "/addresses"
+            uri = "/contactAddresses"
         )
     
     
@@ -90,7 +90,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: Address) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/addresses")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/contactAddresses")
     
     
         

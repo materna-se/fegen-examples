@@ -75,7 +75,7 @@ class PrimitiveTestEntity {
         val int32: Int
         val long64: Long
         val optionalIntNull: Int?
-        val optionalIntBillion: Int
+        val optionalIntBillion: Int?
         val intMinusBillion: Int
         val stringText: String
         val booleanTrue: Boolean

@@ -65,18 +65,18 @@ open class TestRestController(
         return ResponseEntity.ok(EntityModel(projection, links))
     }
 
-    @RequestMapping(name = "requestParamCreate", method = [RequestMethod.POST])
+    @RequestMapping(path = ["requestParamCreate"], method = [RequestMethod.POST])
     @ResponseBody
     fun requestParam(
             @RequestParam int32: Int,
             @RequestParam("long64Custom") long64: Long,
             @RequestParam(required = false) optionalIntNull: Int?,
-            @RequestParam(required = false) optionalIntBillion: Int,
+            @RequestParam(required = false) optionalIntBillion: Int?,
             @RequestParam intMinusBillion: Int,
             @RequestParam stringText: String,
             @RequestParam booleanTrue: Boolean,
-            @RequestParam(name = "dateCustom") date2000_6_12: LocalDate,
-            @RequestParam(required = false) dateTime2000_1_1_12_30: LocalDateTime?
+            @RequestParam(name = "dateCustom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date2000_6_12: LocalDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) dateTime2000_1_1_12_30: LocalDateTime?
     ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
         val savedEntity = testEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32

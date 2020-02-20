@@ -265,7 +265,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         return responseObj;
     }
    
-    public async postCreateOrUpdate<T extends Contact>(userName: string, firstName: string, lastName: string, number: string, street: string, zip: string, city: string, country: string): Promise<T>  {
+    public async postCreateOrUpdate<T extends ContactBaseProjection>(userName: string, firstName: string, lastName: string, number: string, street: string, zip: string, city: string, country: string): Promise<T>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/contacts/createOrUpdate`;
@@ -351,7 +351,196 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
   
     
    
+    public async postMixedCreateByInt32<T extends PrimitiveTestEntityBaseProjection>(int32: number, body: PrimitiveTestEntity, long64: number): Promise<T>  {
+        const request = this._requestAdapter.getRequest();
     
+        const baseUrl = `/api/custom/primitiveTestEntities/mixedCreate/${int32}`;
+        
+        const params = {long64};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
+    }
+    
+    public async postNoBodyCreateByInt32<T extends PrimitiveTestEntityBaseProjection>(int32: number, long64: number): Promise<T>  {
+        const request = this._requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/noBodyCreate/${int32}`;
+        
+        const params = {long64};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
+    }
+    
+    public async postNoPathVariableCreate<T extends PrimitiveTestEntityBaseProjection>(body: PrimitiveTestEntity, long64: number): Promise<T>  {
+        const request = this._requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/noPathVariableCreate`;
+        
+        const params = {long64};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
+    }
+    
+    public async postNoRequestParamCreateByInt32<T extends PrimitiveTestEntityBaseProjection>(int32: number, body: PrimitiveTestEntity): Promise<T>  {
+        const request = this._requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/noRequestParamCreate/${int32}`;
+        
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
+    }
+    
+    public async postPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom<T extends PrimitiveTestEntityBaseProjection>(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string): Promise<T>  {
+        const request = this._requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/pathVariableCreate/${int32}/${long64Custom}/${intMinusBillion}/${stringText}/${booleanTrue}/${dateCustom}`;
+        
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
+    }
+    
+    public async postRequestParamCreate<T extends PrimitiveTestEntityBaseProjection>(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string, optionalIntNull?: number, optionalIntBillion?: number, dateTime2000_1_1_12_30?: string): Promise<T>  {
+        const request = this._requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/requestParamCreate`;
+        
+        const params = {int32, long64Custom, optionalIntNull, optionalIntBillion, intMinusBillion, stringText, booleanTrue, dateCustom, dateTime2000_1_1_12_30};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
+    }
+    
+    public async postRequestBodyCreate<T extends PrimitiveTestEntityBaseProjection>(body: PrimitiveTestEntity): Promise<T>  {
+        const request = this._requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/requestBodyCreate`;
+        
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const obj = (await response.json()) as T;
+        return apiHelper.injectIds(obj);
+    }
 }
 
 export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase> {

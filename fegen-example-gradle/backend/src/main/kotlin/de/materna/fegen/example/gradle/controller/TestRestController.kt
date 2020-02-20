@@ -21,7 +21,6 @@
  */
 package de.materna.fegen.example.gradle.controller
 
-import de.materna.fegen.example.gradle.entity.Contact
 import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.repository.TestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +34,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @RestController
-@RequestMapping("/api/custom/testEntities")
+@RequestMapping("/api/custom/primitiveTestEntities")
 open class TestRestController(
         @Autowired private val testEntityRepository: TestEntityRepository,
         @Autowired private val linkCollector: LinkCollector,

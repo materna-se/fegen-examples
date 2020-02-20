@@ -303,7 +303,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
     
-        suspend fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact? {
+        suspend fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact {
         
             val url = "/api/custom/contacts/createOrUpdate".appendParams("userName=${URLEncoder.encode(userName.toString(), "UTF-8")}",
                     "firstName=${URLEncoder.encode(firstName.toString(), "UTF-8")}",
@@ -411,6 +411,119 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
+        suspend fun customPostMixedCreateByInt32(int32: Int, body: PrimitiveTestEntity, long64: Long): PrimitiveTestEntity {
+        
+            val url = "/api/custom/primitiveTestEntities/mixedCreate/$int32".appendParams("long64=${URLEncoder.encode(long64.toString(), "UTF-8")}")
+        
+            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntity>(
+                url = url,
+                method = "POST",
+                body = body,
+                ignoreBasePath = true
+            )
+        }
+        
+        
+        
+        
+        
+        suspend fun customPostNoBodyCreateByInt32(int32: Int, long64: Long): PrimitiveTestEntity {
+        
+            val url = "/api/custom/primitiveTestEntities/noBodyCreate/$int32".appendParams("long64=${URLEncoder.encode(long64.toString(), "UTF-8")}")
+        
+            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
+                url = url,
+                method = "POST",
+                ignoreBasePath = true
+            )
+        }
+        
+        
+        
+        
+        
+        suspend fun customPostNoPathVariableCreate(body: PrimitiveTestEntity, long64: Long): PrimitiveTestEntity {
+        
+            val url = "/api/custom/primitiveTestEntities/noPathVariableCreate".appendParams("long64=${URLEncoder.encode(long64.toString(), "UTF-8")}")
+        
+            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntity>(
+                url = url,
+                method = "POST",
+                body = body,
+                ignoreBasePath = true
+            )
+        }
+        
+        
+        
+        
+        
+        suspend fun customPostNoRequestParamCreateByInt32(int32: Int, body: PrimitiveTestEntity): PrimitiveTestEntity {
+        
+            val url = "/api/custom/primitiveTestEntities/noRequestParamCreate/$int32".appendParams()
+        
+            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntity>(
+                url = url,
+                method = "POST",
+                body = body,
+                ignoreBasePath = true
+            )
+        }
+        
+        
+        
+        
+        
+        suspend fun customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate): PrimitiveTestEntity {
+        
+            val url = "/api/custom/primitiveTestEntities/pathVariableCreate/$int32/$long64Custom/$intMinusBillion/$stringText/$booleanTrue/$dateCustom".appendParams()
+        
+            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
+                url = url,
+                method = "POST",
+                ignoreBasePath = true
+            )
+        }
+        
+        
+        
+        
+        
+        suspend fun customPostRequestParamCreate(int32: Int, long64Custom: Long, optionalIntNull: Int, optionalIntBillion: Int, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate, dateTime2000_1_1_12_30: LocalDateTime): PrimitiveTestEntity {
+        
+            val url = "/api/custom/primitiveTestEntities/requestParamCreate".appendParams("int32=${URLEncoder.encode(int32.toString(), "UTF-8")}",
+                    "long64Custom=${URLEncoder.encode(long64Custom.toString(), "UTF-8")}",
+                    "optionalIntNull=${URLEncoder.encode(optionalIntNull.toString(), "UTF-8") ?: ""}",
+                    "optionalIntBillion=${URLEncoder.encode(optionalIntBillion.toString(), "UTF-8") ?: ""}",
+                    "intMinusBillion=${URLEncoder.encode(intMinusBillion.toString(), "UTF-8")}",
+                    "stringText=${URLEncoder.encode(stringText.toString(), "UTF-8")}",
+                    "booleanTrue=${URLEncoder.encode(booleanTrue.toString(), "UTF-8")}",
+                    "dateCustom=${URLEncoder.encode(dateCustom.toString(), "UTF-8")}",
+                    "dateTime2000_1_1_12_30=${URLEncoder.encode(dateTime2000_1_1_12_30.toString(), "UTF-8") ?: ""}")
+        
+            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
+                url = url,
+                method = "POST",
+                ignoreBasePath = true
+            )
+        }
+        
+        
+        
+        
+        
+        suspend fun customPostRequestBodyCreate(body: PrimitiveTestEntity): PrimitiveTestEntity {
+        
+            val url = "/api/custom/primitiveTestEntities/requestBodyCreate".appendParams()
+        
+            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntity>(
+                url = url,
+                method = "POST",
+                body = body,
+                ignoreBasePath = true
+            )
+        }
+        
         
     
     }
@@ -841,7 +954,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? =
             runBlocking { client.searchFindByNamesContactFull(firstName, lastName) }
     
-        fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact? =
+        fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact =
                 runBlocking { client.customPostCreateOrUpdate(userName, firstName, lastName, number, street, zip, city, country) }
         
         fun customPostCreateOrUpdateContactFull(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): ContactFull? =
@@ -878,6 +991,51 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
+        fun customPostMixedCreateByInt32(int32: Int, body: PrimitiveTestEntity, long64: Long): PrimitiveTestEntity =
+                runBlocking { client.customPostMixedCreateByInt32(int32, body, long64) }
+        
+        
+        
+        
+        
+        fun customPostNoBodyCreateByInt32(int32: Int, long64: Long): PrimitiveTestEntity =
+                runBlocking { client.customPostNoBodyCreateByInt32(int32, long64) }
+        
+        
+        
+        
+        
+        fun customPostNoPathVariableCreate(body: PrimitiveTestEntity, long64: Long): PrimitiveTestEntity =
+                runBlocking { client.customPostNoPathVariableCreate(body, long64) }
+        
+        
+        
+        
+        
+        fun customPostNoRequestParamCreateByInt32(int32: Int, body: PrimitiveTestEntity): PrimitiveTestEntity =
+                runBlocking { client.customPostNoRequestParamCreateByInt32(int32, body) }
+        
+        
+        
+        
+        
+        fun customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate): PrimitiveTestEntity =
+                runBlocking { client.customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32, long64Custom, intMinusBillion, stringText, booleanTrue, dateCustom) }
+        
+        
+        
+        
+        
+        fun customPostRequestParamCreate(int32: Int, long64Custom: Long, optionalIntNull: Int, optionalIntBillion: Int, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate, dateTime2000_1_1_12_30: LocalDateTime): PrimitiveTestEntity =
+                runBlocking { client.customPostRequestParamCreate(int32, long64Custom, optionalIntNull, optionalIntBillion, intMinusBillion, stringText, booleanTrue, dateCustom, dateTime2000_1_1_12_30) }
+        
+        
+        
+        
+        
+        fun customPostRequestBodyCreate(body: PrimitiveTestEntity): PrimitiveTestEntity =
+                runBlocking { client.customPostRequestBodyCreate(body) }
+        
         
     
     }

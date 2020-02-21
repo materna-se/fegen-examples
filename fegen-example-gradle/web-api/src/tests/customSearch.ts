@@ -41,10 +41,10 @@ describe("Custom search", () => {
 
     it("calls custom searches", async () => {
         const regexStr = "n.?$";
-        const results = (await apiClient.contactClient.searchContactsByRegex(regexStr)).items;
+        const results = (await apiClient.contactClient.searchContactsByRegex(regexStr));
 
-        expect(results).to.not.be.empty;
-        checkSearchCriteria(results, regexStr);
+        expect(results.items).to.not.be.empty;
+        checkSearchCriteria(results.items, regexStr);
     });
 
 });

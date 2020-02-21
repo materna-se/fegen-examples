@@ -111,5 +111,13 @@ describe("Custom endpoint", () => {
 
     it("receives lists", async () => {
         const result = await apiClient.primitiveTestEntityClient.getReturnList();
+
+        expect(result.items).to.not.be.empty;
+    });
+
+    it("calls void endpoints", async () => {
+        const result = await apiClient.primitiveTestEntityClient.getReturnVoid();
+
+        expect(result).to.not.exist;
     });
 });

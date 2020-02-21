@@ -274,7 +274,6 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -286,8 +285,10 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
 }
 
@@ -360,7 +361,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -376,8 +376,10 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
     
     public async postNoBodyCreateByInt32<T extends PrimitiveTestEntity>(int32: number, long64: number): Promise<T>  {
@@ -389,7 +391,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -401,8 +402,10 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
     
     public async postNoPathVariableCreate<T extends PrimitiveTestEntity>(body: PrimitiveTestEntityBase, long64: number): Promise<T>  {
@@ -414,7 +417,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -430,8 +432,10 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
     
     public async postNoRequestParamCreateByInt32<T extends PrimitiveTestEntity>(int32: number, body: PrimitiveTestEntityBase): Promise<T>  {
@@ -443,7 +447,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -459,8 +462,10 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
     
     public async postPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom<T extends PrimitiveTestEntity>(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string): Promise<T>  {
@@ -472,7 +477,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -484,8 +488,10 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
     
     public async postRequestParamCreate<T extends PrimitiveTestEntity>(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string, optionalIntNull?: number, optionalIntBillion?: number, dateTime2000_1_1_12_30?: string): Promise<T>  {
@@ -497,7 +503,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -509,8 +514,10 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
     
     public async postRequestBodyCreate<T extends PrimitiveTestEntity>(body: PrimitiveTestEntityBase): Promise<T>  {
@@ -522,7 +529,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {
@@ -538,11 +544,13 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as T;
+    
+        return responseObj;
+        
     }
     
-    public async getReturnList<T extends PrimitiveTestEntity>(): Promise<T>  {
+    public async getReturnList<T extends PrimitiveTestEntity>(): Promise<Items<T>>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/returnList`;
@@ -551,7 +559,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        // TODO: FIXME handle list and paging results 
         const response = await request.fetch(
             url,
             {
@@ -563,8 +570,15 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             throw response;
         }
         
-        const obj = (await response.json()) as T;
-        return apiHelper.injectIds(obj);
+        const responseObj = (await response.json()) as ApiHateoasObjectBase<T[]>;
+    
+        const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
+        
+        return {
+            items: elements,
+            _links: responseObj._links
+        };
+        
     }
     
     public async getReturnVoid(): Promise<void>  {
@@ -576,7 +590,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
         const url = stringHelper.appendParams(baseUrl, params);
     
-        
         const response = await request.fetch(
             url,
             {

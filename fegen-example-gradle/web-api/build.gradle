@@ -12,11 +12,11 @@ assemble {
 }
 
 check {
-    dependsOn parent.project("backend").tasks.named("fegenWeb")
     dependsOn npm_test
 }
 
 npm_test {
+    dependsOn parent.project("backend").tasks.named("fegenWeb")
     dependsOn parent.startBackend
     parent.stopBackend.mustRunAfter npm_test
 }

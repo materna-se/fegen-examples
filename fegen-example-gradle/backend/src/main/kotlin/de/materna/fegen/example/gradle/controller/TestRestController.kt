@@ -152,4 +152,12 @@ open class TestRestController(
 
         return ResponseEntity.ok(EntityModel(savedEntity))
     }
+
+     @GetMapping("returnList")
+     @ResponseBody
+     fun returnList(): ResponseEntity<CollectionModel<PrimitiveTestEntity>> =
+        ResponseEntity.ok(CollectionModel(testEntityRepository.findAll()))
+
+    @GetMapping("returnVoid")
+    fun returnVoid() {}
 }

@@ -21,6 +21,7 @@
  */
 package de.materna.fegen.test.kotlin
 
+import io.kotlintest.matchers.collections.shouldNotHaveSize
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import java.time.LocalDate
@@ -120,6 +121,16 @@ class CustomEndpointTest : ApiSpec() {
             val result = apiClient().primitiveTestEntityClient.customPostNoPathVariableCreate(customEntity, -65446545)
 
             compareTestEntities(result, customEntity.copy(long64 = -65446545))
+        }
+
+        "return list" {
+            val result = apiClient().primitiveTestEntityClient.customGetReturnList()
+
+            result shouldNotHaveSize 0
+        }
+
+        "return void" {
+            apiClient().primitiveTestEntityClient.customGetReturnVoid()
         }
     }
 }

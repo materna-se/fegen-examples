@@ -525,6 +525,38 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         
+        
+        
+        
+        suspend fun customGetReturnList(): List<PrimitiveTestEntity> {
+        
+            val url = "/api/custom/primitiveTestEntities/returnList".appendParams()
+        
+            return requestAdapter.doListRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
+                url = url,
+                method = "GET",
+                embeddedPropName = "primitiveTestEntities",
+                ignoreBasePath = true,
+                type = object : TypeReference<ApiHateoasList<PrimitiveTestEntityDto, PrimitiveTestEntity>>() {}
+            )
+        }
+        
+        
+        
+        
+        
+        suspend fun customGetReturnVoid(): Unit {
+        
+            val url = "/api/custom/primitiveTestEntities/returnVoid".appendParams()
+        
+            return requestAdapter.doVoidRequest(
+                url = url,
+                method = "GET",
+                ignoreBasePath = true
+            )
+        }
+        
+        
     
     }
     
@@ -1035,6 +1067,20 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         fun customPostRequestBodyCreate(body: PrimitiveTestEntityBase): PrimitiveTestEntity =
                 runBlocking { client.customPostRequestBodyCreate(body) }
+        
+        
+        
+        
+        
+        fun customGetReturnList(): List<PrimitiveTestEntity> =
+                runBlocking { client.customGetReturnList() }
+        
+        
+        
+        
+        
+        fun customGetReturnVoid(): Unit =
+                runBlocking { client.customGetReturnVoid() }
         
         
     

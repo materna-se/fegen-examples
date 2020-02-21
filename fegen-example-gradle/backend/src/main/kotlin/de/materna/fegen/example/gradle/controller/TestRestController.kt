@@ -24,9 +24,8 @@ package de.materna.fegen.example.gradle.controller
 import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.repository.TestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.projection.ProjectionFactory
-import org.springframework.data.rest.webmvc.mapping.LinkCollector
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.EntityModel
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -36,9 +35,7 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/api/custom/primitiveTestEntities")
 open class TestRestController(
-        @Autowired private val testEntityRepository: TestEntityRepository,
-        @Autowired private val linkCollector: LinkCollector,
-        @Autowired private val projectionFactory: ProjectionFactory
+        @Autowired private val testEntityRepository: TestEntityRepository
 ) {
 
     @RequestMapping("pathVariableCreate/{int32}/{long64Custom}/{intMinusBillion}/{stringText}/{booleanTrue}/{dateCustom}", method = [RequestMethod.POST])
@@ -50,7 +47,7 @@ open class TestRestController(
             @PathVariable stringText: String,
             @PathVariable booleanTrue: Boolean,
             @PathVariable(name = "dateCustom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date2000_6_12: LocalDate
-    ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
+    ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
         val savedEntity = testEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
@@ -60,9 +57,7 @@ open class TestRestController(
             it.date2000_6_12 = date2000_6_12
         })
 
-        val projection = projectionFactory.createProjection(PrimitiveTestEntity.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(savedEntity))
     }
 
     @RequestMapping(path = ["requestParamCreate"], method = [RequestMethod.POST])
@@ -77,7 +72,7 @@ open class TestRestController(
             @RequestParam booleanTrue: Boolean,
             @RequestParam(name = "dateCustom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date2000_6_12: LocalDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) dateTime2000_1_1_12_30: LocalDateTime?
-    ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
+    ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
         val savedEntity = testEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
@@ -90,21 +85,17 @@ open class TestRestController(
             it.dateTime2000_1_1_12_30 = dateTime2000_1_1_12_30
         })
 
-        val projection = projectionFactory.createProjection(PrimitiveTestEntity.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(savedEntity))
     }
 
     @RequestMapping("requestBodyCreate", method = [RequestMethod.POST])
     @ResponseBody
     fun responseBody(
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
-    ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
+    ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
         val savedEntity = testEntityRepository.save(primitiveTestEntity)
 
-        val projection = projectionFactory.createProjection(PrimitiveTestEntity.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(savedEntity))
     }
 
     @RequestMapping("mixedCreate/{int32}", method = [RequestMethod.POST])
@@ -113,15 +104,13 @@ open class TestRestController(
             @PathVariable int32: Int,
             @RequestParam long64: Long,
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
-    ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
+    ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
         val savedEntity = testEntityRepository.save(primitiveTestEntity.also {
             it.int32 = int32
             it.long64 = long64
         })
 
-        val projection = projectionFactory.createProjection(PrimitiveTestEntity.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(savedEntity))
     }
 
     @RequestMapping("noBodyCreate/{int32}", method = [RequestMethod.POST])
@@ -129,15 +118,13 @@ open class TestRestController(
     fun noBody(
             @PathVariable int32: Int,
             @RequestParam long64: Long
-    ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
+    ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
         val savedEntity = testEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
         })
 
-        val projection = projectionFactory.createProjection(PrimitiveTestEntity.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(savedEntity))
     }
 
     @RequestMapping("noRequestParamCreate/{int32}", method = [RequestMethod.POST])
@@ -145,14 +132,12 @@ open class TestRestController(
     fun noRequestParam(
             @PathVariable int32: Int,
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
-    ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
+    ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
         val savedEntity = testEntityRepository.save(primitiveTestEntity.also {
             it.int32 = int32
         })
 
-        val projection = projectionFactory.createProjection(PrimitiveTestEntity.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(savedEntity))
     }
 
     @RequestMapping("noPathVariableCreate", method = [RequestMethod.POST])
@@ -160,13 +145,11 @@ open class TestRestController(
     fun noPathVariable(
             @RequestParam long64: Long,
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
-    ): ResponseEntity<EntityModel<PrimitiveTestEntity.BaseProjection>> {
+    ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
         val savedEntity = testEntityRepository.save(primitiveTestEntity.also {
             it.long64 = long64
         })
 
-        val projection = projectionFactory.createProjection(PrimitiveTestEntity.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(savedEntity))
     }
 }

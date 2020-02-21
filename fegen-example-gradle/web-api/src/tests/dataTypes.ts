@@ -42,9 +42,9 @@ describe("Data types", () => {
     };
 
     it("can be read", async () => {
-        const entity = (await apiClient.primitiveTestEntityClient.readAll()).items[0];
+        const entities = (await apiClient.primitiveTestEntityClient.readAll()).items;
 
-        expect(entity).to.include(defaultEntity);
+        expect(entities).to.not.be.empty;
     });
 
     it("can be written", async () => {
@@ -60,7 +60,7 @@ describe("Data types", () => {
             stringText: "27"
         };
         const createReturn = await apiClient.primitiveTestEntityClient.create(entity);
-        const testEntities = (await apiClient.primitiveTestEntityClient.readAll()).items;
+        const testEntities = (await apiClient.primitiveTestEntityClient.readAll(0, 999)).items;
 
         expect(createReturn).to.exist;
         expect(createReturn).to.include(entity);

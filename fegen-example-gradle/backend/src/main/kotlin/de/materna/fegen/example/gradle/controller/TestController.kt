@@ -38,6 +38,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * This controller is not part of the example, but only used in automated tests
@@ -135,13 +137,25 @@ open class TestController(
             })
         })
 
-        testEntityRepository.save(PrimitiveTestEntity())
+        for (i in 0 until 27) {
+            testEntityRepository.save(PrimitiveTestEntity().apply {
+                int32 = 32 * i
+                long64 = 64L * i
+                optionalIntNull = null
+                optionalIntBillion = 1_000_000_000 * i
+                intMinusBillion = -1_000_000_000 * i
+                stringText = "abc".repeat(i)
+                booleanTrue = i % 2 == 0
+                date2000_6_12 = LocalDate.of(2000, 4, i + 1)
+                dateTime2000_1_1_12_30 = LocalDateTime.of(2000, 7, i + 1, 0, 2 * i)
+            })
+        }
     }
 
     @RequestMapping("/exit", method = [RequestMethod.POST])
     @ResponseStatus(HttpStatus.OK)
     open fun exit() {
-      shutdownComponent.exit()
+        shutdownComponent.exit()
     }
 
     @RequestMapping("/forceExit", method = [RequestMethod.POST])

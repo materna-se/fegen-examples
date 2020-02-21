@@ -54,7 +54,7 @@ open class CustomEndpointController(
             @RequestParam zip: String,
             @RequestParam city: String,
             @RequestParam country: String
-    ): ResponseEntity<EntityModel<Contact.BaseProjection>> {
+    ): ResponseEntity<EntityModel<Contact>> {
         val user = userRepository.findUserByName(userName) ?: return ResponseEntity.notFound().build()
 
         val contact = contactRepository.findByNames(firstName, lastName) ?: Contact()
@@ -80,9 +80,6 @@ open class CustomEndpointController(
             }
         }
 
-        val savedEntity = contactRepository.save(contact)
-        val projection = projectionFactory.createProjection(Contact.BaseProjection::class.java, savedEntity)
-        val links = linkCollector.getLinksFor(savedEntity)
-        return ResponseEntity.ok(EntityModel(projection, links))
+        return ResponseEntity.ok(EntityModel(contactRepository.save(contact)))
     }
 }

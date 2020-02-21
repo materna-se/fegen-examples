@@ -19,17 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.materna.fegen.example.gradle
+package de.materna.fegen.example.gradle.component
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.projection.ProjectionFactory
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory
+import org.springframework.stereotype.Component
 
-@SpringBootApplication
-open class Application
+@Component
+class ProjectionFactoryProvider {
 
-fun main(args: Array<String>) {
-    runApplication<Application>(*args)
+    @Bean
+    fun projectionFactory(): ProjectionFactory {
+        return SpelAwareProxyProjectionFactory()
+    }
 }

@@ -175,6 +175,6 @@ open class TestRestController(
                 result.totalElements,
                 result.totalPages.toLong()
         )
-        return ResponseEntity.ok(PagedModel(testEntityRepository.findAll(), pageMetadata))
+        return ResponseEntity.ok(PagedModel(result.content, pageMetadata))
     }
 }

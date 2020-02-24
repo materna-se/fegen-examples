@@ -557,6 +557,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 page = page,
                 size = size,
                 sort = sort,
+                ignoreBasePath = true,
                 type = object : TypeReference<ApiHateoasPage<PrimitiveTestEntityDto, PrimitiveTestEntity>>() {}
             )
         }

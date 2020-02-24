@@ -132,5 +132,14 @@ class CustomEndpointTest : ApiSpec() {
         "return void" {
             apiClient().primitiveTestEntityClient.customGetReturnVoid()
         }
+
+        "return paged" {
+            val firstPage = apiClient().primitiveTestEntityClient.customGetReturnPaged()
+            val secondPage = apiClient().primitiveTestEntityClient.customGetReturnPaged(1)
+            val bothPages = apiClient().primitiveTestEntityClient.customGetReturnPaged(size = firstPage.page.size * 2)
+
+            bothPages.items shouldNotHaveSize 0
+            (firstPage.items + secondPage.items) shouldBe bothPages.items
+        }
     }
 }

@@ -41,8 +41,8 @@ open class PagedModelResponseLinker(
     override fun convert(body: PagedModel<*>): PagedModel<*> {
         val entities = body.content
         return if (entities.firstOrNull()?.javaClass?.getAnnotation(Entity::class.java) != null ?: false) {
-            entities.map { entityToModel(it) }
-            PagedModel(entities, body.metadata, body.links)
+            val entityModels = entities.map { entityToModel(it) }
+            PagedModel(entityModels, body.metadata, body.links)
         } else {
             body
         }

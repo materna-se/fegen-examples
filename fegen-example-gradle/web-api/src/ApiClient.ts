@@ -581,12 +581,12 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         
     }
     
-    public async getReturnPaged<T extends PrimitiveTestEntity>(): Promise<PagedItems<T>>  {
+    public async getReturnPaged<T extends PrimitiveTestEntity>(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC"): Promise<PagedItems<T>>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/returnPaged`;
         
-        const params = {};
+        const params = {page, size, sort};
     
         const url = stringHelper.appendParams(baseUrl, params);
     

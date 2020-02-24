@@ -120,4 +120,13 @@ describe("Custom endpoint", () => {
 
         expect(result).to.not.exist;
     });
+
+    it("receives paged", async () => {
+        const pageOne = await apiClient.primitiveTestEntityClient.getReturnPaged();
+        const pageTwo = await apiClient.primitiveTestEntityClient.getReturnPaged(1);
+        const bothPages = await apiClient.primitiveTestEntityClient.getReturnPaged(undefined, 2 * pageOne.page.size);
+
+        expect(bothPages.items).to.not.be.empty;
+        expect(pageOne.items.concat(pageTwo.items)).to.deep.eq(bothPages.items)
+    });
 });

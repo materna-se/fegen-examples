@@ -24,9 +24,11 @@ package de.materna.fegen.example.gradle.controller
 import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.repository.TestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.EntityModel
+import org.springframework.hateoas.PagedModel
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
@@ -160,4 +162,19 @@ open class TestRestController(
 
     @GetMapping("returnVoid")
     fun returnVoid() {}
+
+    @GetMapping("returnPaged")
+    @ResponseBody
+    fun returnPaged(
+            pageable: Pageable
+    ): ResponseEntity<PagedModel<PrimitiveTestEntity>> {
+        val result = testEntityRepository.findAll(pageable)
+        val pageMetadata = PagedModel.PageMetadata(
+                result.size.toLong(),
+                result.number.toLong(),
+                result.totalElements,
+                result.totalPages.toLong()
+        )
+        return ResponseEntity.ok(PagedModel(testEntityRepository.findAll(), pageMetadata))
+    }
 }

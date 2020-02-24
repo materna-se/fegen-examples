@@ -545,6 +545,26 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         
         
+        suspend fun customGetReturnPaged(page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<PrimitiveTestEntity> {
+        
+            val url = "/api/custom/primitiveTestEntities/returnPaged".appendParams()
+        
+            return requestAdapter.doPageRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
+                url = url,
+                method = "GET",
+                embeddedPropName = "primitiveTestEntities",
+                
+                page = page,
+                size = size,
+                sort = sort,
+                type = object : TypeReference<ApiHateoasPage<PrimitiveTestEntityDto, PrimitiveTestEntity>>() {}
+            )
+        }
+        
+        
+        
+        
+        
         suspend fun customGetReturnVoid(): Unit {
         
             val url = "/api/custom/primitiveTestEntities/returnVoid".appendParams()
@@ -1074,6 +1094,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         fun customGetReturnList(): List<PrimitiveTestEntity> =
                 runBlocking { client.customGetReturnList() }
+        
+        
+        
+        
+        
+        fun customGetReturnPaged(page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<PrimitiveTestEntity> =
+                runBlocking { client.customGetReturnPaged(page, size, sort) }
         
         
         

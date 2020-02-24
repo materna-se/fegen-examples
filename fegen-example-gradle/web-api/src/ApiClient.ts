@@ -581,6 +581,38 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         
     }
     
+    public async getReturnPaged<T extends PrimitiveTestEntity>(): Promise<PagedItems<T>>  {
+        const request = this._requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/returnPaged`;
+        
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "GET"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        const responseObj = (await response.json()) as ApiHateoasObjectReadMultiple<T[]>;
+    
+                    const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
+                
+                    return {
+                        items: elements,
+                        _links: responseObj._links
+        , page: responseObj.page
+                    };
+        
+    }
+    
     public async getReturnVoid(): Promise<void>  {
         const request = this._requestAdapter.getRequest();
     

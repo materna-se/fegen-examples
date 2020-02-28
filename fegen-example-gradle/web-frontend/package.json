@@ -19,7 +19,7 @@
     "react-scripts": "3.3.0",
     "typescript": "^3.7.4",
     "web-api": "file:../web-api",
-    "@materna-se/fegen-runtime": "1.0.0-rc.1"
+    "@materna-se/fegen-runtime": "1.0.0-rc.2"
   },
   "scripts": {
     "start": "react-scripts start",

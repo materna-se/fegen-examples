@@ -212,7 +212,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     public async searchContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
         const request = this._requestAdapter.getRequest();
         
-        const parameters: {[key: string]: string} = {nameRegex};
+        const parameters: {[key: string]: string | number | boolean | undefined} = {nameRegex};
             
         const url = stringHelper.appendParams("/search/contactsByRegex", parameters);
     
@@ -230,7 +230,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     public async searchFindByNameContaining<T extends Contact>(name: string, projection?: string, page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<PagedItems<T>> {
         const request = this._requestAdapter.getRequest();
         
-        const parameters: {[key: string]: string} = {name};
+        const parameters: {[key: string]: string | number | boolean | undefined} = {name};
         if (page !== undefined) {
             parameters["page"] = `${page}`;
         }
@@ -255,7 +255,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     public async searchFindByNames<T extends Contact>(firstName: string, lastName: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<T | undefined> {
         const request = this._requestAdapter.getRequest();
         
-        const parameters: {[key: string]: string} = {firstName, lastName};
+        const parameters: {[key: string]: string | number | boolean | undefined} = {firstName, lastName};
             
         const url = stringHelper.appendParams("/contacts/search/findByNames", parameters);
     
@@ -1015,7 +1015,7 @@ export class UserClient extends BaseClient<ApiClient, UserBase> {
     public async searchFindUserByName<T extends User>(name: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "name,ASC" | "name,DESC"): Promise<T | undefined> {
         const request = this._requestAdapter.getRequest();
         
-        const parameters: {[key: string]: string} = {name};
+        const parameters: {[key: string]: string | number | boolean | undefined} = {name};
             
         const url = stringHelper.appendParams("/users/search/findUserByName", parameters);
     

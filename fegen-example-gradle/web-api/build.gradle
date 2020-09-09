@@ -2,11 +2,6 @@
 apply plugin: 'base'
 apply plugin: 'com.github.node-gradle.node'
 
-npmInstall {
-    inputs.file 'package.json'
-    outputs.file 'package-lock.json'
-}
-
 assemble {
     dependsOn npmInstall
 }
@@ -16,6 +11,7 @@ check {
 }
 
 npm_test {
+    dependsOn assemble
     dependsOn parent.project("backend").tasks.named("fegenWeb")
     dependsOn parent.startBackend
     parent.stopBackend.mustRunAfter npm_test

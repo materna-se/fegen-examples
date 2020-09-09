@@ -10,4 +10,4 @@ include ':fegen-example-gradle:web-frontend'
 // Uncomment it if this fegen-examples directory is part of a fegen repository you checked out and
 // you want to test the changes you made to fegen.
 
-// includeBuild '..'
+includeBuild '..'

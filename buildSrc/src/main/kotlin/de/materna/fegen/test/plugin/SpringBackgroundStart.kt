@@ -31,7 +31,7 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.concurrent.thread
 
-open class SpringBackgroundStart: DefaultTask() {
+open class SpringBackgroundStart : DefaultTask() {
 
     @get:Input
     var springProject: Project? = null
@@ -59,11 +59,12 @@ open class SpringBackgroundStart: DefaultTask() {
     private fun startSpringProcess(springProject: Project): Process {
         val libsDirName = springProject.convention.getPlugin(BasePluginConvention::class.java).libsDirName
         val libsDir = springProject.buildDir.resolve(libsDirName)
-        val jarFile = libsDir.listFiles().singleOrNull() ?: throw GradleException("Multiple or no jars found in ${libsDir}. There should be exactly one jar containing a built spring application")
+        val jarFile = libsDir.listFiles()?.singleOrNull()
+                ?: throw GradleException("Multiple or no jars found in ${libsDir}. There should be exactly one jar containing a built spring application")
         logger.info("Starting spring server $jarFile")
         val javaBin = System.getProperty("java.home") + "/bin/java"
+        logger.info("Using java executable $javaBin")
         return ProcessBuilder(javaBin, "-jar", jarFile.toString())
-                .inheritIO()
                 .start()
 
     }

@@ -70,6 +70,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressBase> {
             street: obj.street,
             zip: obj.zip,
             
+            
         };
     }
   
@@ -134,6 +135,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             number: obj.number,
             address: obj.address,
             owner: obj.owner,
+            
         };
     }
   
@@ -342,6 +344,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             optionalIntBillion: obj.optionalIntBillion,
             optionalIntNull: obj.optionalIntNull,
             stringText: obj.stringText,
+            
             
         };
     }
@@ -657,7 +660,9 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase
             manyToOneRequired: base.manyToOneRequired,
             oneToMany: base.oneToMany !== undefined ? base.oneToMany : [],
             oneToOneOptional: base.oneToOneOptional !== undefined ? base.oneToOneOptional : null,
-            oneToOneRequired: base.oneToOneRequired
+            oneToOneRequired: base.oneToOneRequired,
+            embedded: base.embedded !== undefined ? base.embedded : null,
+            embeddedNullable: base.embeddedNullable !== undefined ? base.embeddedNullable : null
         }
     }
   
@@ -695,6 +700,8 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
             oneToMany: obj.oneToMany,
             oneToOneOptional: obj.oneToOneOptional,
             oneToOneRequired: obj.oneToOneRequired,
+            embedded: obj.embedded,
+            embeddedNullable: obj.embeddedNullable,
         };
     }
   
@@ -963,6 +970,7 @@ export class UserClient extends BaseClient<ApiClient, UserBase> {
         return {
             name: obj.name,
             contacts: obj.contacts,
+            
         };
     }
   

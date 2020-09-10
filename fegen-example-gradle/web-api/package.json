@@ -8,7 +8,7 @@
     "build": "npm run clean && npm run compileTypescript",
     "compileTypescript": "tsc",
     "clean": "shx rm -rf dist",
-    "test": "mocha -r ts-node/register -r jsdom-global/register src/tests/**/*.ts"
+    "test": "npm run compileTypescript && mocha -r ts-node/register -r jsdom-global/register src/tests/**/*.ts"
   },
   "license": "MIT",
   "dependencies": {

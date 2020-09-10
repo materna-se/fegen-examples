@@ -7,7 +7,7 @@ import {
 } from '@materna-se/fegen-runtime';
 import { AddressBase, AddressDto, Address, ContactBase, ContactDto, Contact, PrimitiveTestEntityBase, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityBase, RelTestEntityDto, RelTestEntity, UserBase, UserDto, User } from './Entities'
 import {  } from './Entities'
-import { AddressBaseProjection, ContactBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection, ContactFull, FullRelTestEntity } from './Entities'
+import { ContactBaseProjection, PrimitiveTestEntityBaseProjection, UserBaseProjection, AddressBaseProjection, RelTestEntityBaseProjection, ContactFull, FullRelTestEntity } from './Entities'
 
 export class ApiClient {
     public readonly addressClient: AddressClient;

@@ -54,9 +54,18 @@ class RelTestEntity {
     @ManyToMany
     var manyToMany: List<User> = listOf()
 
+    @NotNull
+    @Embedded
+    lateinit var embedded: EmbeddableTestEntity
+
+    @Embedded
+    var embeddedNullable: OtherEmbeddableTestEntity? = null
+
     @Projection(name = "baseProjection", types = [RelTestEntity::class])
     interface BaseProjection {
         val id: Long
+        val embedded: EmbeddableTestEntity
+        val embeddedNullable: OtherEmbeddableTestEntity?
     }
 
     @Projection(name = "full", types = [RelTestEntity::class])
@@ -68,5 +77,7 @@ class RelTestEntity {
         val manyToOneOptional: User.BaseProjection?
         val oneToMany: List<User.BaseProjection>
         val manyToMany: List<User.BaseProjection>
+        val embedded: EmbeddableTestEntity
+        val embeddedNullable: OtherEmbeddableTestEntity?
     }
 }

@@ -28,7 +28,7 @@ import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.entity.User
 import de.materna.fegen.example.gradle.repository.AddressRepository
 import de.materna.fegen.example.gradle.repository.ContactRepository
-import de.materna.fegen.example.gradle.repository.TestEntityRepository
+import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
 import de.materna.fegen.example.gradle.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -57,7 +57,7 @@ open class TestController(
         val addressRepository: AddressRepository,
 
         @Autowired
-        val testEntityRepository: TestEntityRepository,
+        val primitiveTestEntityRepository: PrimitiveTestEntityRepository,
 
         @Autowired
         val shutdownComponent: ShutdownComponent
@@ -74,7 +74,7 @@ open class TestController(
         addressRepository.deleteAll()
         contactRepository.deleteAll()
         userRepository.deleteAll()
-        testEntityRepository.deleteAll()
+        primitiveTestEntityRepository.deleteAll()
 
         val userOne = userRepository.save(User().apply {
             name = "UserOne"
@@ -138,7 +138,7 @@ open class TestController(
         })
 
         for (i in 0 until 27) {
-            testEntityRepository.save(PrimitiveTestEntity().apply {
+            primitiveTestEntityRepository.save(PrimitiveTestEntity().apply {
                 int32 = 32 * i
                 long64 = 64L * i
                 optionalIntNull = null

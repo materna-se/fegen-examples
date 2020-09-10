@@ -193,11 +193,30 @@ export interface User extends UserDto {
     id: number
 }
 
-export interface AddressBaseProjection extends Address {
-    
+export interface EmbeddableTestEntity {
+    embeddedLong: number
+    embeddedNullableInt: number | null
+    embeddedText: string
+}
+
+export interface OtherEmbeddableTestEntity {
+    embeddedNullableText: string | null
+    otherEmbeddedNullableInt: number | null
 }
 
 export interface ContactBaseProjection extends Contact {
+    
+}
+
+export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
+    
+}
+
+export interface UserBaseProjection extends User {
+    
+}
+
+export interface AddressBaseProjection extends Address {
     
 }
 
@@ -205,23 +224,18 @@ export interface ContactFull extends Contact {
     address: AddressBaseProjection | null
 }
 
-export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
-    
-}
-
 export interface RelTestEntityBaseProjection extends RelTestEntity {
-    
+    embedded: EmbeddableTestEntity | null
+    embeddedNullable: OtherEmbeddableTestEntity | null
 }
 
 export interface FullRelTestEntity extends RelTestEntity {
+    embedded: EmbeddableTestEntity | null
+    embeddedNullable: OtherEmbeddableTestEntity | null
     manyToMany: UserBaseProjection[]
     manyToOneOptional: UserBaseProjection | null
     manyToOneRequired: UserBaseProjection
     oneToMany: UserBaseProjection[]
     oneToOneOptional: UserBaseProjection | null
     oneToOneRequired: UserBaseProjection
-}
-
-export interface UserBaseProjection extends User {
-    
 }

@@ -22,7 +22,7 @@
 package de.materna.fegen.example.gradle.controller
 
 import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
-import de.materna.fegen.example.gradle.repository.TestEntityRepository
+import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
@@ -37,7 +37,7 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/api/custom/primitiveTestEntities")
 open class TestRestController(
-        @Autowired private val testEntityRepository: TestEntityRepository
+        @Autowired private val primitiveTestEntityRepository: PrimitiveTestEntityRepository
 ) {
 
     @RequestMapping("pathVariableCreate/{int32}/{long64Custom}/{intMinusBillion}/{stringText}/{booleanTrue}/{dateCustom}", method = [RequestMethod.POST])
@@ -50,7 +50,7 @@ open class TestRestController(
             @PathVariable booleanTrue: Boolean,
             @PathVariable(name = "dateCustom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date2000_6_12: LocalDate
     ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
-        val savedEntity = testEntityRepository.save(PrimitiveTestEntity().also {
+        val savedEntity = primitiveTestEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
             it.intMinusBillion = intMinusBillion
@@ -75,7 +75,7 @@ open class TestRestController(
             @RequestParam(name = "dateCustom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date2000_6_12: LocalDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) dateTime2000_1_1_12_30: LocalDateTime?
     ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
-        val savedEntity = testEntityRepository.save(PrimitiveTestEntity().also {
+        val savedEntity = primitiveTestEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
             it.optionalIntNull = optionalIntNull
@@ -95,7 +95,7 @@ open class TestRestController(
     fun responseBody(
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
-        val savedEntity = testEntityRepository.save(primitiveTestEntity)
+        val savedEntity = primitiveTestEntityRepository.save(primitiveTestEntity)
 
         return ResponseEntity.ok(EntityModel(savedEntity))
     }
@@ -107,7 +107,7 @@ open class TestRestController(
             @RequestParam long64: Long,
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
-        val savedEntity = testEntityRepository.save(primitiveTestEntity.also {
+        val savedEntity = primitiveTestEntityRepository.save(primitiveTestEntity.also {
             it.int32 = int32
             it.long64 = long64
         })
@@ -121,7 +121,7 @@ open class TestRestController(
             @PathVariable int32: Int,
             @RequestParam long64: Long
     ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
-        val savedEntity = testEntityRepository.save(PrimitiveTestEntity().also {
+        val savedEntity = primitiveTestEntityRepository.save(PrimitiveTestEntity().also {
             it.int32 = int32
             it.long64 = long64
         })
@@ -135,7 +135,7 @@ open class TestRestController(
             @PathVariable int32: Int,
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
-        val savedEntity = testEntityRepository.save(primitiveTestEntity.also {
+        val savedEntity = primitiveTestEntityRepository.save(primitiveTestEntity.also {
             it.int32 = int32
         })
 
@@ -148,7 +148,7 @@ open class TestRestController(
             @RequestParam long64: Long,
             @RequestBody primitiveTestEntity: PrimitiveTestEntity
     ): ResponseEntity<EntityModel<PrimitiveTestEntity>> {
-        val savedEntity = testEntityRepository.save(primitiveTestEntity.also {
+        val savedEntity = primitiveTestEntityRepository.save(primitiveTestEntity.also {
             it.long64 = long64
         })
 
@@ -158,7 +158,7 @@ open class TestRestController(
      @GetMapping("returnList")
      @ResponseBody
      fun returnList(): ResponseEntity<CollectionModel<PrimitiveTestEntity>> =
-        ResponseEntity.ok(CollectionModel(testEntityRepository.findAll()))
+        ResponseEntity.ok(CollectionModel(primitiveTestEntityRepository.findAll()))
 
     @GetMapping("returnVoid")
     fun returnVoid() {}
@@ -168,7 +168,7 @@ open class TestRestController(
     fun returnPaged(
             pageable: Pageable
     ): ResponseEntity<PagedModel<PrimitiveTestEntity>> {
-        val result = testEntityRepository.findAll(pageable)
+        val result = primitiveTestEntityRepository.findAll(pageable)
         val pageMetadata = PagedModel.PageMetadata(
                 result.size.toLong(),
                 result.number.toLong(),

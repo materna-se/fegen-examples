@@ -26,4 +26,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource
-interface TestEntityRepository : JpaRepository<PrimitiveTestEntity, Long>
+interface PrimitiveTestEntityRepository : JpaRepository<PrimitiveTestEntity, Long>

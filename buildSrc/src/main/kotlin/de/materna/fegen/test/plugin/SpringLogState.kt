@@ -48,9 +48,14 @@ enum class SpringLogState {
      */
     StartFailed;
 
+    private val errorMessages = hashSetOf(
+            "APPLICATION FAILED TO START",
+            "Error starting ApplicationContext"
+    )
+
     fun nextLine(line: String): SpringLogState {
         when (this) {
-            Starting -> if (line.contains("APPLICATION FAILED TO START")) {
+            Starting -> if (errorMessages.any { line.contains(it) }) {
                 return StartFailed
             } else if (line.contains(Regex("Started .+ in .+ seconds"))) {
                 return Running

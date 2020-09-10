@@ -28,6 +28,7 @@ import org.gradle.api.plugins.BasePluginConvention
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.concurrent.thread
 
@@ -43,14 +44,19 @@ open class SpringBackgroundStart : DefaultTask() {
 
         val process = startSpringProcess(springProject)
 
+        val outputBuffer = StringBuffer()
         val state = AtomicReference(SpringLogState.Starting)
         val taskFinishSemaphore = Semaphore(0)
         thread { errorReaderThread(process) }
-        thread { outputReaderThread(process, state, taskFinishSemaphore) }
-        taskFinishSemaphore.acquire()
-        if (state.get().taskFailed()) {
+        thread { outputReaderThread(process, state, taskFinishSemaphore, outputBuffer) }
+        val timeout = !taskFinishSemaphore.tryAcquire(30, TimeUnit.SECONDS)
+        if (timeout || state.get().taskFailed()) {
             Thread.sleep(1000)
-            throw GradleException("Starting backend failed")
+            if (timeout) {
+                outputBuffer.lines().forEach { System.err.println(it) }
+            }
+            val errorType = if (timeout) "timed out" else "failed"
+            throw GradleException("Starting backend $errorType")
         } else {
             logger.info("Backend started")
         }
@@ -69,7 +75,12 @@ open class SpringBackgroundStart : DefaultTask() {
 
     }
 
-    private fun outputReaderThread(process: Process, state: AtomicReference<SpringLogState>, taskFinishSemaphore: Semaphore) {
+    private fun outputReaderThread(
+            process: Process,
+            state: AtomicReference<SpringLogState>,
+            taskFinishSemaphore: Semaphore,
+            outputBuffer: StringBuffer
+    ) {
         var semaphore: Semaphore? = taskFinishSemaphore
         process.inputStream.reader().forEachLine { line ->
             state.set(state.get().nextLine(line))
@@ -79,6 +90,8 @@ open class SpringBackgroundStart : DefaultTask() {
             }
             if (state.get().shouldLog()) {
                 System.err.println("  [ Backend ] $line")
+            } else {
+                outputBuffer.appendln(line)
             }
         }
     }

@@ -122,7 +122,7 @@ export interface PrimitiveTestEntity extends PrimitiveTestEntityDto {
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface RelTestEntityBase extends ApiBase {
-    
+    testString: string
     manyToMany: User[]
     manyToOneOptional: User | null
     manyToOneRequired: User
@@ -231,8 +231,7 @@ export interface ContactFull extends Contact {
 }
 
 export interface RelTestEntityBaseProjection extends RelTestEntity {
-    embedded: EmbeddableTestEntity | null
-    embeddedNullable: OtherEmbeddableTestEntity | null
+    
 }
 
 export interface FullRelTestEntity extends RelTestEntity {

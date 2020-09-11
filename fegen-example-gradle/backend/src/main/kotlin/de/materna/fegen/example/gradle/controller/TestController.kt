@@ -22,15 +22,8 @@
 package de.materna.fegen.example.gradle.controller
 
 import de.materna.fegen.example.gradle.component.ShutdownComponent
-import de.materna.fegen.example.gradle.entity.Address
-import de.materna.fegen.example.gradle.entity.Contact
-import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
-import de.materna.fegen.example.gradle.entity.User
-import de.materna.fegen.example.gradle.repository.AddressRepository
-import de.materna.fegen.example.gradle.repository.ContactRepository
-import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
-import de.materna.fegen.example.gradle.repository.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
+import de.materna.fegen.example.gradle.entity.*
+import de.materna.fegen.example.gradle.repository.*
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.transaction.annotation.Transactional
@@ -47,20 +40,12 @@ import java.time.LocalDateTime
 @Controller
 @RequestMapping("/api")
 open class TestController(
-        @Autowired
-        val userRepository: UserRepository,
-
-        @Autowired
-        val contactRepository: ContactRepository,
-
-        @Autowired
-        val addressRepository: AddressRepository,
-
-        @Autowired
-        val primitiveTestEntityRepository: PrimitiveTestEntityRepository,
-
-        @Autowired
-        val shutdownComponent: ShutdownComponent
+        private val userRepository: UserRepository,
+        private val contactRepository: ContactRepository,
+        private val addressRepository: AddressRepository,
+        private val primitiveTestEntityRepository: PrimitiveTestEntityRepository,
+        private val relTestEntityRepository: RelTestEntityRepository,
+        private val shutdownComponent: ShutdownComponent
 ) {
 
 
@@ -71,6 +56,7 @@ open class TestController(
     @ResponseBody
     @Transactional
     open fun setupTests() {
+        relTestEntityRepository.deleteAll()
         addressRepository.deleteAll()
         contactRepository.deleteAll()
         userRepository.deleteAll()
@@ -89,6 +75,14 @@ open class TestController(
             contacts = listOf()
         })
 
+        initContacts(userOne, userTwo)
+
+        initPrimitiveTestEntities()
+
+        initRelationTestEntities(userOne, userTwo)
+    }
+
+    private fun initContacts(userOne: User, userTwo: User) {
         val firstNames = listOf("Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta")
         val lastNames = listOf("One", "Two", "Three", "Four", "Five", "Six")
 
@@ -136,7 +130,9 @@ open class TestController(
                 country = "Germany"
             })
         })
+    }
 
+    private fun initPrimitiveTestEntities() {
         for (i in 0 until 27) {
             primitiveTestEntityRepository.save(PrimitiveTestEntity().apply {
                 int32 = 32 * i
@@ -149,6 +145,36 @@ open class TestController(
                 date2000_6_12 = LocalDate.of(2000, 4, i + 1)
                 dateTime2000_1_1_12_30 = LocalDateTime.of(2000, 7, i + 1, 0, 2 * i)
             })
+        }
+    }
+
+    private fun initRelationTestEntities(userOne: User, userTwo: User) {
+        saveRelationTestEntity("embeddedIsNull", userOne, userTwo)
+        saveRelationTestEntity("embeddedHasNullContent", userOne, userTwo) {
+            embeddedNullable = OtherEmbeddableTestEntity()
+        }
+        saveRelationTestEntity("embeddedHasContent", userOne, userTwo) {
+            embeddedNullable = OtherEmbeddableTestEntity().apply {
+                embeddedNullableText = "SomeText"
+            }
+        }
+    }
+
+    private fun saveRelationTestEntity(
+            text: String,
+            userOne: User,
+            userTwo: User,
+            content: (RelTestEntity.() -> Unit)? = null
+    ) {
+        RelTestEntity().apply {
+            testString = text
+            manyToOneRequired = userOne
+            oneToOneRequired = userTwo
+            embedded = EmbeddableTestEntity()
+            if (content != null) {
+                content()
+            }
+            relTestEntityRepository.save(this)
         }
     }
 

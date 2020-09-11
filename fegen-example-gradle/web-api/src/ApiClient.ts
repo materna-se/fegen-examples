@@ -655,6 +655,7 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase
   
     public static build(base: Partial<RelTestEntityBase> & {manyToOneRequired: User,oneToOneRequired: User}): RelTestEntityBase {
         return {
+            testString: base.testString !== undefined ? base.testString : "",
             manyToMany: base.manyToMany !== undefined ? base.manyToMany : [],
             manyToOneOptional: base.manyToOneOptional !== undefined ? base.manyToOneOptional : null,
             manyToOneRequired: base.manyToOneRequired,
@@ -666,7 +667,7 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase
         }
     }
   
-    public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC") : Promise<PagedItems<RelTestEntityBaseProjection>> {
+    public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<RelTestEntityBaseProjection>> {
         return this.readProjections<RelTestEntityBaseProjection>("baseProjection", page, size, sort);
     }
             
@@ -675,7 +676,7 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase
     }
     
 
-public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort?: "id,ASC" | "id,DESC") : Promise<PagedItems<FullRelTestEntity>> {
+public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<FullRelTestEntity>> {
         return this.readProjections<FullRelTestEntity>("full", page, size, sort);
     }
             
@@ -683,7 +684,7 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return this.readProjection<FullRelTestEntity>(id, "full");
     }
     
-    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC") : Promise<PagedItems<RelTestEntity>> {
+    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<RelTestEntity>> {
         return await this.readProjections<RelTestEntity>(undefined, page, size, sort);
     }
   
@@ -693,7 +694,7 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
 
     public toBase<T extends RelTestEntityBase>(obj: T): RelTestEntityBase {
         return {
-            
+            testString: obj.testString,
             manyToMany: obj.manyToMany,
             manyToOneOptional: obj.manyToOneOptional,
             manyToOneRequired: obj.manyToOneRequired,

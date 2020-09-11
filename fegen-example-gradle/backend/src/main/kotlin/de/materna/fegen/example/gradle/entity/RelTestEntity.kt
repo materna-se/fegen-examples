@@ -34,6 +34,9 @@ class RelTestEntity {
     var id: Long = -1
 
     @NotNull
+    var testString = ""
+
+    @NotNull
     @OneToOne
     lateinit var oneToOneRequired: User
 
@@ -54,7 +57,6 @@ class RelTestEntity {
     @ManyToMany
     var manyToMany: List<User> = listOf()
 
-    @NotNull
     @Embedded
     lateinit var embedded: EmbeddableTestEntity
 
@@ -64,8 +66,6 @@ class RelTestEntity {
     @Projection(name = "baseProjection", types = [RelTestEntity::class])
     interface BaseProjection {
         val id: Long
-        val embedded: EmbeddableTestEntity
-        val embeddedNullable: OtherEmbeddableTestEntity?
     }
 
     @Projection(name = "full", types = [RelTestEntity::class])

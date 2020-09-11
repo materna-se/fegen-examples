@@ -13,5 +13,5 @@ class EmbeddableTestEntity {
     var embeddedNullableInt: Int? = null
 
     @NotNull
-    lateinit var embeddedText: String
+    var embeddedText: String = "DefaultText"
 }

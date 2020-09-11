@@ -458,23 +458,27 @@ data class PrimitiveTestEntity(
  data class RelTestEntityBase(
 
      override val id: Long? = -1L,
+     val testString: String = "",
 
      override val _links: RelTestEntityLinks? = null
  ): ApiBase<RelTestEntity, RelTestEntityDto> {
 
      data class Builder(
          private var id: Long? = -1L,
+         private var testString: String = "",
          private var _links: RelTestEntityLinks? = null
      ) {
 
          constructor(base: RelTestEntityBase): this() {
              this.id = base.id
+             this.testString = base.testString
              this._links = base._links
          }
 
          fun id(id: Long?) = apply { this.id = id }
+         fun testString(testString: String) = apply { this.testString = testString }
          fun _links(_links: RelTestEntityLinks) = apply { this._links = _links }
-         fun build() = RelTestEntityBase(id, _links)
+         fun build() = RelTestEntityBase(id, testString, _links)
      }
 
      fun toBuilder() = Builder(this)
@@ -487,7 +491,8 @@ data class PrimitiveTestEntity(
       * Create a DTO from a base value
       */
      fun toDto(_links: RelTestEntityLinks) = RelTestEntityDto(
-         id = id,
+         id = id, 
+         testString = testString,
          _links = _links
      )
      
@@ -534,12 +539,14 @@ data class PrimitiveTestEntity(
   */
  data class RelTestEntityDto(
      override val id: Long?,
+     val testString: String,
 
      override val _links: RelTestEntityLinks
  ): ApiDto<RelTestEntity> {
 
      override fun toObj() = RelTestEntity(
-             id = objId,
+             id = objId, 
+             testString = testString,
              _links = _links
          )
  }
@@ -550,11 +557,13 @@ data class PrimitiveTestEntity(
   */
  data class RelTestEntity(
      override val id: Long,
+     val testString: String,
 
      override val _links: RelTestEntityLinks
  ): ApiObj<RelTestEntityDto> {
          fun toBuilder() = RelTestEntityBase.Builder(
-             id = id,
+             id = id, 
+             testString = testString,
              _links = _links
          )
  }
@@ -667,6 +676,21 @@ data class PrimitiveTestEntity(
          )
  }
 
+data class EmbeddableTestEntity (
+    val embeddedLong: Long = 0L,
+    val embeddedNullableInt: Int? = 0,
+    val embeddedText: String = ""
+)
+
+data class OtherEmbeddableTestEntity (
+    val embeddedNullableText: String? = "",
+    val otherEmbeddedNullableInt: Int? = 0
+)
+
+
+
+
+
 
 
 
@@ -712,10 +736,11 @@ data class ContactFull(
 
 
 
-
-
 data class FullRelTestEntityDto(
     override val id: Long?,
+    val testString: String,
+    val embedded: EmbeddableTestEntity?,
+    val embeddedNullable: OtherEmbeddableTestEntity?,
     val manyToMany: List<UserDto>,
     val manyToOneOptional: UserDto?,
     val manyToOneRequired: UserDto,
@@ -727,7 +752,10 @@ data class FullRelTestEntityDto(
 ): ApiDto<FullRelTestEntity> {
 
     override fun toObj() = FullRelTestEntity(
-            id = objId,
+            id = objId, 
+            testString = testString,
+            embedded = embedded, 
+            embeddedNullable = embeddedNullable, 
             manyToMany = manyToMany.map { it.toObj() }, 
             manyToOneOptional = manyToOneOptional?.toObj(), 
             manyToOneRequired = manyToOneRequired.toObj(), 
@@ -740,6 +768,9 @@ data class FullRelTestEntityDto(
 
 data class FullRelTestEntity(
     override val id: Long,
+    val testString: String,
+    val embedded: EmbeddableTestEntity?,
+    val embeddedNullable: OtherEmbeddableTestEntity?,
     val manyToMany: List<User>,
     val manyToOneOptional: User?,
     val manyToOneRequired: User,
@@ -751,7 +782,8 @@ data class FullRelTestEntity(
 ): ApiProjection<FullRelTestEntityDto, RelTestEntity> {
 
     override fun toObj() = RelTestEntity(
-            id = id,
+            id = id, 
+            testString = testString,
             _links = _links
         )
 }

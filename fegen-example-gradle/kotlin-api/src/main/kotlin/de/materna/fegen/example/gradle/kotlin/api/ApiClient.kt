@@ -594,6 +594,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
         fun build() = RelTestEntityBase(
                 id = -1L,
+                testString = "",
                 _links = null
             )
     

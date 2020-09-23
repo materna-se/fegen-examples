@@ -18,30 +18,29 @@ data class AddressBase(
 
     override val id: Long? = -1L,
     val city: String = "",
-    val country: String? = "",
     val street: String = "",
     val zip: String = "",
-
+    val country: String? = null,
     override val _links: AddressLinks? = null
 ): ApiBase<Address, AddressDto> {
 
     data class Builder(
         private var id: Long? = -1L,
         private var city: String = "",
-        private var country: String? = "",
+        private var country: String? = null,
         private var street: String = "",
         private var zip: String = "",
         private var _links: AddressLinks? = null
     ) {
 
-        constructor(base: AddressBase): this() {
-            this.id = base.id
-            this.city = base.city
-            this.country = base.country
-            this.street = base.street
-            this.zip = base.zip
-            this._links = base._links
-        }
+        constructor(base: AddressBase): this(
+            base.id,
+            base.city,
+            base.country,
+            base.street,
+            base.zip,
+            base._links
+        )
 
         fun id(id: Long?) = apply { this.id = id }
         fun city(city: String) = apply { this.city = city }
@@ -49,7 +48,7 @@ data class AddressBase(
         fun street(street: String) = apply { this.street = street }
         fun zip(zip: String) = apply { this.zip = zip }
         fun _links(_links: AddressLinks) = apply { this._links = _links }
-        fun build() = AddressBase(id, city, country, street, zip, _links)
+        fun build() = AddressBase(id, city, street, zip, country, _links)
     }
 
     fun toBuilder() = Builder(this)
@@ -133,11 +132,13 @@ data class Address(
 
     override val _links: AddressLinks
 ): ApiObj<AddressDto> {
-        fun toBuilder() = AddressBase.Builder(
-            id = id, 
-            city = city, 
-            country = country, 
-            street = street, 
+        fun toBuilder(
+            
+        ) = AddressBase.Builder(
+            id = id,
+            city = city,
+            country = country,
+            street = street,
             zip = zip,
             _links = _links
         )
@@ -153,33 +154,40 @@ data class Address(
      override val id: Long? = -1L,
      val firstName: String = "",
      val lastName: String = "",
-     val number: String? = "",
-
+     val address: Address? = null,
+     val number: String? = null,
+     val owner: User? = null,
      override val _links: ContactLinks? = null
  ): ApiBase<Contact, ContactDto> {
 
      data class Builder(
          private var id: Long? = -1L,
+         private var address: Address? = null,
          private var firstName: String = "",
          private var lastName: String = "",
-         private var number: String? = "",
+         private var number: String? = null,
+         private var owner: User? = null,
          private var _links: ContactLinks? = null
      ) {
 
-         constructor(base: ContactBase): this() {
-             this.id = base.id
-             this.firstName = base.firstName
-             this.lastName = base.lastName
-             this.number = base.number
-             this._links = base._links
-         }
+         constructor(base: ContactBase): this(
+             base.id,
+             base.address,
+             base.firstName,
+             base.lastName,
+             base.number,
+             base.owner,
+             base._links
+         )
 
          fun id(id: Long?) = apply { this.id = id }
+         fun address(address: Address?) = apply { this.address = address }
          fun firstName(firstName: String) = apply { this.firstName = firstName }
          fun lastName(lastName: String) = apply { this.lastName = lastName }
          fun number(number: String?) = apply { this.number = number }
+         fun owner(owner: User?) = apply { this.owner = owner }
          fun _links(_links: ContactLinks) = apply { this._links = _links }
-         fun build() = ContactBase(id, firstName, lastName, number, _links)
+         fun build() = ContactBase(id, firstName, lastName, address, number, owner, _links)
      }
 
      fun toBuilder() = Builder(this)
@@ -262,11 +270,16 @@ data class Address(
 
      override val _links: ContactLinks
  ): ApiObj<ContactDto> {
-         fun toBuilder() = ContactBase.Builder(
-             id = id, 
-             firstName = firstName, 
-             lastName = lastName, 
+         fun toBuilder(
+             address: Address? = null,
+             owner: User? = null
+         ) = ContactBase.Builder(
+             id = id,
+             address = address,
+             firstName = firstName,
+             lastName = lastName,
              number = number,
+             owner = owner,
              _links = _links
          )
  }
@@ -281,14 +294,13 @@ data class PrimitiveTestEntityBase(
     override val id: Long? = -1L,
     val booleanTrue: Boolean = false,
     val date2000_6_12: LocalDate = LocalDate.parse("1970-01-01"),
-    val dateTime2000_1_1_12_30: LocalDateTime? = LocalDateTime.parse("1970-01-01T00:00:00"),
     val int32: Int = 0,
     val intMinusBillion: Int = 0,
     val long64: Long = 0L,
-    val optionalIntBillion: Int? = 0,
-    val optionalIntNull: Int? = 0,
     val stringText: String = "",
-
+    val dateTime2000_1_1_12_30: LocalDateTime? = null,
+    val optionalIntBillion: Int? = null,
+    val optionalIntNull: Int? = null,
     override val _links: PrimitiveTestEntityLinks? = null
 ): ApiBase<PrimitiveTestEntity, PrimitiveTestEntityDto> {
 
@@ -296,29 +308,29 @@ data class PrimitiveTestEntityBase(
         private var id: Long? = -1L,
         private var booleanTrue: Boolean = false,
         private var date2000_6_12: LocalDate = LocalDate.parse("1970-01-01"),
-        private var dateTime2000_1_1_12_30: LocalDateTime? = LocalDateTime.parse("1970-01-01T00:00:00"),
+        private var dateTime2000_1_1_12_30: LocalDateTime? = null,
         private var int32: Int = 0,
         private var intMinusBillion: Int = 0,
         private var long64: Long = 0L,
-        private var optionalIntBillion: Int? = 0,
-        private var optionalIntNull: Int? = 0,
+        private var optionalIntBillion: Int? = null,
+        private var optionalIntNull: Int? = null,
         private var stringText: String = "",
         private var _links: PrimitiveTestEntityLinks? = null
     ) {
 
-        constructor(base: PrimitiveTestEntityBase): this() {
-            this.id = base.id
-            this.booleanTrue = base.booleanTrue
-            this.date2000_6_12 = base.date2000_6_12
-            this.dateTime2000_1_1_12_30 = base.dateTime2000_1_1_12_30
-            this.int32 = base.int32
-            this.intMinusBillion = base.intMinusBillion
-            this.long64 = base.long64
-            this.optionalIntBillion = base.optionalIntBillion
-            this.optionalIntNull = base.optionalIntNull
-            this.stringText = base.stringText
-            this._links = base._links
-        }
+        constructor(base: PrimitiveTestEntityBase): this(
+            base.id,
+            base.booleanTrue,
+            base.date2000_6_12,
+            base.dateTime2000_1_1_12_30,
+            base.int32,
+            base.intMinusBillion,
+            base.long64,
+            base.optionalIntBillion,
+            base.optionalIntNull,
+            base.stringText,
+            base._links
+        )
 
         fun id(id: Long?) = apply { this.id = id }
         fun booleanTrue(booleanTrue: Boolean) = apply { this.booleanTrue = booleanTrue }
@@ -331,7 +343,7 @@ data class PrimitiveTestEntityBase(
         fun optionalIntNull(optionalIntNull: Int?) = apply { this.optionalIntNull = optionalIntNull }
         fun stringText(stringText: String) = apply { this.stringText = stringText }
         fun _links(_links: PrimitiveTestEntityLinks) = apply { this._links = _links }
-        fun build() = PrimitiveTestEntityBase(id, booleanTrue, date2000_6_12, dateTime2000_1_1_12_30, int32, intMinusBillion, long64, optionalIntBillion, optionalIntNull, stringText, _links)
+        fun build() = PrimitiveTestEntityBase(id, booleanTrue, date2000_6_12, int32, intMinusBillion, long64, stringText, dateTime2000_1_1_12_30, optionalIntBillion, optionalIntNull, _links)
     }
 
     fun toBuilder() = Builder(this)
@@ -435,16 +447,18 @@ data class PrimitiveTestEntity(
 
     override val _links: PrimitiveTestEntityLinks
 ): ApiObj<PrimitiveTestEntityDto> {
-        fun toBuilder() = PrimitiveTestEntityBase.Builder(
-            id = id, 
-            booleanTrue = booleanTrue, 
-            date2000_6_12 = date2000_6_12, 
-            dateTime2000_1_1_12_30 = dateTime2000_1_1_12_30, 
-            int32 = int32, 
-            intMinusBillion = intMinusBillion, 
-            long64 = long64, 
-            optionalIntBillion = optionalIntBillion, 
-            optionalIntNull = optionalIntNull, 
+        fun toBuilder(
+            
+        ) = PrimitiveTestEntityBase.Builder(
+            id = id,
+            booleanTrue = booleanTrue,
+            date2000_6_12 = date2000_6_12,
+            dateTime2000_1_1_12_30 = dateTime2000_1_1_12_30,
+            int32 = int32,
+            intMinusBillion = intMinusBillion,
+            long64 = long64,
+            optionalIntBillion = optionalIntBillion,
+            optionalIntNull = optionalIntNull,
             stringText = stringText,
             _links = _links
         )
@@ -458,33 +472,70 @@ data class PrimitiveTestEntity(
  data class RelTestEntityBase(
 
      override val id: Long? = -1L,
+     val manyToMany: List<User> = listOf(),
+     val manyToOneRequired: User,
+     val oneToMany: List<User> = listOf(),
+     val oneToOneRequired: User,
      val testString: String = "",
-
+     val embedded: EmbeddableTestEntity? = null,
+     val embeddedNullable: OtherEmbeddableTestEntity? = null,
+     val manyToOneOptional: User? = null,
+     val oneToOneOptional: User? = null,
      override val _links: RelTestEntityLinks? = null
  ): ApiBase<RelTestEntity, RelTestEntityDto> {
 
      data class Builder(
          private var id: Long? = -1L,
+         private var embedded: EmbeddableTestEntity? = null,
+         private var embeddedNullable: OtherEmbeddableTestEntity? = null,
+         private var manyToMany: List<User> = listOf(),
+         private var manyToOneOptional: User? = null,
+         private var manyToOneRequired: User,
+         private var oneToMany: List<User> = listOf(),
+         private var oneToOneOptional: User? = null,
+         private var oneToOneRequired: User,
          private var testString: String = "",
          private var _links: RelTestEntityLinks? = null
      ) {
 
-         constructor(base: RelTestEntityBase): this() {
-             this.id = base.id
-             this.testString = base.testString
-             this._links = base._links
-         }
+         constructor(base: RelTestEntityBase): this(
+             base.id,
+             base.embedded,
+             base.embeddedNullable,
+             base.manyToMany,
+             base.manyToOneOptional,
+             base.manyToOneRequired,
+             base.oneToMany,
+             base.oneToOneOptional,
+             base.oneToOneRequired,
+             base.testString,
+             base._links
+         )
 
          fun id(id: Long?) = apply { this.id = id }
+         fun embedded(embedded: EmbeddableTestEntity?) = apply { this.embedded = embedded }
+         fun embeddedNullable(embeddedNullable: OtherEmbeddableTestEntity?) = apply { this.embeddedNullable = embeddedNullable }
+         fun manyToMany(manyToMany: List<User>) = apply { this.manyToMany = manyToMany }
+         fun manyToOneOptional(manyToOneOptional: User?) = apply { this.manyToOneOptional = manyToOneOptional }
+         fun manyToOneRequired(manyToOneRequired: User) = apply { this.manyToOneRequired = manyToOneRequired }
+         fun oneToMany(oneToMany: List<User>) = apply { this.oneToMany = oneToMany }
+         fun oneToOneOptional(oneToOneOptional: User?) = apply { this.oneToOneOptional = oneToOneOptional }
+         fun oneToOneRequired(oneToOneRequired: User) = apply { this.oneToOneRequired = oneToOneRequired }
          fun testString(testString: String) = apply { this.testString = testString }
          fun _links(_links: RelTestEntityLinks) = apply { this._links = _links }
-         fun build() = RelTestEntityBase(id, testString, _links)
+         fun build() = RelTestEntityBase(id, manyToMany, manyToOneRequired, oneToMany, oneToOneRequired, testString, embedded, embeddedNullable, manyToOneOptional, oneToOneOptional, _links)
      }
 
      fun toBuilder() = Builder(this)
 
      companion object {
-         @JvmStatic fun builder() = Builder()
+         @JvmStatic fun builder(
+             manyToOneRequired: User,
+             oneToOneRequired: User
+         ) = Builder(
+             manyToOneRequired = manyToOneRequired,
+             oneToOneRequired = oneToOneRequired
+         )
      }
 
      /**
@@ -492,7 +543,9 @@ data class PrimitiveTestEntity(
       */
      fun toDto(_links: RelTestEntityLinks) = RelTestEntityDto(
          id = id, 
-         testString = testString,
+         testString = testString, 
+         embedded = embedded, 
+         embeddedNullable = embeddedNullable,
          _links = _links
      )
      
@@ -540,13 +593,17 @@ data class PrimitiveTestEntity(
  data class RelTestEntityDto(
      override val id: Long?,
      val testString: String,
+     val embedded: EmbeddableTestEntity?,
+     val embeddedNullable: OtherEmbeddableTestEntity?,
 
      override val _links: RelTestEntityLinks
  ): ApiDto<RelTestEntity> {
 
      override fun toObj() = RelTestEntity(
              id = objId, 
-             testString = testString,
+             testString = testString, 
+             embedded = embedded, 
+             embeddedNullable = embeddedNullable,
              _links = _links
          )
  }
@@ -558,11 +615,28 @@ data class PrimitiveTestEntity(
  data class RelTestEntity(
      override val id: Long,
      val testString: String,
+     val embedded: EmbeddableTestEntity?,
+     val embeddedNullable: OtherEmbeddableTestEntity?,
 
      override val _links: RelTestEntityLinks
  ): ApiObj<RelTestEntityDto> {
-         fun toBuilder() = RelTestEntityBase.Builder(
-             id = id, 
+         fun toBuilder(
+             manyToMany: List<User> = listOf(),
+             manyToOneOptional: User? = null,
+             manyToOneRequired: User,
+             oneToMany: List<User> = listOf(),
+             oneToOneOptional: User? = null,
+             oneToOneRequired: User
+         ) = RelTestEntityBase.Builder(
+             id = id,
+             embedded = embedded,
+             embeddedNullable = embeddedNullable,
+             manyToMany = manyToMany,
+             manyToOneOptional = manyToOneOptional,
+             manyToOneRequired = manyToOneRequired,
+             oneToMany = oneToMany,
+             oneToOneOptional = oneToOneOptional,
+             oneToOneRequired = oneToOneRequired,
              testString = testString,
              _links = _links
          )
@@ -576,27 +650,30 @@ data class PrimitiveTestEntity(
  data class UserBase(
 
      override val id: Long? = -1L,
+     val contacts: List<Contact> = listOf(),
      val name: String = "",
-
      override val _links: UserLinks? = null
  ): ApiBase<User, UserDto> {
 
      data class Builder(
          private var id: Long? = -1L,
+         private var contacts: List<Contact> = listOf(),
          private var name: String = "",
          private var _links: UserLinks? = null
      ) {
 
-         constructor(base: UserBase): this() {
-             this.id = base.id
-             this.name = base.name
-             this._links = base._links
-         }
+         constructor(base: UserBase): this(
+             base.id,
+             base.contacts,
+             base.name,
+             base._links
+         )
 
          fun id(id: Long?) = apply { this.id = id }
+         fun contacts(contacts: List<Contact>) = apply { this.contacts = contacts }
          fun name(name: String) = apply { this.name = name }
          fun _links(_links: UserLinks) = apply { this._links = _links }
-         fun build() = UserBase(id, name, _links)
+         fun build() = UserBase(id, contacts, name, _links)
      }
 
      fun toBuilder() = Builder(this)
@@ -669,8 +746,11 @@ data class PrimitiveTestEntity(
 
      override val _links: UserLinks
  ): ApiObj<UserDto> {
-         fun toBuilder() = UserBase.Builder(
-             id = id, 
+         fun toBuilder(
+             contacts: List<Contact> = listOf()
+         ) = UserBase.Builder(
+             id = id,
+             contacts = contacts,
              name = name,
              _links = _links
          )
@@ -753,9 +833,9 @@ data class FullRelTestEntityDto(
 
     override fun toObj() = FullRelTestEntity(
             id = objId, 
-            testString = testString,
+            testString = testString, 
             embedded = embedded, 
-            embeddedNullable = embeddedNullable, 
+            embeddedNullable = embeddedNullable,
             manyToMany = manyToMany.map { it.toObj() }, 
             manyToOneOptional = manyToOneOptional?.toObj(), 
             manyToOneRequired = manyToOneRequired.toObj(), 
@@ -783,7 +863,9 @@ data class FullRelTestEntity(
 
     override fun toObj() = RelTestEntity(
             id = id, 
-            testString = testString,
+            testString = testString, 
+            embedded = embedded, 
+            embeddedNullable = embeddedNullable,
             _links = _links
         )
 }

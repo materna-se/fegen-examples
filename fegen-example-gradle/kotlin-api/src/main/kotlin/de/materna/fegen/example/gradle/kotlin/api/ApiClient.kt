@@ -43,16 +43,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
             createURI = "/contactAddresses"
         )
     
-        @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
-        fun build() = AddressBase(
-                id = -1L,
-                city = "",
-                country = "",
-                street = "",
-                zip = "",
-                _links = null
-            )
-    
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
             readProjections<Address, AddressDto>(
                 projectionName = null,
@@ -110,15 +100,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
             newObject = obj,
             createURI = "/contacts"
         )
-    
-        @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
-        fun build() = ContactBase(
-                id = -1L,
-                firstName = "",
-                lastName = "",
-                number = "",
-                _links = null
-            )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
             readProjections<Contact, ContactDto>(
@@ -352,21 +333,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
             createURI = "/primitiveTestEntities"
         )
     
-        @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
-        fun build() = PrimitiveTestEntityBase(
-                id = -1L,
-                booleanTrue = false,
-                date2000_6_12 = LocalDate.parse("1970-01-01"),
-                dateTime2000_1_1_12_30 = LocalDateTime.parse("1970-01-01T00:00:00"),
-                int32 = 0,
-                intMinusBillion = 0,
-                long64 = 0L,
-                optionalIntBillion = 0,
-                optionalIntNull = 0,
-                stringText = "",
-                _links = null
-            )
-    
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
             readProjections<PrimitiveTestEntity, PrimitiveTestEntityDto>(
                 projectionName = null,
@@ -591,13 +557,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
             createURI = "/relTestEntities"
         )
     
-        @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
-        fun build() = RelTestEntityBase(
-                id = -1L,
-                testString = "",
-                _links = null
-            )
-    
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
             readProjections<RelTestEntity, RelTestEntityDto>(
                 projectionName = null,
@@ -802,13 +761,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
             newObject = obj,
             createURI = "/users"
         )
-    
-        @Deprecated(message = "from now on an empty constructor is available in base types (as well as a builder)")
-        fun build() = UserBase(
-                id = -1L,
-                name = "",
-                _links = null
-            )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
             readProjections<User, UserDto>(

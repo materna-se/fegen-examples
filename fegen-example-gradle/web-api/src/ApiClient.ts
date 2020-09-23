@@ -70,7 +70,6 @@ export class AddressClient extends BaseClient<ApiClient, AddressBase> {
             street: obj.street,
             zip: obj.zip,
             
-            
         };
     }
   
@@ -135,7 +134,6 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             number: obj.number,
             address: obj.address,
             owner: obj.owner,
-            
         };
     }
   
@@ -344,7 +342,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             optionalIntBillion: obj.optionalIntBillion,
             optionalIntNull: obj.optionalIntNull,
             stringText: obj.stringText,
-            
             
         };
     }
@@ -656,14 +653,14 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase
     public static build(base: Partial<RelTestEntityBase> & {manyToOneRequired: User,oneToOneRequired: User}): RelTestEntityBase {
         return {
             testString: base.testString !== undefined ? base.testString : "",
+            embedded: base.embedded !== undefined ? base.embedded : null,
+            embeddedNullable: base.embeddedNullable !== undefined ? base.embeddedNullable : null,
             manyToMany: base.manyToMany !== undefined ? base.manyToMany : [],
             manyToOneOptional: base.manyToOneOptional !== undefined ? base.manyToOneOptional : null,
             manyToOneRequired: base.manyToOneRequired,
             oneToMany: base.oneToMany !== undefined ? base.oneToMany : [],
             oneToOneOptional: base.oneToOneOptional !== undefined ? base.oneToOneOptional : null,
-            oneToOneRequired: base.oneToOneRequired,
-            embedded: base.embedded !== undefined ? base.embedded : null,
-            embeddedNullable: base.embeddedNullable !== undefined ? base.embeddedNullable : null
+            oneToOneRequired: base.oneToOneRequired
         }
     }
   
@@ -695,14 +692,14 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
     public toBase<T extends RelTestEntityBase>(obj: T): RelTestEntityBase {
         return {
             testString: obj.testString,
+            embedded: obj.embedded,
+            embeddedNullable: obj.embeddedNullable,
             manyToMany: obj.manyToMany,
             manyToOneOptional: obj.manyToOneOptional,
             manyToOneRequired: obj.manyToOneRequired,
             oneToMany: obj.oneToMany,
             oneToOneOptional: obj.oneToOneOptional,
             oneToOneRequired: obj.oneToOneRequired,
-            embedded: obj.embedded,
-            embeddedNullable: obj.embeddedNullable,
         };
     }
   
@@ -971,7 +968,6 @@ export class UserClient extends BaseClient<ApiClient, UserBase> {
         return {
             name: obj.name,
             contacts: obj.contacts,
-            
         };
     }
   

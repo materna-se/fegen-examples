@@ -12,7 +12,6 @@ export interface AddressBase extends ApiBase {
     street: string
     zip: string
     
-    
     _links?: {
         self: ApiNavigationLink
         
@@ -48,7 +47,6 @@ export interface ContactBase extends ApiBase {
     number: string | null
     address: Address | null
     owner: User | null
-    
     _links?: {
         self: ApiNavigationLink
         address: ApiNavigationLink
@@ -91,7 +89,6 @@ export interface PrimitiveTestEntityBase extends ApiBase {
     optionalIntNull: number | null
     stringText: string
     
-    
     _links?: {
         self: ApiNavigationLink
         
@@ -123,14 +120,14 @@ export interface PrimitiveTestEntity extends PrimitiveTestEntityDto {
  */
 export interface RelTestEntityBase extends ApiBase {
     testString: string
+    embedded: EmbeddableTestEntity | null
+    embeddedNullable: OtherEmbeddableTestEntity | null
     manyToMany: User[]
     manyToOneOptional: User | null
     manyToOneRequired: User
     oneToMany: User[]
     oneToOneOptional: User | null
     oneToOneRequired: User
-    embedded: EmbeddableTestEntity | null
-    embeddedNullable: OtherEmbeddableTestEntity | null
     _links?: {
         self: ApiNavigationLink
         manyToMany: ApiNavigationLink
@@ -173,7 +170,6 @@ export interface RelTestEntity extends RelTestEntityDto {
 export interface UserBase extends ApiBase {
     name: string
     contacts: Contact[]
-    
     _links?: {
         self: ApiNavigationLink
         contacts: ApiNavigationLink

@@ -48,7 +48,7 @@ class Contact {
 
     @Nullable
     @ManyToOne
-    lateinit var owner: User
+    var owner: User? = null
 
     @Projection(name = "baseProjection", types = [Contact::class])
     interface BaseProjection {

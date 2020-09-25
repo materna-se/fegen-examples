@@ -21,10 +21,7 @@
  */
 package de.materna.fegen.test.kotlin
 
-import de.materna.fegen.example.gradle.kotlin.api.AddressBase
-import de.materna.fegen.example.gradle.kotlin.api.Contact
-import de.materna.fegen.example.gradle.kotlin.api.ContactBase
-import de.materna.fegen.example.gradle.kotlin.api.User
+import de.materna.fegen.example.gradle.kotlin.api.*
 import io.kotlintest.matchers.collections.shouldContain
 import io.kotlintest.matchers.collections.shouldContainAll
 import io.kotlintest.matchers.collections.shouldHaveSize
@@ -33,9 +30,37 @@ import io.kotlintest.matchers.numerics.shouldBeGreaterThanOrEqual
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 
-class RelationshipTest: ApiSpec() {
+class RelationshipTest : ApiSpec() {
 
     init {
+        "create referencing existing" {
+            val user = apiClient().userClient.create(UserBase(
+                    name = "CreatedUser"
+            ))
+
+            val createdContact = apiClient().contactClient.create(ContactBase(
+                    firstName = "Created",
+                    lastName = "Contact",
+                    address = null,
+                    number = "123456789",
+                    owner = user
+            ))
+
+            val contacts = apiClient().userClient.readContacts(user)
+
+            contacts shouldHaveSize 1
+            val contact = contacts.single()
+            contact.id shouldBe createdContact.id
+            contact.firstName shouldBe "Created"
+            contact.lastName shouldBe "Contact"
+
+            val owner = apiClient().contactClient.readOwner(contact)
+
+            owner shouldNotBe null
+            owner!!.id shouldBe user.id
+            owner.name shouldBe user.name
+        }
+
         "read set of related" {
             val userOne = getUserOne()
 
@@ -124,11 +149,11 @@ class RelationshipTest: ApiSpec() {
     }
 
     private suspend fun createAddress() = AddressBase(
-                street = "ExampleStreet",
-                zip = "12345",
-                city = "ExampleCity",
-                country = "ExampleCountry"
-        ).let { apiClient().addressClient.create(it) }
+            street = "ExampleStreet",
+            zip = "12345",
+            city = "ExampleCity",
+            country = "ExampleCountry"
+    ).let { apiClient().addressClient.create(it) }
 
     private suspend fun getAllContacts(): List<Contact> {
         return apiClient().contactClient.readAll(null, null, null).items

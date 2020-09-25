@@ -21,7 +21,7 @@
  */
 import {apiClient, setupFetch, setupTest} from "./util";
 import {expect} from 'chai';
-import {Contact, User} from "../Entities";
+import {Contact, ContactBase, User} from "../Entities";
 
 describe("Relationship", () => {
 
@@ -50,6 +50,35 @@ describe("Relationship", () => {
         };
         return await apiClient.addressClient.create(addressBase);
     }
+
+    it("create referencing existing", async () => {
+        const user = await apiClient.userClient.create({
+            name: "CreatedUser"
+        });
+
+        const contactToCreate: ContactBase = {
+            firstName: "Created",
+            lastName: "Contact",
+            address: null,
+            number: "123456789",
+            owner: user
+        };
+
+        const createdContact = await apiClient.contactClient.create(contactToCreate);
+
+        const contacts = await apiClient.userClient.readContacts(user);
+
+        expect(contacts).to.have.length(1);
+        const contact = contacts[0];
+        expect(contact.firstName).to.equal(contactToCreate.firstName);
+        expect(contact.lastName).to.equal(contactToCreate.lastName);
+        expect(createdContact).to.deep.equal(contact);
+
+        const owner = await apiClient.contactClient.readOwner(contact);
+
+        expect(owner!!.id).to.equal(user.id);
+        expect(owner!!.name).to.equal(user.name);
+    });
 
     it("reads set of related", async () => {
         const userOne = await getUserOne();

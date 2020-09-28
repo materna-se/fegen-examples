@@ -145,6 +145,16 @@ data class Address(
 }
 
 
+
+
+
+
+
+
+
+
+
+
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -283,6 +293,110 @@ data class Address(
              _links = _links
          )
  }
+
+data class ContactFullDto(
+    override val id: Long?,
+    val firstName: String,
+    val lastName: String,
+    val number: String?,
+    val address: AddressDto?,
+
+    override val _links: ContactLinks
+): ApiDto<ContactFull> {
+
+    override fun toObj() = ContactFull(
+            id = objId, 
+            firstName = firstName, 
+            lastName = lastName, 
+            number = number,
+            address = address?.toObj(),
+            _links = _links
+        )
+}
+
+data class ContactFull(
+    override val id: Long,
+    val firstName: String,
+    val lastName: String,
+    val number: String?,
+    val address: Address?,
+
+    override val _links: ContactLinks
+): ApiProjection<ContactFullDto, Contact> {
+
+    override fun toObj() = Contact(
+            id = id, 
+            firstName = firstName, 
+            lastName = lastName, 
+            number = number,
+            _links = _links
+        )
+}
+
+data class EmbeddableTestEntity (
+    val embeddedLong: Long = 0L,
+    val embeddedNullableInt: Int? = 0,
+    val embeddedText: String = ""
+)
+
+data class FullRelTestEntityDto(
+    override val id: Long?,
+    val testString: String,
+    val embedded: EmbeddableTestEntity?,
+    val embeddedNullable: OtherEmbeddableTestEntity?,
+    val manyToMany: List<UserDto>,
+    val manyToOneOptional: UserDto?,
+    val manyToOneRequired: UserDto,
+    val oneToMany: List<UserDto>,
+    val oneToOneOptional: UserDto?,
+    val oneToOneRequired: UserDto,
+
+    override val _links: RelTestEntityLinks
+): ApiDto<FullRelTestEntity> {
+
+    override fun toObj() = FullRelTestEntity(
+            id = objId, 
+            testString = testString, 
+            embedded = embedded, 
+            embeddedNullable = embeddedNullable,
+            manyToMany = manyToMany.map { it.toObj() }, 
+            manyToOneOptional = manyToOneOptional?.toObj(), 
+            manyToOneRequired = manyToOneRequired.toObj(), 
+            oneToMany = oneToMany.map { it.toObj() }, 
+            oneToOneOptional = oneToOneOptional?.toObj(), 
+            oneToOneRequired = oneToOneRequired.toObj(),
+            _links = _links
+        )
+}
+
+data class FullRelTestEntity(
+    override val id: Long,
+    val testString: String,
+    val embedded: EmbeddableTestEntity?,
+    val embeddedNullable: OtherEmbeddableTestEntity?,
+    val manyToMany: List<User>,
+    val manyToOneOptional: User?,
+    val manyToOneRequired: User,
+    val oneToMany: List<User>,
+    val oneToOneOptional: User?,
+    val oneToOneRequired: User,
+
+    override val _links: RelTestEntityLinks
+): ApiProjection<FullRelTestEntityDto, RelTestEntity> {
+
+    override fun toObj() = RelTestEntity(
+            id = id, 
+            testString = testString, 
+            embedded = embedded, 
+            embeddedNullable = embeddedNullable,
+            _links = _links
+        )
+}
+
+data class OtherEmbeddableTestEntity (
+    val embeddedNullableText: String? = "",
+    val otherEmbeddedNullableInt: Int? = 0
+)
 
 
 /**
@@ -755,117 +869,3 @@ data class PrimitiveTestEntity(
              _links = _links
          )
  }
-
-data class EmbeddableTestEntity (
-    val embeddedLong: Long = 0L,
-    val embeddedNullableInt: Int? = 0,
-    val embeddedText: String = ""
-)
-
-data class OtherEmbeddableTestEntity (
-    val embeddedNullableText: String? = "",
-    val otherEmbeddedNullableInt: Int? = 0
-)
-
-
-
-
-
-
-
-
-
-data class ContactFullDto(
-    override val id: Long?,
-    val firstName: String,
-    val lastName: String,
-    val number: String?,
-    val address: AddressDto?,
-
-    override val _links: ContactLinks
-): ApiDto<ContactFull> {
-
-    override fun toObj() = ContactFull(
-            id = objId, 
-            firstName = firstName, 
-            lastName = lastName, 
-            number = number,
-            address = address?.toObj(),
-            _links = _links
-        )
-}
-
-data class ContactFull(
-    override val id: Long,
-    val firstName: String,
-    val lastName: String,
-    val number: String?,
-    val address: Address?,
-
-    override val _links: ContactLinks
-): ApiProjection<ContactFullDto, Contact> {
-
-    override fun toObj() = Contact(
-            id = id, 
-            firstName = firstName, 
-            lastName = lastName, 
-            number = number,
-            _links = _links
-        )
-}
-
-
-
-data class FullRelTestEntityDto(
-    override val id: Long?,
-    val testString: String,
-    val embedded: EmbeddableTestEntity?,
-    val embeddedNullable: OtherEmbeddableTestEntity?,
-    val manyToMany: List<UserDto>,
-    val manyToOneOptional: UserDto?,
-    val manyToOneRequired: UserDto,
-    val oneToMany: List<UserDto>,
-    val oneToOneOptional: UserDto?,
-    val oneToOneRequired: UserDto,
-
-    override val _links: RelTestEntityLinks
-): ApiDto<FullRelTestEntity> {
-
-    override fun toObj() = FullRelTestEntity(
-            id = objId, 
-            testString = testString, 
-            embedded = embedded, 
-            embeddedNullable = embeddedNullable,
-            manyToMany = manyToMany.map { it.toObj() }, 
-            manyToOneOptional = manyToOneOptional?.toObj(), 
-            manyToOneRequired = manyToOneRequired.toObj(), 
-            oneToMany = oneToMany.map { it.toObj() }, 
-            oneToOneOptional = oneToOneOptional?.toObj(), 
-            oneToOneRequired = oneToOneRequired.toObj(),
-            _links = _links
-        )
-}
-
-data class FullRelTestEntity(
-    override val id: Long,
-    val testString: String,
-    val embedded: EmbeddableTestEntity?,
-    val embeddedNullable: OtherEmbeddableTestEntity?,
-    val manyToMany: List<User>,
-    val manyToOneOptional: User?,
-    val manyToOneRequired: User,
-    val oneToMany: List<User>,
-    val oneToOneOptional: User?,
-    val oneToOneRequired: User,
-
-    override val _links: RelTestEntityLinks
-): ApiProjection<FullRelTestEntityDto, RelTestEntity> {
-
-    override fun toObj() = RelTestEntity(
-            id = id, 
-            testString = testString, 
-            embedded = embedded, 
-            embeddedNullable = embeddedNullable,
-            _links = _links
-        )
-}

@@ -194,35 +194,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 url = "/contacts/${obj.id}/owner/${childToDelete.id}"
             )
     
-        suspend fun searchContactsByRegex(nameRegex: String): List<Contact> {
-        
-            val url = "/search/contactsByRegex".appendParams(
-                "nameRegex" to nameRegex
-            )
-        
-            return requestAdapter.doListRequest<Contact, ContactDto>(
-                url = url,
-                embeddedPropName = "contacts",
-                type = object : TypeReference<ApiHateoasList<ContactDto, Contact>>() {}
-            )
-        }
-        
-        suspend fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
-        
-            val url = "/search/contactsByRegex".appendParams(
-                "nameRegex" to nameRegex
-            )
-        
-            return requestAdapter.doListRequest<ContactFull, ContactFullDto>(
-                url = url,
-                embeddedPropName = "contacts",
-                projectionName = "full",
-                type = object : TypeReference<ApiHateoasList<ContactFullDto, ContactFull>>() {}
-            )
-        }
-        
-        
-        
         suspend fun searchFindByNameContaining(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<Contact> {
         
             val url = "/contacts/search/findByNameContaining".appendParams(
@@ -281,6 +252,35 @@ import com.fasterxml.jackson.databind.SerializationFeature
             return requestAdapter.doSingleRequest<ContactFull, ContactFullDto>(
                 url = url,
                 projectionName = "full"
+            )
+        }
+        
+        
+        
+        suspend fun searchContactsByRegex(nameRegex: String): List<Contact> {
+        
+            val url = "/search/contactsByRegex".appendParams(
+                "nameRegex" to nameRegex
+            )
+        
+            return requestAdapter.doListRequest<Contact, ContactDto>(
+                url = url,
+                embeddedPropName = "contacts",
+                type = object : TypeReference<ApiHateoasList<ContactDto, Contact>>() {}
+            )
+        }
+        
+        suspend fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
+        
+            val url = "/search/contactsByRegex".appendParams(
+                "nameRegex" to nameRegex
+            )
+        
+            return requestAdapter.doListRequest<ContactFull, ContactFullDto>(
+                url = url,
+                embeddedPropName = "contacts",
+                projectionName = "full",
+                type = object : TypeReference<ApiHateoasList<ContactFullDto, ContactFull>>() {}
             )
         }
     
@@ -938,14 +938,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun deleteFromOwner(obj: Contact, childToDelete: User) =
             runBlocking { client.deleteFromOwner(obj, childToDelete) }
     
-        fun searchContactsByRegex(nameRegex: String): List<Contact> =
-            runBlocking { client.searchContactsByRegex(nameRegex) }
-        
-        fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
-            runBlocking { client.searchContactsByRegexContactFull(nameRegex) }
-        
-        
-        
         fun searchFindByNameContaining(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<Contact> =
             runBlocking { client.searchFindByNameContaining(name, page, size, sort) }
         
@@ -959,6 +951,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? =
             runBlocking { client.searchFindByNamesContactFull(firstName, lastName) }
+        
+        
+        
+        fun searchContactsByRegex(nameRegex: String): List<Contact> =
+            runBlocking { client.searchContactsByRegex(nameRegex) }
+        
+        fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
+            runBlocking { client.searchContactsByRegexContactFull(nameRegex) }
     
         fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact =
                 runBlocking { client.customPostCreateOrUpdate(userName, firstName, lastName, number, street, zip, city, country) }

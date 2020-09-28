@@ -37,6 +37,26 @@ export interface Address extends AddressDto {
     id: number
 }
 
+export interface ContactBaseProjection extends Contact {
+    
+}
+
+export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
+    
+}
+
+export interface UserBaseProjection extends User {
+    
+}
+
+export interface AddressBaseProjection extends Address {
+    
+}
+
+export interface RelTestEntityBaseProjection extends RelTestEntity {
+    
+}
+
 /**
  * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -72,6 +92,32 @@ export interface ContactDto extends ContactBase {
  */
 export interface Contact extends ContactDto {
     id: number
+}
+
+export interface ContactFull extends Contact {
+    address: AddressBaseProjection | null
+}
+
+export interface EmbeddableTestEntity {
+    embeddedLong: number
+    embeddedNullableInt: number | null
+    embeddedText: string
+}
+
+export interface FullRelTestEntity extends RelTestEntity {
+    embedded: EmbeddableTestEntity | null
+    embeddedNullable: OtherEmbeddableTestEntity | null
+    manyToMany: UserBaseProjection[]
+    manyToOneOptional: UserBaseProjection | null
+    manyToOneRequired: UserBaseProjection
+    oneToMany: UserBaseProjection[]
+    oneToOneOptional: UserBaseProjection | null
+    oneToOneRequired: UserBaseProjection
+}
+
+export interface OtherEmbeddableTestEntity {
+    embeddedNullableText: string | null
+    otherEmbeddedNullableInt: number | null
 }
 
 /**
@@ -193,50 +239,4 @@ export interface UserDto extends UserBase {
  */
 export interface User extends UserDto {
     id: number
-}
-
-export interface EmbeddableTestEntity {
-    embeddedLong: number
-    embeddedNullableInt: number | null
-    embeddedText: string
-}
-
-export interface OtherEmbeddableTestEntity {
-    embeddedNullableText: string | null
-    otherEmbeddedNullableInt: number | null
-}
-
-export interface ContactBaseProjection extends Contact {
-    
-}
-
-export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
-    
-}
-
-export interface UserBaseProjection extends User {
-    
-}
-
-export interface AddressBaseProjection extends Address {
-    
-}
-
-export interface ContactFull extends Contact {
-    address: AddressBaseProjection | null
-}
-
-export interface RelTestEntityBaseProjection extends RelTestEntity {
-    
-}
-
-export interface FullRelTestEntity extends RelTestEntity {
-    embedded: EmbeddableTestEntity | null
-    embeddedNullable: OtherEmbeddableTestEntity | null
-    manyToMany: UserBaseProjection[]
-    manyToOneOptional: UserBaseProjection | null
-    manyToOneRequired: UserBaseProjection
-    oneToMany: UserBaseProjection[]
-    oneToOneOptional: UserBaseProjection | null
-    oneToOneRequired: UserBaseProjection
 }

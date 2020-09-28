@@ -209,24 +209,6 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         );
     }
   
-    public async searchContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
-        const request = this._requestAdapter.getRequest();
-        
-        const parameters: {[key: string]: string | number | boolean | undefined} = {nameRegex};
-            
-        const url = stringHelper.appendParams("/search/contactsByRegex", parameters);
-    
-        const response = await request.get(url);
-        const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
-        
-        const elements = ((responseObj._embedded && responseObj._embedded.contacts) || []).map(item => (apiHelper.injectIds(item)));
-        
-        return {
-            items: elements,
-            _links: responseObj._links
-        };
-    }
-    
     public async searchFindByNameContaining<T extends Contact>(name: string, projection?: string, page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<PagedItems<T>> {
         const request = this._requestAdapter.getRequest();
         
@@ -263,6 +245,24 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         const responseObj = ((await response.json()) as T);
         
         return responseObj;
+    }
+    
+    public async searchContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
+        const request = this._requestAdapter.getRequest();
+        
+        const parameters: {[key: string]: string | number | boolean | undefined} = {nameRegex};
+            
+        const url = stringHelper.appendParams("/search/contactsByRegex", parameters);
+    
+        const response = await request.get(url);
+        const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
+        
+        const elements = ((responseObj._embedded && responseObj._embedded.contacts) || []).map(item => (apiHelper.injectIds(item)));
+        
+        return {
+            items: elements,
+            _links: responseObj._links
+        };
     }
    
     public async postCreateOrUpdate<T extends Contact>(userName: string, firstName: string, lastName: string, number: string, street: string, zip: string, city: string, country: string): Promise<T>  {

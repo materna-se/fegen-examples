@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 import {action, observable} from "mobx";
-import {Address, ContactBase, ContactFull} from "web-api";
+import {Address, ContactNew} from "web-api";
 import apiClient from "./apiClient";
 import mainModel from "./mainModel";
 
@@ -28,7 +28,7 @@ import mainModel from "./mainModel";
 class UpsertContactModel {
 
     @observable
-    contact: ContactBase = {
+    contact: ContactNew = {
         owner: null,
         firstName: "",
         lastName: "",
@@ -41,14 +41,14 @@ class UpsertContactModel {
         } as Address
     };
 
-    setContactField<K extends keyof ContactFull>(key: K) {
-        return action("Set contact field", (value: ContactFull[K]) => {
+    setContactField<K extends keyof ContactNew>(key: K) {
+        return action("Set contact field", (value: ContactNew[K]) => {
             this.contact[key] = value;
         })
     }
 
     setAddressField<K extends keyof Address>(key: K) {
-        return action("Set address field", ( value: Address[K]) => {
+        return action("Set address field", (value: Address[K]) => {
             this.contact.address!![key] = value;
         });
     }

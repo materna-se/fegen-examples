@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 import {action, autorun, observable, runInAction} from "mobx";
-import {Address, AddressBase, ContactFull, AddressClient} from "web-api";
+import {Address, AddressNew, ContactFull, AddressClient} from "web-api";
 import apiClient from "./apiClient";
 import mainModel from "./mainModel";
 
@@ -49,7 +49,7 @@ class ContactDetailsModel {
     }
 
     @action
-    setAddressField<K extends keyof AddressBase>(key: K, value: Address[K]) {
+    setAddressField<K extends keyof AddressNew>(key: K, value: Address[K]) {
         this.contact!!.address!![key] = value;
     }
 

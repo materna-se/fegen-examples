@@ -50,7 +50,13 @@ class UserContactsModel {
     }
 
     async createContact(firstName: string, lastName: string) {
-        const contact = await apiClient.contactClient.create({firstName, lastName, owner: userModel.loggedInUser!!});
+        const contact = await apiClient.contactClient.create({
+            firstName,
+            lastName,
+            owner: userModel.loggedInUser!!,
+            number: null,
+            address: null
+        });
         runInAction("Add contact", () => {
             this.contacts.push(contact);
         });

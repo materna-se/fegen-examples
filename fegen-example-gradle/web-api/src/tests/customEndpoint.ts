@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 import {apiClient, setupFetch, setupTest} from "./util";
-import { expect } from "chai";
-import {PrimitiveTestEntityBase} from "../Entities";
+import {expect} from "chai";
+import {PrimitiveTestEntityNew} from "../Entities";
 
 
 describe("Custom endpoint", () => {
@@ -29,12 +29,12 @@ describe("Custom endpoint", () => {
     before(setupFetch);
     beforeEach(setupTest);
 
-    const customEntity: PrimitiveTestEntityBase = {
+    const customEntity: PrimitiveTestEntityNew = {
         booleanTrue: false,
         date2000_6_12: new Date(1900, 4, 8, 0, 0, 0, 0).toISOString().substring(0, 10),
         dateTime2000_1_1_12_30: new Date(1950, 12, 31, 23, 59, 0, 0).toISOString().substring(0, 19),
         int32: 98498651,
-        intMinusBillion : 0,
+        intMinusBillion: 0,
         long64: -6515164854,
         optionalIntBillion: null,
         optionalIntNull: -51651964,
@@ -100,13 +100,13 @@ describe("Custom endpoint", () => {
     it("calls with path variables and request body", async () => {
         const result = await apiClient.primitiveTestEntityClient.postNoRequestParamCreateByInt32(789, customEntity);
 
-        expect(result).to.contain({ ...customEntity, int32: 789 });
+        expect(result).to.contain({...customEntity, int32: 789});
     });
 
     it("call with request parameters and request body", async () => {
         const result = await apiClient.primitiveTestEntityClient.postNoPathVariableCreate(customEntity, -65446545);
 
-        expect(result).to.contain({ ...customEntity, long64: -65446545 })
+        expect(result).to.contain({...customEntity, long64: -65446545})
     });
 
     it("receives lists", async () => {

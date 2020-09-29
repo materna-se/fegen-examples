@@ -21,7 +21,7 @@
  */
 import {apiClient, setupFetch, setupTest} from "./util";
 import {expect} from 'chai';
-import {Contact, ContactBase, User} from "../Entities";
+import {Contact, ContactNew, User} from "../Entities";
 
 describe("Relationship", () => {
 
@@ -53,10 +53,11 @@ describe("Relationship", () => {
 
     it("create referencing existing", async () => {
         const user = await apiClient.userClient.create({
-            name: "CreatedUser"
+            name: "CreatedUser",
+            contacts: []
         });
 
-        const contactToCreate: ContactBase = {
+        const contactToCreate: ContactNew = {
             firstName: "Created",
             lastName: "Contact",
             address: null,
@@ -142,8 +143,11 @@ describe("Relationship", () => {
     it("adds related to set", async () => {
         const contact = await apiClient.contactClient.create({
             firstName: "Example",
-            lastName: "Contact"
-        })!!;
+            lastName: "Contact",
+            address: null,
+            number: null,
+            owner: null
+        });
         const user = await getUserOne();
         const contactsBefore =  await apiClient.userClient.readContacts(user);
 

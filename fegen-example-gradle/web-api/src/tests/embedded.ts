@@ -74,7 +74,12 @@ describe("Embedded", () => {
             testString: "created",
             oneToOneRequired: userOne,
             manyToOneRequired: userOne,
-            embedded
+            embedded,
+            embeddedNullable: null,
+            manyToMany: [],
+            manyToOneOptional: null,
+            oneToMany: [],
+            oneToOneOptional: null
         });
 
         const created = await fetchNamed("created");

@@ -21,7 +21,7 @@
  */
 import {apiClient, setupFetch, setupTest} from "./util";
 import { expect } from "chai";
-import {FullRelTestEntity, PrimitiveTestEntityBase} from "../Entities";
+import {FullRelTestEntity, PrimitiveTestEntityNew} from "../Entities";
 
 
 describe("Data types", () => {
@@ -48,7 +48,7 @@ describe("Data types", () => {
     });
 
     it("can be written", async () => {
-        const entity: PrimitiveTestEntityBase = {
+        const entity: PrimitiveTestEntityNew = {
             booleanTrue: false,
             date2000_6_12: "1900-04-08",
             dateTime2000_1_1_12_30: "1950-12-31T23:59:00",
@@ -68,14 +68,14 @@ describe("Data types", () => {
     });
 
     it("can use default values", async () => {
-        const entity: Partial<PrimitiveTestEntityBase> = {};
-        const createReturn = await apiClient.primitiveTestEntityClient.create(entity);
+        const entity: Partial<PrimitiveTestEntityNew> = {};
+        const createReturn = await apiClient.primitiveTestEntityClient.createWithDefaults(entity);
 
         expect(createReturn).to.include(defaultEntity);
     });
 
     it("has correct nullability for primitive types", () => {
-        const obj: PrimitiveTestEntityBase = {
+        const obj: PrimitiveTestEntityNew = {
             booleanTrue: false,
             date2000_6_12: "",
             dateTime2000_1_1_12_30: null,
@@ -96,6 +96,7 @@ describe("Data types", () => {
     });
 
     // Test nullability of fields of FullRelTestEntity
+    // This function is only declared here to check correct typing and does not need to do anything at runtime
     function testFullRelTestEntityNullability(entity: FullRelTestEntity) {
         entity.oneToOneOptional = null;
         entity.manyToOneOptional = null;
@@ -105,5 +106,7 @@ describe("Data types", () => {
         assertNonNullable(entity.manyToMany);
     }
 
-    function assertNonNullable<T>(obj: NonNullable<T>) {}
+    // This function serves the purpose of asserting that its parameter is not of a nullable type
+    // It is intentional that it does not do anything at runtime
+    function assertNonNullable<T>(_obj: NonNullable<T>) {}
 });

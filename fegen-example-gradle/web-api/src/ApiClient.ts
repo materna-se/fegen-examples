@@ -2,10 +2,10 @@
 
 import {
     BaseClient, RequestAdapter,
-    ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks, ApiBase,
-    apiHelper, stringHelper
+    ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
+    apiHelper, stringHelper, Dto, Entity
 } from '@materna-se/fegen-runtime';
-import { AddressBase, AddressDto, Address, ContactBase, ContactDto, Contact, PrimitiveTestEntityBase, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityBase, RelTestEntityDto, RelTestEntity, UserBase, UserDto, User } from './Entities'
+import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities'
 import {  } from './Entities'
 import { ContactBaseProjection, PrimitiveTestEntityBaseProjection, UserBaseProjection, AddressBaseProjection, RelTestEntityBaseProjection, ContactFull, FullRelTestEntity } from './Entities'
 
@@ -29,7 +29,7 @@ export class ApiClient {
     }
 }
 
-export class AddressClient extends BaseClient<ApiClient, AddressBase> {
+export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
         super("/contactAddresses", "contactAddresses", apiClient, requestAdapter);
@@ -38,7 +38,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressBase> {
         
     }
   
-    public static build(base: Partial<AddressBase> = {}): AddressBase {
+    public static build(base: Partial<AddressNew> = {}): AddressNew {
         return {
             city: base.city !== undefined ? base.city : "",
             country: base.country !== undefined ? base.country : "",
@@ -59,20 +59,6 @@ export class AddressClient extends BaseClient<ApiClient, AddressBase> {
         return await this.readProjections<Address>(undefined, page, size, sort);
     }
   
-    public toDto(obj: Address): AddressDto {
-        return obj;
-    }
-
-    public toBase<T extends AddressBase>(obj: T): AddressBase {
-        return {
-            city: obj.city,
-            country: obj.country,
-            street: obj.street,
-            zip: obj.zip,
-            
-        };
-    }
-  
     
   
     
@@ -82,7 +68,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressBase> {
     
 }
 
-export class ContactClient extends BaseClient<ApiClient, ContactBase> {
+export class ContactClient extends BaseClient<ApiClient, ContactNew, Contact> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
         super("/contacts", "contacts", apiClient, requestAdapter);
@@ -92,7 +78,7 @@ export class ContactClient extends BaseClient<ApiClient, ContactBase> {
             this.readOwnerProjection = this.readOwnerProjection.bind(this);
     }
   
-    public static build(base: Partial<ContactBase> = {}): ContactBase {
+    public static build(base: Partial<ContactNew> = {}): ContactNew {
         return {
             firstName: base.firstName !== undefined ? base.firstName : "",
             lastName: base.lastName !== undefined ? base.lastName : "",
@@ -123,20 +109,6 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         return await this.readProjections<Contact>(undefined, page, size, sort);
     }
   
-    public toDto(obj: Contact): ContactDto {
-        return obj;
-    }
-
-    public toBase<T extends ContactBase>(obj: T): ContactBase {
-        return {
-            firstName: obj.firstName,
-            lastName: obj.lastName,
-            number: obj.number,
-            address: obj.address,
-            owner: obj.owner,
-        };
-    }
-  
     public async deleteFromAddress(returnType: Contact, childToDelete: Address) {
         await this._requestAdapter.getRequest().delete(`/contacts/${returnType.id}/address/${childToDelete.id}`);
     }
@@ -153,8 +125,8 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         return this.readAddressProjection<AddressBaseProjection>(obj, "baseProjection");
     }
     
-    public async readAddressProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: ContactDto, projection?: string): Promise<T | undefined> {
-        const hasProjection = (!!projection);
+    public async readAddressProjection<T extends Dto>(obj: ContactDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.address);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -185,8 +157,8 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         return this.readOwnerProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readOwnerProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: ContactDto, projection?: string): Promise<T | undefined> {
-        const hasProjection = (!!projection);
+    public async readOwnerProjection<T extends Dto>(obj: ContactDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.owner);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -292,7 +264,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     }
 }
 
-export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityBase> {
+export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityNew, PrimitiveTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
         super("/primitiveTestEntities", "primitiveTestEntities", apiClient, requestAdapter);
@@ -301,7 +273,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         
     }
   
-    public static build(base: Partial<PrimitiveTestEntityBase> = {}): PrimitiveTestEntityBase {
+    public static build(base: Partial<PrimitiveTestEntityNew> = {}): PrimitiveTestEntityNew {
         return {
             booleanTrue: base.booleanTrue !== undefined ? base.booleanTrue : false,
             date2000_6_12: base.date2000_6_12 !== undefined ? base.date2000_6_12 : "1970-01-01",
@@ -327,32 +299,13 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         return await this.readProjections<PrimitiveTestEntity>(undefined, page, size, sort);
     }
   
-    public toDto(obj: PrimitiveTestEntity): PrimitiveTestEntityDto {
-        return obj;
-    }
-
-    public toBase<T extends PrimitiveTestEntityBase>(obj: T): PrimitiveTestEntityBase {
-        return {
-            booleanTrue: obj.booleanTrue,
-            date2000_6_12: obj.date2000_6_12,
-            dateTime2000_1_1_12_30: obj.dateTime2000_1_1_12_30,
-            int32: obj.int32,
-            intMinusBillion: obj.intMinusBillion,
-            long64: obj.long64,
-            optionalIntBillion: obj.optionalIntBillion,
-            optionalIntNull: obj.optionalIntNull,
-            stringText: obj.stringText,
-            
-        };
-    }
-  
     
   
     
   
     
    
-    public async postMixedCreateByInt32<T extends PrimitiveTestEntity>(int32: number, body: PrimitiveTestEntityBase, long64: number): Promise<T>  {
+    public async postMixedCreateByInt32<T extends PrimitiveTestEntity>(int32: number, body: PrimitiveTestEntityNew, long64: number): Promise<T>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/mixedCreate/${int32}`;
@@ -408,7 +361,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         
     }
     
-    public async postNoPathVariableCreate<T extends PrimitiveTestEntity>(body: PrimitiveTestEntityBase, long64: number): Promise<T>  {
+    public async postNoPathVariableCreate<T extends PrimitiveTestEntity>(body: PrimitiveTestEntityNew, long64: number): Promise<T>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/noPathVariableCreate`;
@@ -438,7 +391,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         
     }
     
-    public async postNoRequestParamCreateByInt32<T extends PrimitiveTestEntity>(int32: number, body: PrimitiveTestEntityBase): Promise<T>  {
+    public async postNoRequestParamCreateByInt32<T extends PrimitiveTestEntity>(int32: number, body: PrimitiveTestEntityNew): Promise<T>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/noRequestParamCreate/${int32}`;
@@ -520,7 +473,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         
     }
     
-    public async postRequestBodyCreate<T extends PrimitiveTestEntity>(body: PrimitiveTestEntityBase): Promise<T>  {
+    public async postRequestBodyCreate<T extends PrimitiveTestEntity>(body: PrimitiveTestEntityNew): Promise<T>  {
         const request = this._requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/requestBodyCreate`;
@@ -636,7 +589,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     }
 }
 
-export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase> {
+export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew, RelTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
         super("/relTestEntities", "relTestEntities", apiClient, requestAdapter);
@@ -650,7 +603,7 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityBase
             this.readOneToOneRequiredProjection = this.readOneToOneRequiredProjection.bind(this);
     }
   
-    public static build(base: Partial<RelTestEntityBase> & {manyToOneRequired: User,oneToOneRequired: User}): RelTestEntityBase {
+    public static build(base: Partial<RelTestEntityNew> & {manyToOneRequired: User,oneToOneRequired: User}): RelTestEntityNew {
         return {
             testString: base.testString !== undefined ? base.testString : "",
             embedded: base.embedded !== undefined ? base.embedded : null,
@@ -685,24 +638,6 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return await this.readProjections<RelTestEntity>(undefined, page, size, sort);
     }
   
-    public toDto(obj: RelTestEntity): RelTestEntityDto {
-        return obj;
-    }
-
-    public toBase<T extends RelTestEntityBase>(obj: T): RelTestEntityBase {
-        return {
-            testString: obj.testString,
-            embedded: obj.embedded,
-            embeddedNullable: obj.embeddedNullable,
-            manyToMany: obj.manyToMany,
-            manyToOneOptional: obj.manyToOneOptional,
-            manyToOneRequired: obj.manyToOneRequired,
-            oneToMany: obj.oneToMany,
-            oneToOneOptional: obj.oneToOneOptional,
-            oneToOneRequired: obj.oneToOneRequired,
-        };
-    }
-  
     public async deleteFromManyToMany(returnType: RelTestEntity, childToDelete: User) {
         await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToMany/${childToDelete.id}`);
     }
@@ -735,8 +670,8 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return this.readManyToManyProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readManyToManyProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T[]> {
-        const hasProjection = (!!projection);
+    public async readManyToManyProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T[]> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.manyToMany);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -771,8 +706,8 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return this.readManyToOneOptionalProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readManyToOneOptionalProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
-        const hasProjection = (!!projection);
+    public async readManyToOneOptionalProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.manyToOneOptional);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -803,8 +738,8 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return this.readManyToOneRequiredProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readManyToOneRequiredProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
-        const hasProjection = (!!projection);
+    public async readManyToOneRequiredProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.manyToOneRequired);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -835,8 +770,8 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return this.readOneToManyProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readOneToManyProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T[]> {
-        const hasProjection = (!!projection);
+    public async readOneToManyProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T[]> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.oneToMany);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -871,8 +806,8 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return this.readOneToOneOptionalProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readOneToOneOptionalProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
-        const hasProjection = (!!projection);
+    public async readOneToOneOptionalProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.oneToOneOptional);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -903,8 +838,8 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         return this.readOneToOneRequiredProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readOneToOneRequiredProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
-        const hasProjection = (!!projection);
+    public async readOneToOneRequiredProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.oneToOneRequired);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
@@ -932,7 +867,7 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
     
 }
 
-export class UserClient extends BaseClient<ApiClient, UserBase> {
+export class UserClient extends BaseClient<ApiClient, UserNew, User> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
         super("/users", "users", apiClient, requestAdapter);
@@ -941,7 +876,7 @@ export class UserClient extends BaseClient<ApiClient, UserBase> {
         this.readContactsProjection = this.readContactsProjection.bind(this);
     }
   
-    public static build(base: Partial<UserBase> = {}): UserBase {
+    public static build(base: Partial<UserNew> = {}): UserNew {
         return {
             name: base.name !== undefined ? base.name : "",
             contacts: base.contacts !== undefined ? base.contacts : []
@@ -958,17 +893,6 @@ export class UserClient extends BaseClient<ApiClient, UserBase> {
     
     public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "name,ASC" | "name,DESC") : Promise<PagedItems<User>> {
         return await this.readProjections<User>(undefined, page, size, sort);
-    }
-  
-    public toDto(obj: User): UserDto {
-        return obj;
-    }
-
-    public toBase<T extends UserBase>(obj: T): UserBase {
-        return {
-            name: obj.name,
-            contacts: obj.contacts,
-        };
     }
   
     public async deleteFromContacts(returnType: User, childToDelete: Contact) {
@@ -989,8 +913,8 @@ export class UserClient extends BaseClient<ApiClient, UserBase> {
         return this.readContactsProjection<ContactFull>(obj, "full");
     }
     
-    public async readContactsProjection<T extends ApiBase & { _links: ApiNavigationLinks }>(obj: UserDto, projection?: string): Promise<T[]> {
-        const hasProjection = (!!projection);
+    public async readContactsProjection<T extends Dto>(obj: UserDto, projection?: string): Promise<T[]> {
+        const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.contacts);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     

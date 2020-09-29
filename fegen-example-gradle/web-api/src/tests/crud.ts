@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 import {expect} from "chai";
-import {UserBase} from "../Entities";
 import {apiClient, setupFetch, setupTest} from "./util";
+import {UserNew} from "../Entities";
 
 describe("CRUD", () => {
 
@@ -36,7 +36,7 @@ describe("CRUD", () => {
 
     it("creates", async () => {
         const usersBefore = await apiClient.userClient.readAll();
-        const userBase: UserBase = {
+        const userBase: UserNew = {
             name: "user_name",
             contacts: []
         };

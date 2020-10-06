@@ -30,7 +30,7 @@ class CustomEndpointTest : ApiSpec() {
 
     init {
         "custom endpoint" {
-            val result = apiClient().contactRepository.customPostCreateOrUpdate(
+            val result = apiClient().customEndpointControllerClient.createOrUpdateContact(
                     "UserOne",
                     "firstName",
                     "lastName",
@@ -58,7 +58,7 @@ class CustomEndpointTest : ApiSpec() {
 
         "path variables" {
             val date = LocalDate.of(1234, 7, 13)
-            val result = apiClient().primitiveTestEntityClient.customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(
+            val result = apiClient().testRestControllerClient.pathVariable(
                     1, 12, -123, "fghtejte", false, date
             )
 
@@ -74,15 +74,15 @@ class CustomEndpointTest : ApiSpec() {
 
         "request parameters" {
             val date = LocalDate.of(2003, 7, 3)
-            val result = apiClient().primitiveTestEntityClient.customPostRequestParamCreate(
+            val result = apiClient().testRestControllerClient.requestParam(
                     1,
                     12,
+                    -541651664,
+                    null,
                     -123,
                     "grshteh",
                     false,
                     date,
-                    -541651664,
-                    null,
                     null
             )
             result.apply {
@@ -99,44 +99,44 @@ class CustomEndpointTest : ApiSpec() {
         }
 
         "body" {
-            val result = apiClient().primitiveTestEntityClient.customPostRequestBodyCreate(customEntity)
+            val result = apiClient().testRestControllerClient.responseBody(customEntity)
 
             compareTestEntities(result, customEntity)
         }
 
         "path variables and request parameters" {
-            val result = apiClient().primitiveTestEntityClient.customPostNoBodyCreateByInt32(684, 848)
+            val result = apiClient().testRestControllerClient.noBody(684, 848)
 
             result.int32 shouldBe 684
             result.long64 shouldBe 848
         }
 
         "path variables and request body" {
-            val result = apiClient().primitiveTestEntityClient.customPostNoRequestParamCreateByInt32(789, customEntity)
+            val result = apiClient().testRestControllerClient.noRequestParam(customEntity, 789)
 
             compareTestEntities(result, customEntity.copy(int32 = 789))
         }
 
         "request parameters and request body" {
-            val result = apiClient().primitiveTestEntityClient.customPostNoPathVariableCreate(customEntity, -65446545)
+            val result = apiClient().testRestControllerClient.noPathVariable(customEntity, -65446545)
 
             compareTestEntities(result, customEntity.copy(long64 = -65446545))
         }
 
         "return list" {
-            val result = apiClient().primitiveTestEntityClient.customGetReturnList()
+            val result = apiClient().testRestControllerClient.returnList()
 
             result shouldNotHaveSize 0
         }
 
         "return void" {
-            apiClient().primitiveTestEntityClient.customGetReturnVoid()
+            apiClient().testRestControllerClient.returnVoid()
         }
 
         "return paged" {
-            val firstPage = apiClient().primitiveTestEntityClient.customGetReturnPaged()
-            val secondPage = apiClient().primitiveTestEntityClient.customGetReturnPaged(1)
-            val bothPages = apiClient().primitiveTestEntityClient.customGetReturnPaged(size = firstPage.page.size * 2)
+            val firstPage = apiClient().testRestControllerClient.returnPaged()
+            val secondPage = apiClient().testRestControllerClient.returnPaged(1)
+            val bothPages = apiClient().testRestControllerClient.returnPaged(size = firstPage.page.size * 2)
 
             bothPages.items shouldNotHaveSize 0
             (firstPage.items + secondPage.items) shouldBe bothPages.items

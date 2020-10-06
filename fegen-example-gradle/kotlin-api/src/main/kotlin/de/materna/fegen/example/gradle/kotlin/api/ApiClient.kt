@@ -31,6 +31,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         open val relTestEntityRepository by lazy { RelTestEntityRepository(client = relTestEntityClient) }
         open val userClient by lazy { UserClient(apiClient = this, requestAdapter = adapter) }
         open val userRepository by lazy { UserRepository(client = userClient) }
+        open val customEndpointControllerClient by lazy { CustomEndpointControllerClient(adapter) }
+        open val testRestControllerClient by lazy { TestRestControllerClient(adapter) }
     }
 
     open class AddressClient(
@@ -82,8 +84,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/contactAddresses")
     
-    
-        
     
         
     
@@ -284,43 +284,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
     
-        suspend fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact {
-        
-            val url = "/api/custom/contacts/createOrUpdate".appendParams("userName" to userName,
-                    "firstName" to firstName,
-                    "lastName" to lastName,
-                    "number" to number,
-                    "street" to street,
-                    "zip" to zip,
-                    "city" to city,
-                    "country" to country)
-        
-            return requestAdapter.doSingleRequest<Contact, ContactDto>(
-                url = url,
-                method = "POST",
-                ignoreBasePath = true
-            )
-        }
-        
-        suspend fun customPostCreateOrUpdateContactFull(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): ContactFull? {
-        
-            val url = "/api/custom/contacts/createOrUpdate".appendParams("userName" to userName,
-                    "firstName" to firstName,
-                    "lastName" to lastName,
-                    "number" to number,
-                    "street" to street,
-                    "zip" to zip,
-                    "city" to city,
-                    "country" to country)
-        
-            return requestAdapter.doSingleRequest<ContactFull, ContactFullDto>(
-                url = url,
-                method = "POST",
-                projectionName = "full",
-                ignoreBasePath = true
-            )
-        }
-    
     }
     
     open class PrimitiveTestEntityClient(
@@ -375,174 +338,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
-        
-    
-        suspend fun customPostMixedCreateByInt32(int32: Int, body: PrimitiveTestEntityBase, long64: Long): PrimitiveTestEntity {
-        
-            val url = "/api/custom/primitiveTestEntities/mixedCreate/$int32".appendParams("long64" to long64)
-        
-            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntityBase>(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostNoBodyCreateByInt32(int32: Int, long64: Long): PrimitiveTestEntity {
-        
-            val url = "/api/custom/primitiveTestEntities/noBodyCreate/$int32".appendParams("long64" to long64)
-        
-            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
-                url = url,
-                method = "POST",
-                ignoreBasePath = true
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostNoPathVariableCreate(body: PrimitiveTestEntityBase, long64: Long): PrimitiveTestEntity {
-        
-            val url = "/api/custom/primitiveTestEntities/noPathVariableCreate".appendParams("long64" to long64)
-        
-            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntityBase>(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostNoRequestParamCreateByInt32(int32: Int, body: PrimitiveTestEntityBase): PrimitiveTestEntity {
-        
-            val url = "/api/custom/primitiveTestEntities/noRequestParamCreate/$int32".appendParams()
-        
-            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntityBase>(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate): PrimitiveTestEntity {
-        
-            val url = "/api/custom/primitiveTestEntities/pathVariableCreate/$int32/$long64Custom/$intMinusBillion/$stringText/$booleanTrue/$dateCustom".appendParams()
-        
-            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
-                url = url,
-                method = "POST",
-                ignoreBasePath = true
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostRequestParamCreate(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate, optionalIntNull: Int?, optionalIntBillion: Int?, dateTime2000_1_1_12_30: LocalDateTime?): PrimitiveTestEntity {
-        
-            val url = "/api/custom/primitiveTestEntities/requestParamCreate".appendParams("int32" to int32,
-                    "long64Custom" to long64Custom,
-                    "optionalIntNull" to optionalIntNull,
-                    "optionalIntBillion" to optionalIntBillion,
-                    "intMinusBillion" to intMinusBillion,
-                    "stringText" to stringText,
-                    "booleanTrue" to booleanTrue,
-                    "dateCustom" to dateCustom,
-                    "dateTime2000_1_1_12_30" to dateTime2000_1_1_12_30)
-        
-            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
-                url = url,
-                method = "POST",
-                ignoreBasePath = true
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customPostRequestBodyCreate(body: PrimitiveTestEntityBase): PrimitiveTestEntity {
-        
-            val url = "/api/custom/primitiveTestEntities/requestBodyCreate".appendParams()
-        
-            return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto, PrimitiveTestEntityBase>(
-                url = url,
-                method = "POST",
-                body = body,
-                ignoreBasePath = true
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customGetReturnList(): List<PrimitiveTestEntity> {
-        
-            val url = "/api/custom/primitiveTestEntities/returnList".appendParams()
-        
-            return requestAdapter.doListRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
-                url = url,
-                method = "GET",
-                embeddedPropName = "primitiveTestEntities",
-                ignoreBasePath = true,
-                type = object : TypeReference<ApiHateoasList<PrimitiveTestEntityDto, PrimitiveTestEntity>>() {}
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customGetReturnPaged(page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<PrimitiveTestEntity> {
-        
-            val url = "/api/custom/primitiveTestEntities/returnPaged".appendParams()
-        
-            return requestAdapter.doPageRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
-                url = url,
-                method = "GET",
-                embeddedPropName = "primitiveTestEntities",
-                
-                page = page,
-                size = size,
-                sort = sort,
-                ignoreBasePath = true,
-                type = object : TypeReference<ApiHateoasPage<PrimitiveTestEntityDto, PrimitiveTestEntity>>() {}
-            )
-        }
-        
-        
-        
-        
-        
-        suspend fun customGetReturnVoid(): Unit {
-        
-            val url = "/api/custom/primitiveTestEntities/returnVoid".appendParams()
-        
-            return requestAdapter.doVoidRequest(
-                url = url,
-                method = "GET",
-                ignoreBasePath = true
-            )
-        }
-        
         
     
     }
@@ -748,8 +543,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
-        
-    
     }
     
     open class UserClient(
@@ -851,8 +644,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         
     
-        
-    
     }
 
     open class AddressRepository( val client: AddressClient ) {
@@ -883,9 +674,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
     
         
-    
-        
-    
     }
     
     open class ContactRepository( val client: ContactClient ) {
@@ -959,13 +747,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
             runBlocking { client.searchContactsByRegexContactFull(nameRegex) }
-    
-        fun customPostCreateOrUpdate(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): Contact =
-                runBlocking { client.customPostCreateOrUpdate(userName, firstName, lastName, number, street, zip, city, country) }
-        
-        fun customPostCreateOrUpdateContactFull(userName: String, firstName: String, lastName: String, number: String, street: String, zip: String, city: String, country: String): ContactFull? =
-                runBlocking { client.customPostCreateOrUpdateContactFull(userName, firstName, lastName, number, street, zip, city, country) }
-    
     }
     
     open class PrimitiveTestEntityRepository( val client: PrimitiveTestEntityClient ) {
@@ -996,75 +777,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
     
         
-    
-        fun customPostMixedCreateByInt32(int32: Int, body: PrimitiveTestEntityBase, long64: Long): PrimitiveTestEntity =
-                runBlocking { client.customPostMixedCreateByInt32(int32, body, long64) }
-        
-        
-        
-        
-        
-        fun customPostNoBodyCreateByInt32(int32: Int, long64: Long): PrimitiveTestEntity =
-                runBlocking { client.customPostNoBodyCreateByInt32(int32, long64) }
-        
-        
-        
-        
-        
-        fun customPostNoPathVariableCreate(body: PrimitiveTestEntityBase, long64: Long): PrimitiveTestEntity =
-                runBlocking { client.customPostNoPathVariableCreate(body, long64) }
-        
-        
-        
-        
-        
-        fun customPostNoRequestParamCreateByInt32(int32: Int, body: PrimitiveTestEntityBase): PrimitiveTestEntity =
-                runBlocking { client.customPostNoRequestParamCreateByInt32(int32, body) }
-        
-        
-        
-        
-        
-        fun customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate): PrimitiveTestEntity =
-                runBlocking { client.customPostPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(int32, long64Custom, intMinusBillion, stringText, booleanTrue, dateCustom) }
-        
-        
-        
-        
-        
-        fun customPostRequestParamCreate(int32: Int, long64Custom: Long, intMinusBillion: Int, stringText: String, booleanTrue: Boolean, dateCustom: LocalDate, optionalIntNull: Int?, optionalIntBillion: Int?, dateTime2000_1_1_12_30: LocalDateTime?): PrimitiveTestEntity =
-                runBlocking { client.customPostRequestParamCreate(int32, long64Custom, intMinusBillion, stringText, booleanTrue, dateCustom, optionalIntNull, optionalIntBillion, dateTime2000_1_1_12_30) }
-        
-        
-        
-        
-        
-        fun customPostRequestBodyCreate(body: PrimitiveTestEntityBase): PrimitiveTestEntity =
-                runBlocking { client.customPostRequestBodyCreate(body) }
-        
-        
-        
-        
-        
-        fun customGetReturnList(): List<PrimitiveTestEntity> =
-                runBlocking { client.customGetReturnList() }
-        
-        
-        
-        
-        
-        fun customGetReturnPaged(page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<PrimitiveTestEntity> =
-                runBlocking { client.customGetReturnPaged(page, size, sort) }
-        
-        
-        
-        
-        
-        fun customGetReturnVoid(): Unit =
-                runBlocking { client.customGetReturnVoid() }
-        
-        
-    
     }
     
     open class RelTestEntityRepository( val client: RelTestEntityClient ) {
@@ -1170,9 +882,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
     
         
-    
-        
-    
     }
     
     open class UserRepository( val client: UserClient ) {
@@ -1219,7 +928,4 @@ import com.fasterxml.jackson.databind.SerializationFeature
             runBlocking { client.searchFindUserByName(name) }
         
         
-    
-        
-    
     }

@@ -1,4 +1,4 @@
-import {Contact} from "./Entities";
+import {Contact} from "../Entities";
 import {RequestAdapter, stringHelper} from "@materna-se/fegen-runtime";
 
 export class CustomEndpointControllerClient {

@@ -1,4 +1,4 @@
-import {PrimitiveTestEntity, PrimitiveTestEntityNew} from "./Entities";
+import {PrimitiveTestEntity, PrimitiveTestEntityNew} from "../Entities";
 import {RequestAdapter, stringHelper, Items, ApiHateoasObjectBase, apiHelper, PagedItems, ApiHateoasObjectReadMultiple} from "@materna-se/fegen-runtime";
 
 export class TestRestControllerClient {

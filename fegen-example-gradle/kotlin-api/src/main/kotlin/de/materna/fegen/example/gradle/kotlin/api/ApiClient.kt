@@ -10,6 +10,8 @@
     import com.fasterxml.jackson.module.kotlin.registerKotlinModule
     import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.databind.SerializationFeature
+    import de.materna.fegen.example.gradle.kotlin.api.controller.CustomEndpointControllerClient
+        import de.materna.fegen.example.gradle.kotlin.api.controller.TestRestControllerClient
 
     open class ApiClient(val request: FetchRequest) {
         val adapter: RequestAdapter

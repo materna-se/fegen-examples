@@ -1,5 +1,7 @@
-package de.materna.fegen.example.gradle.kotlin.api
+package de.materna.fegen.example.gradle.kotlin.api.controller
 
+import de.materna.fegen.example.gradle.kotlin.api.Contact
+import de.materna.fegen.example.gradle.kotlin.api.ContactDto
 import de.materna.fegen.runtime.RequestAdapter
 import de.materna.fegen.runtime.appendParams
 import kotlin.String

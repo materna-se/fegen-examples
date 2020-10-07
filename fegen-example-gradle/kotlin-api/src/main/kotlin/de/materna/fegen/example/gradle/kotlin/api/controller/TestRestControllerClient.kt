@@ -1,6 +1,9 @@
-package de.materna.fegen.example.gradle.kotlin.api
+package de.materna.fegen.example.gradle.kotlin.api.controller
 
 import com.fasterxml.jackson.core.type.TypeReference
+import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntity
+import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityBase
+import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityDto
 import de.materna.fegen.runtime.ApiHateoasList
 import de.materna.fegen.runtime.ApiHateoasPage
 import de.materna.fegen.runtime.PagedItems

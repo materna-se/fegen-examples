@@ -42,7 +42,7 @@ describe("Custom endpoint", () => {
     };
 
     it("calls custom endpoint", async () => {
-        await apiClient.contactClient.postCreateOrUpdate(
+        await apiClient.customEndpointControllerClient.createOrUpdateContact(
             "UserOne",
             "firstName",
             "lastName",
@@ -56,7 +56,7 @@ describe("Custom endpoint", () => {
 
     it("calls with path variables", async () => {
         const date = new Date(1234, 7, 13, 0, 0, 0, 0).toISOString().substring(0, 10);
-        const result = await apiClient.primitiveTestEntityClient.postPathVariableCreateByInt32ByLong64CustomByIntMinusBillionByStringTextByBooleanTrueByDateCustom(
+        const result = await apiClient.testRestControllerClient.pathVariable(
             1, 12, -123, "fghtejte", false, date
         );
 
@@ -70,8 +70,9 @@ describe("Custom endpoint", () => {
 
     it("calls with request parameters", async () => {
         const date = new Date(2003, 7, 3, 0, 0, 0, 0).toISOString().substring(0, 10);
-        const result = await apiClient.primitiveTestEntityClient.postRequestParamCreate(
-            1, 12, -123, "grshteh", false, date, -541651664);
+        const result = await apiClient.testRestControllerClient.requestParam(
+            1, 12, -123, "grshteh", false, date, -541651664
+        );
 
         expect(result.int32).to.eq(1);
         expect(result.long64).to.eq(12);
@@ -85,46 +86,46 @@ describe("Custom endpoint", () => {
     });
 
     it("calls with request body", async () => {
-        const result = await apiClient.primitiveTestEntityClient.postRequestBodyCreate(customEntity);
+        const result = await apiClient.testRestControllerClient.responseBody(customEntity);
 
         expect(result).to.contain(customEntity);
     });
 
     it("calls with path variables and request parameters", async () => {
-        const result = await apiClient.primitiveTestEntityClient.postNoBodyCreateByInt32(684, 848);
+        const result = await apiClient.testRestControllerClient.noBody(684, 848);
 
         expect(result.int32).to.eq(684);
         expect(result.long64).to.eq(848);
     });
 
     it("calls with path variables and request body", async () => {
-        const result = await apiClient.primitiveTestEntityClient.postNoRequestParamCreateByInt32(789, customEntity);
+        const result = await apiClient.testRestControllerClient.noRequestParam(789, customEntity);
 
         expect(result).to.contain({...customEntity, int32: 789});
     });
 
     it("call with request parameters and request body", async () => {
-        const result = await apiClient.primitiveTestEntityClient.postNoPathVariableCreate(customEntity, -65446545);
+        const result = await apiClient.testRestControllerClient.noPathVariable(customEntity, -65446545);
 
         expect(result).to.contain({...customEntity, long64: -65446545})
     });
 
     it("receives lists", async () => {
-        const result = await apiClient.primitiveTestEntityClient.getReturnList();
+        const result = await apiClient.testRestControllerClient.returnList();
 
         expect(result.items).to.not.be.empty;
     });
 
     it("calls void endpoints", async () => {
-        const result = await apiClient.primitiveTestEntityClient.getReturnVoid();
+        const result = await apiClient.testRestControllerClient.returnVoid();
 
         expect(result).to.not.exist;
     });
 
     it("receives paged", async () => {
-        const pageOne = await apiClient.primitiveTestEntityClient.getReturnPaged();
-        const pageTwo = await apiClient.primitiveTestEntityClient.getReturnPaged(1);
-        const bothPages = await apiClient.primitiveTestEntityClient.getReturnPaged(undefined, 2 * pageOne.page.size);
+        const pageOne = await apiClient.testRestControllerClient.returnPaged();
+        const pageTwo = await apiClient.testRestControllerClient.returnPaged(1);
+        const bothPages = await apiClient.testRestControllerClient.returnPaged(undefined, 2 * pageOne.page.size);
 
         expect(bothPages.items).to.not.be.empty;
         expect(pageOne.items.concat(pageTwo.items)).to.deep.eq(bothPages.items)

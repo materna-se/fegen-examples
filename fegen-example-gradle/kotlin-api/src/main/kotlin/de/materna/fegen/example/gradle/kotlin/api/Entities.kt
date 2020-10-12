@@ -155,6 +155,8 @@ data class Address(
 
 
 
+
+
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -347,6 +349,7 @@ data class FullRelTestEntityDto(
     val manyToMany: List<UserDto>,
     val manyToOneOptional: UserDto?,
     val manyToOneRequired: UserDto,
+    val notExported: NotExportedTestEntityDto?,
     val oneToMany: List<UserDto>,
     val oneToOneOptional: UserDto?,
     val oneToOneRequired: UserDto,
@@ -362,6 +365,7 @@ data class FullRelTestEntityDto(
             manyToMany = manyToMany.map { it.toObj() }, 
             manyToOneOptional = manyToOneOptional?.toObj(), 
             manyToOneRequired = manyToOneRequired.toObj(), 
+            notExported = notExported?.toObj(), 
             oneToMany = oneToMany.map { it.toObj() }, 
             oneToOneOptional = oneToOneOptional?.toObj(), 
             oneToOneRequired = oneToOneRequired.toObj(),
@@ -377,6 +381,7 @@ data class FullRelTestEntity(
     val manyToMany: List<User>,
     val manyToOneOptional: User?,
     val manyToOneRequired: User,
+    val notExported: NotExportedTestEntity?,
     val oneToMany: List<User>,
     val oneToOneOptional: User?,
     val oneToOneRequired: User,
@@ -389,6 +394,114 @@ data class FullRelTestEntity(
             testString = testString, 
             embedded = embedded, 
             embeddedNullable = embeddedNullable,
+            _links = _links
+        )
+}
+
+
+/**
+ * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+data class NotExportedTestEntityBase(
+
+    override val id: Long? = -1L,
+    val text: String = "",
+    override val _links: NotExportedTestEntityLinks? = null
+): ApiBase<NotExportedTestEntity, NotExportedTestEntityDto> {
+
+    data class Builder(
+        private var id: Long? = -1L,
+        private var text: String = "",
+        private var _links: NotExportedTestEntityLinks? = null
+    ) {
+
+        constructor(base: NotExportedTestEntityBase): this(
+            base.id,
+            base.text,
+            base._links
+        )
+
+        fun id(id: Long?) = apply { this.id = id }
+        fun text(text: String) = apply { this.text = text }
+        fun _links(_links: NotExportedTestEntityLinks) = apply { this._links = _links }
+        fun build() = NotExportedTestEntityBase(id, text, _links)
+    }
+
+    fun toBuilder() = Builder(this)
+
+    companion object {
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /**
+     * Create a DTO from a base value
+     */
+    fun toDto(_links: NotExportedTestEntityLinks) = NotExportedTestEntityDto(
+        id = id, 
+        text = text,
+        _links = _links
+    )
+    
+    /**
+     * A convenience method for the creation of a dto from a base value for testing.
+     * Don't use this method in production code.
+     */
+    fun toDto(id: Long) = toDto(NotExportedTestEntityLinks(mapOf(
+        "self" to ApiNavigationLink("/notExportedTestEntities/$id", false)
+    )))
+}
+
+@JsonDeserialize(using = NotExportedTestEntityLinksDeserializer::class)
+data class NotExportedTestEntityLinks(
+    override val linkMap: Map<String, ApiNavigationLink>
+): BaseApiNavigationLinks(linkMap) {
+    
+}
+
+class NotExportedTestEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<NotExportedTestEntityLinks>(vc) {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): NotExportedTestEntityLinks {
+        val jacksonType = ctxt.typeFactory.constructType(object : TypeReference<Map<String, ApiNavigationLink>>() {})
+        val deserializer = ctxt.findRootValueDeserializer(jacksonType)
+        val map = deserializer.deserialize(p, ctxt)
+        return NotExportedTestEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
+    }
+}
+
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+data class NotExportedTestEntityDto(
+    override val id: Long?,
+    val text: String,
+
+    override val _links: NotExportedTestEntityLinks
+): ApiDto<NotExportedTestEntity> {
+
+    override fun toObj() = NotExportedTestEntity(
+            id = objId, 
+            text = text,
+            _links = _links
+        )
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `NotExportedTestEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+data class NotExportedTestEntity(
+    override val id: Long,
+    val text: String,
+
+    override val _links: NotExportedTestEntityLinks
+): ApiObj<NotExportedTestEntityDto> {
+        fun toBuilder(
+            
+        ) = NotExportedTestEntityBase.Builder(
+            id = id,
+            text = text,
             _links = _links
         )
 }
@@ -594,6 +707,7 @@ data class PrimitiveTestEntity(
      val embedded: EmbeddableTestEntity? = null,
      val embeddedNullable: OtherEmbeddableTestEntity? = null,
      val manyToOneOptional: User? = null,
+     val notExported: NotExportedTestEntity? = null,
      val oneToOneOptional: User? = null,
      override val _links: RelTestEntityLinks? = null
  ): ApiBase<RelTestEntity, RelTestEntityDto> {
@@ -605,6 +719,7 @@ data class PrimitiveTestEntity(
          private var manyToMany: List<User> = listOf(),
          private var manyToOneOptional: User? = null,
          private var manyToOneRequired: User,
+         private var notExported: NotExportedTestEntity? = null,
          private var oneToMany: List<User> = listOf(),
          private var oneToOneOptional: User? = null,
          private var oneToOneRequired: User,
@@ -619,6 +734,7 @@ data class PrimitiveTestEntity(
              base.manyToMany,
              base.manyToOneOptional,
              base.manyToOneRequired,
+             base.notExported,
              base.oneToMany,
              base.oneToOneOptional,
              base.oneToOneRequired,
@@ -632,12 +748,13 @@ data class PrimitiveTestEntity(
          fun manyToMany(manyToMany: List<User>) = apply { this.manyToMany = manyToMany }
          fun manyToOneOptional(manyToOneOptional: User?) = apply { this.manyToOneOptional = manyToOneOptional }
          fun manyToOneRequired(manyToOneRequired: User) = apply { this.manyToOneRequired = manyToOneRequired }
+         fun notExported(notExported: NotExportedTestEntity?) = apply { this.notExported = notExported }
          fun oneToMany(oneToMany: List<User>) = apply { this.oneToMany = oneToMany }
          fun oneToOneOptional(oneToOneOptional: User?) = apply { this.oneToOneOptional = oneToOneOptional }
          fun oneToOneRequired(oneToOneRequired: User) = apply { this.oneToOneRequired = oneToOneRequired }
          fun testString(testString: String) = apply { this.testString = testString }
          fun _links(_links: RelTestEntityLinks) = apply { this._links = _links }
-         fun build() = RelTestEntityBase(id, manyToMany, manyToOneRequired, oneToMany, oneToOneRequired, testString, embedded, embeddedNullable, manyToOneOptional, oneToOneOptional, _links)
+         fun build() = RelTestEntityBase(id, manyToMany, manyToOneRequired, oneToMany, oneToOneRequired, testString, embedded, embeddedNullable, manyToOneOptional, notExported, oneToOneOptional, _links)
      }
 
      fun toBuilder() = Builder(this)
@@ -672,6 +789,7 @@ data class PrimitiveTestEntity(
 "manyToMany" to ApiNavigationLink("/relTestEntities/$id/manyToMany", false),
          "manyToOneOptional" to ApiNavigationLink("/relTestEntities/$id/manyToOneOptional", false),
          "manyToOneRequired" to ApiNavigationLink("/relTestEntities/$id/manyToOneRequired", false),
+         "notExported" to ApiNavigationLink("/relTestEntities/$id/notExported", false),
          "oneToMany" to ApiNavigationLink("/relTestEntities/$id/oneToMany", false),
          "oneToOneOptional" to ApiNavigationLink("/relTestEntities/$id/oneToOneOptional", false),
          "oneToOneRequired" to ApiNavigationLink("/relTestEntities/$id/oneToOneRequired", false)
@@ -738,6 +856,7 @@ data class PrimitiveTestEntity(
              manyToMany: List<User> = listOf(),
              manyToOneOptional: User? = null,
              manyToOneRequired: User,
+             notExported: NotExportedTestEntity? = null,
              oneToMany: List<User> = listOf(),
              oneToOneOptional: User? = null,
              oneToOneRequired: User
@@ -748,6 +867,7 @@ data class PrimitiveTestEntity(
              manyToMany = manyToMany,
              manyToOneOptional = manyToOneOptional,
              manyToOneRequired = manyToOneRequired,
+             notExported = notExported,
              oneToMany = oneToMany,
              oneToOneOptional = oneToOneOptional,
              oneToOneRequired = oneToOneRequired,

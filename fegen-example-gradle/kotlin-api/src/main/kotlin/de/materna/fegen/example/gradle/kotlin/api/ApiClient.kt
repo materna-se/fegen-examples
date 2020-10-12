@@ -27,6 +27,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         open val addressRepository by lazy { AddressRepository(client = addressClient) }
         open val contactClient by lazy { ContactClient(apiClient = this, requestAdapter = adapter) }
         open val contactRepository by lazy { ContactRepository(client = contactClient) }
+        open val notExportedTestEntityClient by lazy { NotExportedTestEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val notExportedTestEntityRepository by lazy { NotExportedTestEntityRepository(client = notExportedTestEntityClient) }
         open val primitiveTestEntityClient by lazy { PrimitiveTestEntityClient(apiClient = this, requestAdapter = adapter) }
         open val primitiveTestEntityRepository by lazy { PrimitiveTestEntityRepository(client = primitiveTestEntityClient) }
         open val relTestEntityClient by lazy { RelTestEntityClient(apiClient = this, requestAdapter = adapter) }
@@ -288,6 +290,62 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
     }
     
+    open class NotExportedTestEntityClient(
+            override val apiClient: ApiClient,
+            override val requestAdapter: RequestAdapter
+    ): BaseClient<ApiClient>(apiClient, requestAdapter) {
+    
+        suspend fun create(obj: NotExportedTestEntityBase) = requestAdapter.createObject(
+            newObject = obj,
+            createURI = "/notExportedTestEntities"
+        )
+    
+        suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            readProjections<NotExportedTestEntity, NotExportedTestEntityDto>(
+                projectionName = null,
+                page = page,
+                size = size,
+                sort = sort,
+                type = object : TypeReference<ApiHateoasPage<NotExportedTestEntityDto, NotExportedTestEntity>>() {}
+            )
+    
+        
+    
+        private suspend inline fun <reified T: ApiObj<U>, reified U: ApiDto<T>> readProjections(
+                projectionName: String?, page: Int?, size: Int?, sort: String?,
+                type: TypeReference<ApiHateoasPage<U, T>>
+        ) =
+            requestAdapter.doPageRequest<T, U>(
+                url = "/notExportedTestEntities",
+                embeddedPropName = "notExportedTestEntities",
+                projectionName = projectionName,
+                page = page,
+                size = size,
+                sort = sort,
+                type = type
+            )
+    
+        suspend fun readOne(id: Long) = requestAdapter.readProjection<NotExportedTestEntity, NotExportedTestEntityDto>(
+            id = id,
+            uri = "/notExportedTestEntities"
+        )
+    
+    
+        
+    
+        suspend fun update(obj: NotExportedTestEntity) = requestAdapter.updateObject(obj)
+    
+        suspend fun delete(obj: NotExportedTestEntity) = requestAdapter.deleteObject(obj)
+    
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/notExportedTestEntities")
+    
+    
+        
+    
+        
+    
+    }
+    
     open class PrimitiveTestEntityClient(
             override val apiClient: ApiClient,
             override val requestAdapter: RequestAdapter
@@ -473,6 +531,27 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         
+        
+        
+        suspend fun readNotExported(obj: RelTestEntity) =
+            requestAdapter.readAssociationProjection<RelTestEntity, NotExportedTestEntity, NotExportedTestEntityDto>(
+                obj = obj,
+                linkName = "notExported"
+            )
+        
+        
+        
+        suspend fun setNotExported(obj: RelTestEntity, child: NotExportedTestEntity) =
+            requestAdapter.updateAssociation(
+                objToBeSetted = child,
+                objWithAssociation = obj,
+                property = "notExported"
+            )
+        
+        suspend fun deleteFromNotExported(obj: RelTestEntity, childToDelete: NotExportedTestEntity) =
+            requestAdapter.request.delete(
+                url = "/relTestEntities/${obj.id}/notExported/${childToDelete.id}"
+            )
         
         
         suspend fun readOneToMany(obj: RelTestEntity) =
@@ -751,6 +830,36 @@ import com.fasterxml.jackson.databind.SerializationFeature
             runBlocking { client.searchContactsByRegexContactFull(nameRegex) }
     }
     
+    open class NotExportedTestEntityRepository( val client: NotExportedTestEntityClient ) {
+    
+        fun create(obj: NotExportedTestEntityBase) =
+            runBlocking { client.create(obj) }
+    
+        fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            runBlocking { client.readAll(page, size, sort) }
+    
+        
+    
+        fun readOne(id: Long) =
+            runBlocking { client.readOne(id) }
+    
+        
+    
+        fun update(obj: NotExportedTestEntity) =
+            runBlocking { client.update(obj) }
+    
+        fun delete(obj: NotExportedTestEntity) =
+            runBlocking { client.delete(obj) }
+    
+        fun delete(id: Long) =
+            runBlocking { client.delete(id) }
+    
+    
+        
+    
+        
+    }
+    
     open class PrimitiveTestEntityRepository( val client: PrimitiveTestEntityClient ) {
     
         fun create(obj: PrimitiveTestEntityBase) =
@@ -844,6 +953,18 @@ import com.fasterxml.jackson.databind.SerializationFeature
             runBlocking { client.setManyToOneRequired(obj, child) }
         
         
+        
+        
+        fun readNotExported(obj: RelTestEntity) =
+            runBlocking { client.readNotExported(obj) }
+        
+        
+        
+        fun setNotExported(obj: RelTestEntity, child: NotExportedTestEntity) =
+            runBlocking { client.setNotExported(obj, child) }
+        
+        fun deleteFromNotExported(obj: RelTestEntity, childToDelete: NotExportedTestEntity) =
+            runBlocking { client.deleteFromNotExported(obj, childToDelete) }
         
         
         fun readOneToMany(obj: RelTestEntity) =

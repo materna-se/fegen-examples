@@ -57,6 +57,10 @@ export interface RelTestEntityBaseProjection extends RelTestEntity {
     
 }
 
+export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
+    
+}
+
 /**
  * This type is used for creaing this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -108,9 +112,39 @@ export interface FullRelTestEntity extends RelTestEntity {
     manyToMany: UserBaseProjection[]
     manyToOneOptional: UserBaseProjection | null
     manyToOneRequired: UserBaseProjection
+    notExported: NotExportedTestEntityBaseProjection | null
     oneToMany: UserBaseProjection[]
     oneToOneOptional: UserBaseProjection | null
     oneToOneRequired: UserBaseProjection
+}
+
+/**
+ * This type is used for creaing this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+export interface NotExportedTestEntityNew {
+    text: string
+    
+}
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+export interface NotExportedTestEntityDto {
+    text: string
+    _links: {
+        self: ApiNavigationLink
+        
+    }
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `NotExportedTestEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+export interface NotExportedTestEntity extends NotExportedTestEntityDto {
+    id: number
 }
 
 export interface OtherEmbeddableTestEntity {
@@ -174,6 +208,7 @@ export interface RelTestEntityNew {
     manyToMany: User[]
     manyToOneOptional: User | null
     manyToOneRequired: User
+    notExported: NotExportedTestEntity | null
     oneToMany: User[]
     oneToOneOptional: User | null
     oneToOneRequired: User
@@ -192,6 +227,7 @@ export interface RelTestEntityDto {
         manyToMany: ApiNavigationLink
         manyToOneOptional: ApiNavigationLink
         manyToOneRequired: ApiNavigationLink
+        notExported: ApiNavigationLink
         oneToMany: ApiNavigationLink
         oneToOneOptional: ApiNavigationLink
         oneToOneRequired: ApiNavigationLink

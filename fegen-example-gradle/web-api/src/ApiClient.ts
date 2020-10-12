@@ -5,15 +5,16 @@ import {
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
     apiHelper, stringHelper, Dto, Entity
 } from '@materna-se/fegen-runtime';
-import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities';
+import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, NotExportedTestEntityNew, NotExportedTestEntityDto, NotExportedTestEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
-import { ContactBaseProjection, PrimitiveTestEntityBaseProjection, UserBaseProjection, AddressBaseProjection, RelTestEntityBaseProjection, ContactFull, FullRelTestEntity } from './Entities';
+import { ContactBaseProjection, PrimitiveTestEntityBaseProjection, UserBaseProjection, AddressBaseProjection, RelTestEntityBaseProjection, NotExportedTestEntityBaseProjection, ContactFull, FullRelTestEntity } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
 
 export class ApiClient {
     public readonly addressClient: AddressClient;
     public readonly contactClient: ContactClient;
+    public readonly notExportedTestEntityClient: NotExportedTestEntityClient;
     public readonly primitiveTestEntityClient: PrimitiveTestEntityClient;
     public readonly relTestEntityClient: RelTestEntityClient;
     public readonly userClient: UserClient;
@@ -27,6 +28,7 @@ export class ApiClient {
         const adapter = requestAdapter || new RequestAdapter(this.baseUrl);
         this.addressClient = new AddressClient(this, adapter);
         this.contactClient = new ContactClient(this, adapter);
+        this.notExportedTestEntityClient = new NotExportedTestEntityClient(this, adapter);
         this.primitiveTestEntityClient = new PrimitiveTestEntityClient(this, adapter);
         this.relTestEntityClient = new RelTestEntityClient(this, adapter);
         this.userClient = new UserClient(this, adapter);
@@ -242,6 +244,40 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     }
 }
 
+export class NotExportedTestEntityClient extends BaseClient<ApiClient, NotExportedTestEntityNew, NotExportedTestEntity> {
+
+    constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
+        super("/notExportedTestEntities", "notExportedTestEntities", apiClient, requestAdapter);
+        this.readOne = this.readOne.bind(this);
+        this.readProjection = this.readProjection.bind(this);
+        
+    }
+  
+    public static build(base: Partial<NotExportedTestEntityNew> = {}): NotExportedTestEntityNew {
+        return {
+            text: base.text !== undefined ? base.text : ""
+        }
+    }
+  
+    public async readProjectionsNotExportedTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "text,ASC" | "text,DESC") : Promise<PagedItems<NotExportedTestEntityBaseProjection>> {
+        return this.readProjections<NotExportedTestEntityBaseProjection>("baseProjection", page, size, sort);
+    }
+            
+    public async readProjectionNotExportedTestEntityBaseProjection(id: number): Promise<NotExportedTestEntityBaseProjection| undefined> {
+        return this.readProjection<NotExportedTestEntityBaseProjection>(id, "baseProjection");
+    }
+    
+    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "text,ASC" | "text,DESC") : Promise<PagedItems<NotExportedTestEntity>> {
+        return await this.readProjections<NotExportedTestEntity>(undefined, page, size, sort);
+    }
+  
+    
+  
+    
+  
+    
+}
+
 export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityNew, PrimitiveTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
@@ -293,6 +329,7 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew,
         this.readManyToManyProjection = this.readManyToManyProjection.bind(this);
             this.readManyToOneOptionalProjection = this.readManyToOneOptionalProjection.bind(this);
             this.readManyToOneRequiredProjection = this.readManyToOneRequiredProjection.bind(this);
+            this.readNotExportedProjection = this.readNotExportedProjection.bind(this);
             this.readOneToManyProjection = this.readOneToManyProjection.bind(this);
             this.readOneToOneOptionalProjection = this.readOneToOneOptionalProjection.bind(this);
             this.readOneToOneRequiredProjection = this.readOneToOneRequiredProjection.bind(this);
@@ -306,6 +343,7 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew,
             manyToMany: base.manyToMany !== undefined ? base.manyToMany : [],
             manyToOneOptional: base.manyToOneOptional !== undefined ? base.manyToOneOptional : null,
             manyToOneRequired: base.manyToOneRequired,
+            notExported: base.notExported !== undefined ? base.notExported : null,
             oneToMany: base.oneToMany !== undefined ? base.oneToMany : [],
             oneToOneOptional: base.oneToOneOptional !== undefined ? base.oneToOneOptional : null,
             oneToOneRequired: base.oneToOneRequired
@@ -343,6 +381,10 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
     
     public async deleteFromManyToOneRequired(returnType: RelTestEntity, childToDelete: User) {
         await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToOneRequired/${childToDelete.id}`);
+    }
+    
+    public async deleteFromNotExported(returnType: RelTestEntity, childToDelete: NotExportedTestEntity) {
+        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/notExported/${childToDelete.id}`);
     }
     
     public async deleteFromOneToMany(returnType: RelTestEntity, childToDelete: User) {
@@ -453,6 +495,38 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
         if(!child._links) throw `Child has no _links: ${child.id}`;
         await this._requestAdapter.adaptAnyToOne(
             apiHelper.removeParamsFromNavigationHref(returnType._links.manyToOneRequired),
+            child._links.self.href
+        );
+    }
+    
+    public async readNotExported(obj: RelTestEntityDto): Promise<NotExportedTestEntity | undefined> {
+        return this.readNotExportedProjection<NotExportedTestEntity>(obj);
+    }
+    
+    public async readNotExportedProjectionNotExportedTestEntityBaseProjection(obj: RelTestEntityDto): Promise<NotExportedTestEntityBaseProjection | undefined> {
+        return this.readNotExportedProjection<NotExportedTestEntityBaseProjection>(obj, "baseProjection");
+    }
+    
+    public async readNotExportedProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+        const hasProjection = !!projection;
+        let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.notExported);
+        fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
+    
+        const response = await this._requestAdapter.getRequest().get(fullUrl);
+        if(response.status === 404) { return undefined; }
+        if(!response.ok){ throw response; }
+        
+        const result = (await response.json()) as T;
+        return apiHelper.injectIds(result);
+    }
+    
+    public async setNotExported(returnType: RelTestEntity, child: NotExportedTestEntity) {
+        // eslint-disable-next-line no-throw-literal
+        if(!returnType._links) throw `Parent has no _links: ${returnType.id}`;
+        // eslint-disable-next-line no-throw-literal
+        if(!child._links) throw `Child has no _links: ${child.id}`;
+        await this._requestAdapter.adaptAnyToOne(
+            apiHelper.removeParamsFromNavigationHref(returnType._links.notExported),
             child._links.self.href
         );
     }

@@ -21,18 +21,46 @@
  */
 package de.materna.fegen.test.kotlin
 
+import de.materna.fegen.example.gradle.kotlin.api.ContactFull
 import io.kotlintest.matchers.numerics.shouldBeGreaterThanOrEqual
+import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 
 class ProjectionTest: ApiSpec() {
 
     init {
         "read projection" {
-            val fullContacts = apiClient().contactClient.readAllContactFull(null, null, null)
-            val contact = fullContacts.items.first { it.firstName == "With" && it.lastName == "Address" }
+            val contact = fetchWithAddress()
 
             contact.address shouldNotBe null
             contact.address!!.id shouldBeGreaterThanOrEqual 0
         }
+
+        "fetches single projection" {
+            val withAddress = fetchWithAddress()
+            val contact = apiClient().contactClient.readOneContactFull(withAddress.id)
+
+            contact.address shouldNotBe null
+            contact.address!!.id shouldBeGreaterThanOrEqual 0
+        }
+
+        "updates using projections" {
+            val withAddress = fetchWithAddress()
+            val updated = withAddress.copy(firstName = "NewFirstName")
+            val updateResult = apiClient().contactClient.update(updated.toObj())
+            val fetchedUpdated = apiClient().contactClient.readOneContactFull(withAddress.id)
+
+            updateResult.id shouldBe updated.id
+            updateResult.firstName shouldBe updated.firstName
+            updateResult.lastName shouldBe updated.lastName
+            updateResult.number shouldBe updated.number
+
+            fetchedUpdated shouldBe updated
+        }
+    }
+
+    private suspend fun fetchWithAddress(): ContactFull {
+        val fullContacts = apiClient().contactClient.readAllContactFull()
+        return fullContacts.items.single { it.firstName == "With" && it.lastName == "Address" }
     }
 }

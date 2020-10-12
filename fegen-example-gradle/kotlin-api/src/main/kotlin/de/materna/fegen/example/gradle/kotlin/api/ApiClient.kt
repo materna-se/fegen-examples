@@ -144,7 +144,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun readOneContactFull(id: Long) =
             requestAdapter.readProjection<ContactFull, ContactFullDto>(
                 id = id,
-                uri = "/contactFulls",
+                uri = "/contacts",
                 projectionName = "full"
             )
     
@@ -395,7 +395,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun readOneFullRelTestEntity(id: Long) =
             requestAdapter.readProjection<FullRelTestEntity, FullRelTestEntityDto>(
                 id = id,
-                uri = "/fullRelTestEntities",
+                uri = "/relTestEntities",
                 projectionName = "full"
             )
     

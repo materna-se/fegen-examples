@@ -21,6 +21,7 @@
  */
 import {apiClient, setupFetch, setupTest} from "./util";
 import {expect} from 'chai';
+import {ContactFull} from "../Entities";
 
 describe("Projection", () => {
 
@@ -28,11 +29,37 @@ describe("Projection", () => {
     beforeEach(setupTest);
 
     it("fetches projections", async () => {
-        const fullContacts = await apiClient.contactClient.readProjectionsContactFull();
-        const contact = fullContacts.items.find(c => c.firstName == "With" && c.lastName == "Address");
+        const contact = await fetchWithAddress();
 
         expect(contact).to.exist;
         expect(contact?.address).to.exist;
         expect(contact?.address?.id).to.be.at.least(0);
-    })
+    });
+
+    it("fetches single projection", async () => {
+        const withAddress = await fetchWithAddress();
+        const contact = await apiClient.contactClient.readProjectionContactFull(withAddress.id);
+
+        expect(contact).to.exist;
+        expect(contact?.address).to.exist;
+        expect(contact?.address?.id).to.be.at.least(0);
+    });
+
+    it("updates using projections", async () => {
+        const withAddress = await fetchWithAddress();
+        const updated = {
+            ...withAddress,
+            firstName: "NewFirstName"
+        };
+        const updateResult = await apiClient.contactClient.update(updated);
+        const fetchedUpdated = await apiClient.contactClient.readProjectionContactFull(withAddress.id);
+
+        expect(updated).to.deep.include(updateResult);
+        expect(fetchedUpdated).to.deep.eq(updated);
+    });
+
+    async function fetchWithAddress(): Promise<ContactFull> {
+        const fullContacts = await apiClient.contactClient.readProjectionsContactFull();
+        return fullContacts.items.find(c => c.firstName == "With" && c.lastName == "Address")!!;
+    }
 });

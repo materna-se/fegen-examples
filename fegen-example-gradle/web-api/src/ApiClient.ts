@@ -53,6 +53,17 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
         }
     }
   
+    protected toPlainObj(obj: Address): Address {
+        return {
+            id: obj.id,
+            city: obj.city,
+            country: obj.country,
+            street: obj.street,
+            zip: obj.zip,
+            _links: obj._links
+        };
+    }
+  
     public async readProjectionsAddressBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "city,ASC" | "city,DESC" | "street,ASC" | "street,DESC" | "zip,ASC" | "zip,DESC") : Promise<PagedItems<AddressBaseProjection>> {
         return this.readProjections<AddressBaseProjection>("baseProjection", page, size, sort);
     }
@@ -90,6 +101,16 @@ export class ContactClient extends BaseClient<ApiClient, ContactNew, Contact> {
             address: base.address !== undefined ? base.address : null,
             owner: base.owner !== undefined ? base.owner : null
         }
+    }
+  
+    protected toPlainObj(obj: Contact): Contact {
+        return {
+            id: obj.id,
+            firstName: obj.firstName,
+            lastName: obj.lastName,
+            number: obj.number,
+            _links: obj._links
+        };
     }
   
     public async readProjectionsContactBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC") : Promise<PagedItems<ContactBaseProjection>> {
@@ -265,6 +286,22 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         }
     }
   
+    protected toPlainObj(obj: PrimitiveTestEntity): PrimitiveTestEntity {
+        return {
+            id: obj.id,
+            booleanTrue: obj.booleanTrue,
+            date2000_6_12: obj.date2000_6_12,
+            dateTime2000_1_1_12_30: obj.dateTime2000_1_1_12_30,
+            int32: obj.int32,
+            intMinusBillion: obj.intMinusBillion,
+            long64: obj.long64,
+            optionalIntBillion: obj.optionalIntBillion,
+            optionalIntNull: obj.optionalIntNull,
+            stringText: obj.stringText,
+            _links: obj._links
+        };
+    }
+  
     public async readProjectionsPrimitiveTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC") : Promise<PagedItems<PrimitiveTestEntityBaseProjection>> {
         return this.readProjections<PrimitiveTestEntityBaseProjection>("baseProjection", page, size, sort);
     }
@@ -310,6 +347,16 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew,
             oneToOneOptional: base.oneToOneOptional !== undefined ? base.oneToOneOptional : null,
             oneToOneRequired: base.oneToOneRequired
         }
+    }
+  
+    protected toPlainObj(obj: RelTestEntity): RelTestEntity {
+        return {
+            id: obj.id,
+            testString: obj.testString,
+            embedded: obj.embedded,
+            embeddedNullable: obj.embeddedNullable,
+            _links: obj._links
+        };
     }
   
     public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<RelTestEntityBaseProjection>> {
@@ -574,6 +621,14 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
             name: base.name !== undefined ? base.name : "",
             contacts: base.contacts !== undefined ? base.contacts : []
         }
+    }
+  
+    protected toPlainObj(obj: User): User {
+        return {
+            id: obj.id,
+            name: obj.name,
+            _links: obj._links
+        };
     }
   
     public async readProjectionsUserBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "name,ASC" | "name,DESC") : Promise<PagedItems<UserBaseProjection>> {

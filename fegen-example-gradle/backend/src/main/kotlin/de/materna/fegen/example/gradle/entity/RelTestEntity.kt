@@ -63,10 +63,6 @@ class RelTestEntity {
     @Embedded
     var embeddedNullable: OtherEmbeddableTestEntity? = null
 
-    @Nullable
-    @ManyToOne
-    var notExported: NotExportedTestEntity? = null
-
     @Projection(name = "baseProjection", types = [RelTestEntity::class])
     interface BaseProjection {
         val id: Long
@@ -83,6 +79,5 @@ class RelTestEntity {
         val manyToMany: List<User.BaseProjection>
         val embedded: EmbeddableTestEntity
         val embeddedNullable: OtherEmbeddableTestEntity?
-        val notExported: NotExportedTestEntity.BaseProjection?
     }
 }

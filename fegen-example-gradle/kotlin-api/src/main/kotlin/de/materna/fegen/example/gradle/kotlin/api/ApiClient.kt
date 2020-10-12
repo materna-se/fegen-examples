@@ -533,27 +533,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         
         
-        suspend fun readNotExported(obj: RelTestEntity) =
-            requestAdapter.readAssociationProjection<RelTestEntity, NotExportedTestEntity, NotExportedTestEntityDto>(
-                obj = obj,
-                linkName = "notExported"
-            )
-        
-        
-        
-        suspend fun setNotExported(obj: RelTestEntity, child: NotExportedTestEntity) =
-            requestAdapter.updateAssociation(
-                objToBeSetted = child,
-                objWithAssociation = obj,
-                property = "notExported"
-            )
-        
-        suspend fun deleteFromNotExported(obj: RelTestEntity, childToDelete: NotExportedTestEntity) =
-            requestAdapter.request.delete(
-                url = "/relTestEntities/${obj.id}/notExported/${childToDelete.id}"
-            )
-        
-        
         suspend fun readOneToMany(obj: RelTestEntity) =
             requestAdapter.readListAssociationProjection<RelTestEntity, User, UserDto>(
                 obj = obj,
@@ -953,18 +932,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
             runBlocking { client.setManyToOneRequired(obj, child) }
         
         
-        
-        
-        fun readNotExported(obj: RelTestEntity) =
-            runBlocking { client.readNotExported(obj) }
-        
-        
-        
-        fun setNotExported(obj: RelTestEntity, child: NotExportedTestEntity) =
-            runBlocking { client.setNotExported(obj, child) }
-        
-        fun deleteFromNotExported(obj: RelTestEntity, childToDelete: NotExportedTestEntity) =
-            runBlocking { client.deleteFromNotExported(obj, childToDelete) }
         
         
         fun readOneToMany(obj: RelTestEntity) =

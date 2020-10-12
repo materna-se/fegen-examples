@@ -112,7 +112,6 @@ export interface FullRelTestEntity extends RelTestEntity {
     manyToMany: UserBaseProjection[]
     manyToOneOptional: UserBaseProjection | null
     manyToOneRequired: UserBaseProjection
-    notExported: NotExportedTestEntityBaseProjection | null
     oneToMany: UserBaseProjection[]
     oneToOneOptional: UserBaseProjection | null
     oneToOneRequired: UserBaseProjection
@@ -208,7 +207,6 @@ export interface RelTestEntityNew {
     manyToMany: User[]
     manyToOneOptional: User | null
     manyToOneRequired: User
-    notExported: NotExportedTestEntity | null
     oneToMany: User[]
     oneToOneOptional: User | null
     oneToOneRequired: User
@@ -227,7 +225,6 @@ export interface RelTestEntityDto {
         manyToMany: ApiNavigationLink
         manyToOneOptional: ApiNavigationLink
         manyToOneRequired: ApiNavigationLink
-        notExported: ApiNavigationLink
         oneToMany: ApiNavigationLink
         oneToOneOptional: ApiNavigationLink
         oneToOneRequired: ApiNavigationLink

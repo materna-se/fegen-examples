@@ -349,7 +349,6 @@ data class FullRelTestEntityDto(
     val manyToMany: List<UserDto>,
     val manyToOneOptional: UserDto?,
     val manyToOneRequired: UserDto,
-    val notExported: NotExportedTestEntityDto?,
     val oneToMany: List<UserDto>,
     val oneToOneOptional: UserDto?,
     val oneToOneRequired: UserDto,
@@ -365,7 +364,6 @@ data class FullRelTestEntityDto(
             manyToMany = manyToMany.map { it.toObj() }, 
             manyToOneOptional = manyToOneOptional?.toObj(), 
             manyToOneRequired = manyToOneRequired.toObj(), 
-            notExported = notExported?.toObj(), 
             oneToMany = oneToMany.map { it.toObj() }, 
             oneToOneOptional = oneToOneOptional?.toObj(), 
             oneToOneRequired = oneToOneRequired.toObj(),
@@ -381,7 +379,6 @@ data class FullRelTestEntity(
     val manyToMany: List<User>,
     val manyToOneOptional: User?,
     val manyToOneRequired: User,
-    val notExported: NotExportedTestEntity?,
     val oneToMany: List<User>,
     val oneToOneOptional: User?,
     val oneToOneRequired: User,
@@ -707,7 +704,6 @@ data class PrimitiveTestEntity(
      val embedded: EmbeddableTestEntity? = null,
      val embeddedNullable: OtherEmbeddableTestEntity? = null,
      val manyToOneOptional: User? = null,
-     val notExported: NotExportedTestEntity? = null,
      val oneToOneOptional: User? = null,
      override val _links: RelTestEntityLinks? = null
  ): ApiBase<RelTestEntity, RelTestEntityDto> {
@@ -719,7 +715,6 @@ data class PrimitiveTestEntity(
          private var manyToMany: List<User> = listOf(),
          private var manyToOneOptional: User? = null,
          private var manyToOneRequired: User,
-         private var notExported: NotExportedTestEntity? = null,
          private var oneToMany: List<User> = listOf(),
          private var oneToOneOptional: User? = null,
          private var oneToOneRequired: User,
@@ -734,7 +729,6 @@ data class PrimitiveTestEntity(
              base.manyToMany,
              base.manyToOneOptional,
              base.manyToOneRequired,
-             base.notExported,
              base.oneToMany,
              base.oneToOneOptional,
              base.oneToOneRequired,
@@ -748,13 +742,12 @@ data class PrimitiveTestEntity(
          fun manyToMany(manyToMany: List<User>) = apply { this.manyToMany = manyToMany }
          fun manyToOneOptional(manyToOneOptional: User?) = apply { this.manyToOneOptional = manyToOneOptional }
          fun manyToOneRequired(manyToOneRequired: User) = apply { this.manyToOneRequired = manyToOneRequired }
-         fun notExported(notExported: NotExportedTestEntity?) = apply { this.notExported = notExported }
          fun oneToMany(oneToMany: List<User>) = apply { this.oneToMany = oneToMany }
          fun oneToOneOptional(oneToOneOptional: User?) = apply { this.oneToOneOptional = oneToOneOptional }
          fun oneToOneRequired(oneToOneRequired: User) = apply { this.oneToOneRequired = oneToOneRequired }
          fun testString(testString: String) = apply { this.testString = testString }
          fun _links(_links: RelTestEntityLinks) = apply { this._links = _links }
-         fun build() = RelTestEntityBase(id, manyToMany, manyToOneRequired, oneToMany, oneToOneRequired, testString, embedded, embeddedNullable, manyToOneOptional, notExported, oneToOneOptional, _links)
+         fun build() = RelTestEntityBase(id, manyToMany, manyToOneRequired, oneToMany, oneToOneRequired, testString, embedded, embeddedNullable, manyToOneOptional, oneToOneOptional, _links)
      }
 
      fun toBuilder() = Builder(this)
@@ -789,7 +782,6 @@ data class PrimitiveTestEntity(
 "manyToMany" to ApiNavigationLink("/relTestEntities/$id/manyToMany", false),
          "manyToOneOptional" to ApiNavigationLink("/relTestEntities/$id/manyToOneOptional", false),
          "manyToOneRequired" to ApiNavigationLink("/relTestEntities/$id/manyToOneRequired", false),
-         "notExported" to ApiNavigationLink("/relTestEntities/$id/notExported", false),
          "oneToMany" to ApiNavigationLink("/relTestEntities/$id/oneToMany", false),
          "oneToOneOptional" to ApiNavigationLink("/relTestEntities/$id/oneToOneOptional", false),
          "oneToOneRequired" to ApiNavigationLink("/relTestEntities/$id/oneToOneRequired", false)
@@ -856,7 +848,6 @@ data class PrimitiveTestEntity(
              manyToMany: List<User> = listOf(),
              manyToOneOptional: User? = null,
              manyToOneRequired: User,
-             notExported: NotExportedTestEntity? = null,
              oneToMany: List<User> = listOf(),
              oneToOneOptional: User? = null,
              oneToOneRequired: User
@@ -867,7 +858,6 @@ data class PrimitiveTestEntity(
              manyToMany = manyToMany,
              manyToOneOptional = manyToOneOptional,
              manyToOneRequired = manyToOneRequired,
-             notExported = notExported,
              oneToMany = oneToMany,
              oneToOneOptional = oneToOneOptional,
              oneToOneRequired = oneToOneRequired,

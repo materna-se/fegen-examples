@@ -79,8 +79,7 @@ describe("Embedded", () => {
             manyToMany: [],
             manyToOneOptional: null,
             oneToMany: [],
-            oneToOneOptional: null,
-            notExported: null
+            oneToOneOptional: null
         });
 
         const created = await fetchNamed("created");

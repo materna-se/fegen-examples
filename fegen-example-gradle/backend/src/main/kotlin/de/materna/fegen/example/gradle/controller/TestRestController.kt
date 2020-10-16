@@ -21,7 +21,9 @@
  */
 package de.materna.fegen.example.gradle.controller
 
-import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
+import de.materna.fegen.example.gradle.entity.*
+import de.materna.fegen.example.gradle.entity.ComplexPojoTest
+import de.materna.fegen.example.gradle.entity.PrimitivePojoTest
 import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
@@ -176,5 +178,27 @@ open class TestRestController(
                 result.totalPages.toLong()
         )
         return ResponseEntity.ok(PagedModel(result.content, pageMetadata))
+    }
+
+    @RequestMapping("pojosAsReturnValue", method = [RequestMethod.GET])
+    @ResponseBody
+    fun pojosAsReturnValue(): ResponseEntity<List<PrimitivePojoTest>> {
+        val testList = listOf(PrimitivePojoTest("test1", 12.2, true), PrimitivePojoTest("test2", 13.3, false))
+        return ResponseEntity.ok(testList)
+    }
+
+    @RequestMapping("pojoAsBodyAndSingleReturnValue", method = [RequestMethod.POST])
+    @ResponseBody
+    fun pojoAsBodyAndReturnValue(@RequestBody body: ComplexPojoTest): ResponseEntity<ComplexPojoTest> {
+        println("Pojo $body")
+        return ResponseEntity.ok(body)
+    }
+
+    @RequestMapping("pojoAsBodyAndListReturnValue", method = [RequestMethod.POST])
+    @ResponseBody
+    fun pojoAsBodyAndListReturnValue(@RequestBody body: ComplexPojoTest): ResponseEntity<List<ComplexPojoTest>> {
+        println("Pojo $body")
+        val testList = listOf(ComplexPojoTest(listOf(PrimitivePojoTest("test2", 13.3, false))), body)
+        return ResponseEntity.ok(testList)
     }
 }

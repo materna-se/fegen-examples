@@ -23,6 +23,7 @@ package de.materna.fegen.example.gradle.controller
 
 import de.materna.fegen.example.gradle.entity.Address
 import de.materna.fegen.example.gradle.entity.Contact
+import de.materna.fegen.example.gradle.entity.CreationalRequest
 import de.materna.fegen.example.gradle.repository.AddressRepository
 import de.materna.fegen.example.gradle.repository.ContactRepository
 import de.materna.fegen.example.gradle.repository.UserRepository
@@ -70,6 +71,37 @@ open class CustomEndpointController(
             address.zip = zip
             address.city = city
             address.country = country
+            address = addressRepository.save(address)
+            contact.address = address
+        } else {
+            val address = contact.address
+            if (address != null) {
+                contact.address = null
+                addressRepository.delete(address)
+            }
+        }
+
+        return ResponseEntity.ok(EntityModel(contactRepository.save(contact)))
+    }
+
+    @Transactional
+    @RequestMapping("create", method = [RequestMethod.POST])
+    open fun createContact(@RequestBody creationalRequest: CreationalRequest): ResponseEntity<EntityModel<Contact>> {
+        val user = userRepository.findUserByName(creationalRequest.userName) ?: return ResponseEntity.notFound().build()
+
+        val contact = Contact()
+
+        contact.owner = user
+        contact.firstName = creationalRequest.firstName
+        contact.lastName = creationalRequest.lastName
+        contact.number = creationalRequest.number.ifBlank { null }
+
+        if (arrayOf(creationalRequest.street, creationalRequest.zip, creationalRequest.city, creationalRequest.country).any { it.isNotBlank() }) {
+            var address = Address()
+            address.street = creationalRequest.street
+            address.zip = creationalRequest.zip
+            address.city = creationalRequest.city
+            address.country = creationalRequest.country
             address = addressRepository.save(address)
             contact.address = address
         } else {

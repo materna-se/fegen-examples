@@ -2,6 +2,7 @@ package de.materna.fegen.example.gradle.kotlin.api.controller
 
 import de.materna.fegen.example.gradle.kotlin.api.Contact
 import de.materna.fegen.example.gradle.kotlin.api.ContactDto
+import de.materna.fegen.example.gradle.kotlin.api.CreationalRequest
 import de.materna.fegen.runtime.RequestAdapter
 import de.materna.fegen.runtime.appendParams
 import kotlin.String
@@ -10,6 +11,17 @@ import kotlin.Suppress
 class CustomEndpointControllerClient(
     private val requestAdapter: RequestAdapter
 ) {
+    @Suppress("UNUSED")
+    suspend fun createContact(body: CreationalRequest): Contact {
+        val url = """/api/custom/contacts/create""".appendParams()
+        return requestAdapter.doSingleRequest<Contact, ContactDto, CreationalRequest>(
+            url = url,
+            method = "POST",
+            body = body,
+            ignoreBasePath = true
+        )
+    }
+
     @Suppress("UNUSED")
     suspend fun createOrUpdateContact(
         userName: String,

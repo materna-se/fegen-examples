@@ -979,3 +979,24 @@ data class PrimitiveTestEntity(
              _links = _links
          )
  }
+
+data class CreationalRequest (
+    val userName: String,
+    val firstName: String,
+    val lastName: String,
+    val number: String,
+    val street: String,
+    val zip: String,
+    val city: String,
+    val country: String
+)
+
+data class ComplexPojoTest (
+    val pojos: List<PrimitivePojoTest>
+)
+
+data class PrimitivePojoTest (
+    val string: String,
+    val number: Double,
+    val boolean: Boolean
+)

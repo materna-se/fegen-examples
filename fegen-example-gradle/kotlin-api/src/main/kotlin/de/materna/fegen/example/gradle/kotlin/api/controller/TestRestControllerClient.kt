@@ -1,6 +1,8 @@
 package de.materna.fegen.example.gradle.kotlin.api.controller
 
 import com.fasterxml.jackson.core.type.TypeReference
+import de.materna.fegen.example.gradle.kotlin.api.ComplexPojoTest
+import de.materna.fegen.example.gradle.kotlin.api.PrimitivePojoTest
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityBase
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityDto
@@ -91,6 +93,41 @@ class TestRestControllerClient(
         return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
             url = url,
             method = "POST",
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun pojoAsBodyAndListReturnValue(body: ComplexPojoTest): List<ComplexPojoTest> {
+        val url =
+                """/api/custom/primitiveTestEntities/pojoAsBodyAndListReturnValue""".appendParams()
+        return requestAdapter.doListRequestSimpleIncludingBody(
+            url = url,
+            method = "POST",
+            body = body,
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun pojoAsBodyAndReturnValue(body: ComplexPojoTest): ComplexPojoTest {
+        val url =
+                """/api/custom/primitiveTestEntities/pojoAsBodyAndSingleReturnValue""".appendParams()
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<ComplexPojoTest,
+                ComplexPojoTest>(
+            url = url,
+            method = "POST",
+            body = body,
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun pojosAsReturnValue(): List<PrimitivePojoTest> {
+        val url = """/api/custom/primitiveTestEntities/pojosAsReturnValue""".appendParams()
+        return requestAdapter.doListRequestSimple(
+            url = url,
+            method = "GET",
             ignoreBasePath = true
         )
     }

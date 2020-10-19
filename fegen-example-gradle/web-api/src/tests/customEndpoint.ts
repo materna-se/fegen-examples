@@ -21,8 +21,12 @@
  */
 import {apiClient, setupFetch, setupTest} from "./util";
 import {expect} from "chai";
-import {PrimitiveTestEntityNew} from "../Entities";
-
+import {
+    PrimitiveTestEntityNew,
+    ComplexPojoTest,
+    PrimitivePojoTest,
+    CreationalRequest
+} from "../Entities";
 
 describe("Custom endpoint", () => {
 
@@ -129,5 +133,57 @@ describe("Custom endpoint", () => {
 
         expect(bothPages.items).to.not.be.empty;
         expect(pageOne.items.concat(pageTwo.items)).to.deep.eq(bothPages.items)
+    });
+
+    it("call with pojo as request body", async () => {
+        const pojos: PrimitivePojoTest[] = [
+            {
+                string: "test",
+                number: 42,
+                boolean: true
+            }
+        ];
+        const pojo: ComplexPojoTest = {
+            pojos: pojos,
+        };
+        const result = await apiClient.testRestControllerClient.pojoAsBodyAndReturnValue(pojo);
+        expect(result).to.be.not.empty;
+        expect(result.pojos).to.deep.include.members(pojos);
+    });
+
+    it("call with pojo as request body and list return value", async () => {
+        const pojos: PrimitivePojoTest[] = [
+            {
+                string: "test",
+                number: 42,
+                boolean: true
+            }
+        ];
+        const pojo: ComplexPojoTest = {
+            pojos: pojos,
+        };
+        const result = await apiClient.testRestControllerClient.pojoAsBodyAndListReturnValue(pojo);
+        expect(result).to.be.not.empty;
+        expect(result.length).to.equal(2);
+    });
+
+    it("call with pojo as response", async () => {
+        const result = await apiClient.testRestControllerClient.pojosAsReturnValue();
+        expect(result).to.be.not.empty;
+        expect(result.length).to.equal(2);
+    });
+
+    it("calls custom endpoint to create contact using pojo as body param", async () => {
+        const request: CreationalRequest = {
+            userName: "UserOne",
+            firstName: "firstName",
+            lastName: "lastName",
+            number: "",
+            street: "street",
+            zip: "12345",
+            city: "city",
+            country: "country"
+        };
+        await apiClient.customEndpointControllerClient.createContact(request);
     });
 });

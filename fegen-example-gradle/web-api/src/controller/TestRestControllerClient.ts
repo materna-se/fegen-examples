@@ -1,4 +1,4 @@
-import {PrimitiveTestEntity, PrimitiveTestEntityNew} from "../Entities";
+import {PrimitiveTestEntity, PrimitiveTestEntityNew, ComplexPojoTest, PrimitivePojoTest} from "../Entities";
 import {RequestAdapter, stringHelper, Items, ApiHateoasObjectBase, apiHelper, PagedItems, ApiHateoasObjectReadMultiple} from "@materna-se/fegen-runtime";
 
 export class TestRestControllerClient {
@@ -35,9 +35,10 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as PrimitiveTestEntity;
-    
         return responseObj;
+        
         
     }
     
@@ -61,9 +62,10 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as PrimitiveTestEntity;
-    
         return responseObj;
+        
         
     }
     
@@ -91,9 +93,10 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as PrimitiveTestEntity;
-    
         return responseObj;
+        
         
     }
     
@@ -121,9 +124,10 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as PrimitiveTestEntity;
-    
         return responseObj;
+        
         
     }
     
@@ -147,9 +151,97 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as PrimitiveTestEntity;
-    
         return responseObj;
+        
+        
+    }
+    
+    public async pojoAsBodyAndListReturnValue(body: ComplexPojoTest): Promise<ComplexPojoTest[]>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/pojoAsBodyAndListReturnValue`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as ComplexPojoTest[];
+        
+        
+    }
+    
+    public async pojoAsBodyAndReturnValue(body: ComplexPojoTest): Promise<ComplexPojoTest>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/pojoAsBodyAndSingleReturnValue`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        const responseObj = (await response.json()) as ComplexPojoTest;
+        return responseObj;
+        
+        
+    }
+    
+    public async pojosAsReturnValue(): Promise<PrimitivePojoTest[]>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/pojosAsReturnValue`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "GET"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as PrimitivePojoTest[];
+        
         
     }
     
@@ -173,9 +265,10 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as PrimitiveTestEntity;
-    
         return responseObj;
+        
         
     }
     
@@ -203,9 +296,10 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as PrimitiveTestEntity;
-    
         return responseObj;
+        
         
     }
     
@@ -229,14 +323,15 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as ApiHateoasObjectBase<PrimitiveTestEntity[]>;
-    
         const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
     
     return {
         items: elements,
         _links: responseObj._links
     };
+        
         
     }
     
@@ -260,8 +355,8 @@ export class TestRestControllerClient {
             throw response;
         }
         
+        
         const responseObj = (await response.json()) as ApiHateoasObjectReadMultiple<PrimitiveTestEntity[]>;
-    
                     const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
             
                 return {
@@ -269,6 +364,7 @@ export class TestRestControllerClient {
                     _links: responseObj._links
     , page: responseObj.page
                 };
+        
         
     }
     

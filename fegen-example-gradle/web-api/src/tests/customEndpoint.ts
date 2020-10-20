@@ -45,6 +45,18 @@ describe("Custom endpoint", () => {
         stringText: "27"
     };
 
+    const pojos: PrimitivePojoTest[] = [
+        {
+            string: "test",
+            number: 42,
+            boolean: true
+        }
+    ];
+
+    const pojo: ComplexPojoTest = {
+        pojos: pojos,
+    };
+
     it("calls custom endpoint", async () => {
         await apiClient.customEndpointControllerClient.createOrUpdateContact(
             "UserOne",
@@ -136,33 +148,15 @@ describe("Custom endpoint", () => {
     });
 
     it("call with pojo as request body", async () => {
-        const pojos: PrimitivePojoTest[] = [
-            {
-                string: "test",
-                number: 42,
-                boolean: true
-            }
-        ];
-        const pojo: ComplexPojoTest = {
-            pojos: pojos,
-        };
         const result = await apiClient.testRestControllerClient.pojoAsBodyAndReturnValue(pojo);
+        
         expect(result).to.be.not.empty;
         expect(result.pojos).to.deep.include.members(pojos);
     });
 
     it("call with pojo as request body and list return value", async () => {
-        const pojos: PrimitivePojoTest[] = [
-            {
-                string: "test",
-                number: 42,
-                boolean: true
-            }
-        ];
-        const pojo: ComplexPojoTest = {
-            pojos: pojos,
-        };
         const result = await apiClient.testRestControllerClient.pojoAsBodyAndListReturnValue(pojo);
+        
         expect(result).to.be.not.empty;
         expect(result.length).to.equal(2);
     });
@@ -171,6 +165,13 @@ describe("Custom endpoint", () => {
         const result = await apiClient.testRestControllerClient.pojosAsReturnValue();
         expect(result).to.be.not.empty;
         expect(result.length).to.equal(2);
+    });
+
+    it("call with pojo list as response", async () => {
+        const result = await apiClient.testRestControllerClient.pojoListAsBody(pojos);
+        
+        expect(result).to.be.not.empty;
+        expect(result.length).to.equal(1);
     });
 
     it("calls custom endpoint to create contact using pojo as body param", async () => {

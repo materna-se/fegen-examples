@@ -201,4 +201,11 @@ open class TestRestController(
         val testList = listOf(ComplexPojoTest(listOf(PrimitivePojoTest("test2", 13.3, false))), body)
         return ResponseEntity.ok(testList)
     }
+
+    @RequestMapping("pojoListAsBody", method = [RequestMethod.POST])
+    @ResponseBody
+    fun pojoListAsBody(@RequestBody body: List<PrimitivePojoTest>): ResponseEntity<List<PrimitivePojoTest>> {
+        println("Pojo $body")
+        return ResponseEntity.ok(body)
+    }
 }

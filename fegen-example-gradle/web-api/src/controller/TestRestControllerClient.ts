@@ -219,6 +219,36 @@ export class TestRestControllerClient {
         
     }
     
+    public async pojoListAsBody(body: PrimitivePojoTest[]): Promise<PrimitivePojoTest[]>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/pojoListAsBody`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as PrimitivePojoTest[];
+        
+        
+    }
+    
     public async pojosAsReturnValue(): Promise<PrimitivePojoTest[]>  {
         const request = this.requestAdapter.getRequest();
     
@@ -326,11 +356,11 @@ export class TestRestControllerClient {
         
         const responseObj = (await response.json()) as ApiHateoasObjectBase<PrimitiveTestEntity[]>;
         const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
-    
-    return {
-        items: elements,
-        _links: responseObj._links
-    };
+            
+        return {
+            items: elements,
+            _links: responseObj._links
+        };
         
         
     }
@@ -357,13 +387,13 @@ export class TestRestControllerClient {
         
         
         const responseObj = (await response.json()) as ApiHateoasObjectReadMultiple<PrimitiveTestEntity[]>;
-                    const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
+        const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
             
-                return {
-                    items: elements,
-                    _links: responseObj._links
-    , page: responseObj.page
-                };
+        return {
+            items: elements,
+            _links: responseObj._links, 
+     page: responseObj.page
+        };
         
         
     }

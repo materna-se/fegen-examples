@@ -191,5 +191,12 @@ class CustomEndpointTest : ApiSpec() {
             result shouldNotBe null
             result.size shouldBe 2
         }
+
+        "pojo list as body " {
+            val body = listOf(PrimitivePojoTest("test", 42.0, true))
+            val result = apiClient().testRestControllerClient.pojoListAsBody(body)
+            result shouldNotBe null
+            result.size shouldBe 1
+        }
     }
 }

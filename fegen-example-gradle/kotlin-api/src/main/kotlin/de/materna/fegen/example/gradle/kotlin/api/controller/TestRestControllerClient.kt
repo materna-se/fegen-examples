@@ -123,6 +123,17 @@ class TestRestControllerClient(
     }
 
     @Suppress("UNUSED")
+    suspend fun pojoListAsBody(body: List<PrimitivePojoTest>): List<PrimitivePojoTest> {
+        val url = """/api/custom/primitiveTestEntities/pojoListAsBody""".appendParams()
+        return requestAdapter.doListRequestSimpleIncludingBody(
+            url = url,
+            method = "POST",
+            body = body,
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
     suspend fun pojosAsReturnValue(): List<PrimitivePojoTest> {
         val url = """/api/custom/primitiveTestEntities/pojosAsReturnValue""".appendParams()
         return requestAdapter.doListRequestSimple(

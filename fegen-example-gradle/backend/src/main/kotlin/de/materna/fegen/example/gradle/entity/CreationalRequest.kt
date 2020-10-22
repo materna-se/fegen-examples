@@ -21,13 +21,31 @@
  */
 package de.materna.fegen.example.gradle.entity
 
-data class CreationalRequest(
-    val userName: String,
-    val firstName: String,
-    val lastName: String,
-    val number: String,
-    val street: String,
-    val zip: String,
-    val city: String,
-    val country: String
-)
+import javax.validation.constraints.NotNull
+
+class CreationalRequest{
+
+    @NotNull
+    lateinit var userName: String
+
+    @NotNull
+    lateinit var firstName: String
+
+    @NotNull
+    lateinit var lastName: String
+
+    @NotNull
+    lateinit var number: String
+
+    @NotNull
+    lateinit var street: String
+
+    @NotNull
+    lateinit var zip: String
+
+    @NotNull
+    lateinit var city: String
+
+    @NotNull
+    lateinit var country: String
+}

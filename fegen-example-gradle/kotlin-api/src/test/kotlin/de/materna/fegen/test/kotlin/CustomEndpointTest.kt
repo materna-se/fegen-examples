@@ -62,14 +62,14 @@ class CustomEndpointTest : ApiSpec() {
 
         "custom endpoint with pojo as body" {
             val result = apiClient().customEndpointControllerClient.createContact(CreationalRequest(
-                    "UserOne",
-                    "firstName",
-                    "lastName",
-                    "",
-                    "street",
-                    "12345",
-                    "city",
-                    "country")
+                    userName = "UserOne",
+                    firstName = "firstName",
+                    lastName = "lastName",
+                    number = "",
+                    street = "street",
+                    zip = "12345",
+                    city =  "city",
+                    country = "country")
             )
 
             result shouldNotBe null
@@ -180,20 +180,20 @@ class CustomEndpointTest : ApiSpec() {
         }
 
         "pojo as body and single return value" {
-            val result = apiClient().testRestControllerClient.pojoAsBodyAndReturnValue(ComplexPojoTest(listOf(PrimitivePojoTest("test", 42.0, true))))
+            val result = apiClient().testRestControllerClient.pojoAsBodyAndReturnValue(ComplexPojoTest(listOf(PrimitivePojoTest("test",true, 42.0))))
             result shouldNotBe null
             result.pojos.size shouldBe 1
         }
 
         "pojo as body and list return value" {
-            val body = ComplexPojoTest(listOf(PrimitivePojoTest("test", 42.0, true)))
+            val body = ComplexPojoTest(listOf(PrimitivePojoTest("test",true, 42.0)))
             val result = apiClient().testRestControllerClient.pojoAsBodyAndListReturnValue(body)
             result shouldNotBe null
             result.size shouldBe 2
         }
 
         "pojo list as body " {
-            val body = listOf(PrimitivePojoTest("test", 42.0, true))
+            val body = listOf(PrimitivePojoTest("test", true, 42.0))
             val result = apiClient().testRestControllerClient.pojoListAsBody(body)
             result shouldNotBe null
             result.size shouldBe 1

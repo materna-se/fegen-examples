@@ -269,14 +269,14 @@ export interface User extends UserDto {
 }
 
 export interface CreationalRequest {
-    userName: string
-    firstName: string
-    lastName: string
     number: string
-    street: string
-    zip: string
-    city: string
     country: string
+    userName: string
+    lastName: string
+    city: string
+    zip: string
+    firstName: string
+    street: string
 }
 
 export interface ComplexPojoTest {
@@ -284,7 +284,7 @@ export interface ComplexPojoTest {
 }
 
 export interface PrimitivePojoTest {
+    boolean: boolean | null
+    number: number | null
     string: string
-    number: number
-    boolean: boolean
 }

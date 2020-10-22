@@ -21,8 +21,24 @@
  */
 package de.materna.fegen.example.gradle.entity
 
-data class PrimitivePojoTest(
-        val string: String,
-        val number: Double,
-        val boolean: Boolean
-)
+import org.springframework.lang.Nullable
+import javax.validation.constraints.NotNull
+
+class PrimitivePojoTest {
+
+    constructor(string: String, number: Double?, boolean: Boolean?) {
+        this.string = string
+        this.number = number
+        this.boolean = boolean
+    }
+
+    @NotNull
+    var string: String
+
+    @Nullable
+    var number: Double? = null
+
+    @Nullable
+    var boolean: Boolean? = null
+
+}

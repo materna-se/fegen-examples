@@ -11,6 +11,7 @@ import de.materna.fegen.runtime.ApiHateoasPage
 import de.materna.fegen.runtime.PagedItems
 import de.materna.fegen.runtime.RequestAdapter
 import de.materna.fegen.runtime.appendParams
+import java.lang.Object
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.Boolean
@@ -101,7 +102,7 @@ class TestRestControllerClient(
     suspend fun pojoAsBodyAndListReturnValue(body: ComplexPojoTest): List<ComplexPojoTest> {
         val url =
                 """/api/custom/primitiveTestEntities/pojoAsBodyAndListReturnValue""".appendParams()
-        return requestAdapter.doListRequestSimpleIncludingBody(
+        return requestAdapter.doListRequestSimple<ComplexPojoTest, ComplexPojoTest>(
             url = url,
             method = "POST",
             body = body,
@@ -125,7 +126,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun pojoListAsBody(body: List<PrimitivePojoTest>): List<PrimitivePojoTest> {
         val url = """/api/custom/primitiveTestEntities/pojoListAsBody""".appendParams()
-        return requestAdapter.doListRequestSimpleIncludingBody(
+        return requestAdapter.doListRequestSimple<List<PrimitivePojoTest>, PrimitivePojoTest>(
             url = url,
             method = "POST",
             body = body,
@@ -136,7 +137,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun pojosAsReturnValue(): List<PrimitivePojoTest> {
         val url = """/api/custom/primitiveTestEntities/pojosAsReturnValue""".appendParams()
-        return requestAdapter.doListRequestSimple(
+        return requestAdapter.doListRequestSimple<Object, PrimitivePojoTest>(
             url = url,
             method = "GET",
             ignoreBasePath = true

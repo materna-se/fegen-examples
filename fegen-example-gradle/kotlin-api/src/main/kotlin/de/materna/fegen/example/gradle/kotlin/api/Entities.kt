@@ -981,14 +981,14 @@ data class PrimitiveTestEntity(
  }
 
 data class CreationalRequest (
-    val number: String,
-    val country: String,
-    val userName: String,
-    val lastName: String,
     val city: String,
-    val zip: String,
+    val country: String,
     val firstName: String,
-    val street: String
+    val lastName: String,
+    val number: String,
+    val street: String,
+    val userName: String,
+    val zip: String
 )
 
 data class ComplexPojoTest (

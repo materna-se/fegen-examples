@@ -37,15 +37,7 @@ export interface Address extends AddressDto {
     id: number
 }
 
-export interface AddressBaseProjection extends Address {
-    
-}
-
 export interface ContactBaseProjection extends Contact {
-    
-}
-
-export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
     
 }
 
@@ -53,11 +45,19 @@ export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
     
 }
 
+export interface UserBaseProjection extends User {
+    
+}
+
+export interface AddressBaseProjection extends Address {
+    
+}
+
 export interface RelTestEntityBaseProjection extends RelTestEntity {
     
 }
 
-export interface UserBaseProjection extends User {
+export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
     
 }
 

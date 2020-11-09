@@ -211,14 +211,12 @@ open class TestRestController(
         return ResponseEntity.ok(body)
     }
 
-    @RequestMapping("recursivePojo", method = [RequestMethod.GET])
+    @RequestMapping("recursivePojo", method = [RequestMethod.POST])
     @ResponseBody
-    fun returnRecursivePojo(): ResponseEntity<RecursiveTestPojo> {
+    fun recursivePojo(@RequestBody input: RecursiveTestPojo): ResponseEntity<RecursiveTestPojo> {
         return ResponseEntity.ok(
                 RecursiveTestPojo(
-                        recursive = RecursiveTestPojo(
-                                recursive = null
-                        )
+                        recursive = input
                 )
         )
     }

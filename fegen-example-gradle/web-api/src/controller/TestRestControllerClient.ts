@@ -275,6 +275,37 @@ export class TestRestControllerClient {
         
     }
     
+    public async recursivePojo(body: RecursiveTestPojo): Promise<RecursiveTestPojo>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/recursivePojo`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        const responseObj = (await response.json()) as RecursiveTestPojo;
+        return responseObj;
+        
+        
+    }
+    
     public async requestParam(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string, optionalIntNull?: number, optionalIntBillion?: number, dateTime2000_1_1_12_30?: string): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
@@ -394,33 +425,6 @@ export class TestRestControllerClient {
                     _links: responseObj._links
     , page: responseObj.page
                 };
-        
-        
-    }
-    
-    public async returnRecursivePojo(): Promise<RecursiveTestPojo>  {
-        const request = this.requestAdapter.getRequest();
-    
-        const baseUrl = `/api/custom/primitiveTestEntities/recursivePojo`;
-    
-        const params = {};
-    
-        const url = stringHelper.appendParams(baseUrl, params);
-    
-        const response = await request.fetch(
-            url,
-            {
-                method: "GET"
-            },
-            true);
-    
-        if(!response.ok) {
-            throw response;
-        }
-        
-        
-        const responseObj = (await response.json()) as RecursiveTestPojo;
-        return responseObj;
         
         
     }

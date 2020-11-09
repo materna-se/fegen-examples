@@ -145,6 +145,18 @@ class TestRestControllerClient(
     }
 
     @Suppress("UNUSED")
+    suspend fun recursivePojo(body: RecursiveTestPojo): RecursiveTestPojo {
+        val url = """/api/custom/primitiveTestEntities/recursivePojo""".appendParams()
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<RecursiveTestPojo,
+                RecursiveTestPojo>(
+            url = url,
+            method = "POST",
+            body = body,
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
     suspend fun requestParam(
         int32: Int,
         long64Custom: Long,
@@ -216,16 +228,6 @@ class TestRestControllerClient(
             ignoreBasePath = true,
             type = object : TypeReference<ApiHateoasPage<PrimitiveTestEntityDto,
                 PrimitiveTestEntity>>() {}
-        )
-    }
-
-    @Suppress("UNUSED")
-    suspend fun returnRecursivePojo(): RecursiveTestPojo {
-        val url = """/api/custom/primitiveTestEntities/recursivePojo""".appendParams()
-        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<RecursiveTestPojo>(
-            url = url,
-            method = "GET",
-            ignoreBasePath = true
         )
     }
 

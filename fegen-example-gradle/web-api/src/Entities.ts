@@ -268,7 +268,7 @@ export interface User extends UserDto {
     id: number
 }
 
-export interface CreationalRequest {
+export interface CreateRequest {
     city: string
     country: string
     firstName: string
@@ -286,5 +286,5 @@ export interface ComplexPojoTest {
 export interface PrimitivePojoTest {
     boolean: boolean | null
     number: number | null
-    string: string
+    string: string | null
 }

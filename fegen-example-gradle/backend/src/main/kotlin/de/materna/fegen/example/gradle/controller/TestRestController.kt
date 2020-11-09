@@ -22,8 +22,8 @@
 package de.materna.fegen.example.gradle.controller
 
 import de.materna.fegen.example.gradle.entity.*
-import de.materna.fegen.example.gradle.entity.ComplexPojoTest
-import de.materna.fegen.example.gradle.entity.PrimitivePojoTest
+import de.materna.fegen.example.gradle.pojo.ComplexPojoTest
+import de.materna.fegen.example.gradle.pojo.PrimitivePojoTest
 import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable

@@ -2,7 +2,7 @@ package de.materna.fegen.example.gradle.kotlin.api.controller
 
 import de.materna.fegen.example.gradle.kotlin.api.Contact
 import de.materna.fegen.example.gradle.kotlin.api.ContactDto
-import de.materna.fegen.example.gradle.kotlin.api.CreationalRequest
+import de.materna.fegen.example.gradle.kotlin.api.CreateRequest
 import de.materna.fegen.runtime.RequestAdapter
 import de.materna.fegen.runtime.appendParams
 import kotlin.String
@@ -12,9 +12,9 @@ class CustomEndpointControllerClient(
     private val requestAdapter: RequestAdapter
 ) {
     @Suppress("UNUSED")
-    suspend fun createContact(body: CreationalRequest): Contact {
+    suspend fun createContact(body: CreateRequest): Contact {
         val url = """/api/custom/contacts/create""".appendParams()
-        return requestAdapter.doSingleRequest<Contact, ContactDto, CreationalRequest>(
+        return requestAdapter.doSingleRequest<Contact, ContactDto, CreateRequest>(
             url = url,
             method = "POST",
             body = body,

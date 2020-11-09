@@ -1,4 +1,4 @@
-import {Contact, CreationalRequest} from "../Entities";
+import {Contact, CreateRequest} from "../Entities";
 import {RequestAdapter, stringHelper} from "@materna-se/fegen-runtime";
 
 export class CustomEndpointControllerClient {
@@ -11,7 +11,7 @@ export class CustomEndpointControllerClient {
         }
     }
     
-    public async createContact(body: CreationalRequest): Promise<Contact>  {
+    public async createContact(body: CreateRequest): Promise<Contact>  {
         const request = this.requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/contacts/create`;

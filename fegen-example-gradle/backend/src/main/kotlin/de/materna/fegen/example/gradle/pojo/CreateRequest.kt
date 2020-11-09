@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.materna.fegen.example.gradle.entity
+package de.materna.fegen.example.gradle.pojo
 
 import javax.validation.constraints.NotNull
 
-class CreationalRequest{
+class CreateRequest {
 
     @NotNull
     lateinit var userName: String

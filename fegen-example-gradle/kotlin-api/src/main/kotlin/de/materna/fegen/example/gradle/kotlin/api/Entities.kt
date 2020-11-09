@@ -980,7 +980,7 @@ data class PrimitiveTestEntity(
          )
  }
 
-data class CreationalRequest (
+data class CreateRequest (
     val city: String,
     val country: String,
     val firstName: String,
@@ -996,7 +996,7 @@ data class ComplexPojoTest (
 )
 
 data class PrimitivePojoTest (
-    val string: String,
     val boolean: Boolean?,
-    val number: Double?
+    val number: Double?,
+    val string: String?
 )

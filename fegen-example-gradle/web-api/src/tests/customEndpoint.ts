@@ -25,7 +25,7 @@ import {
     PrimitiveTestEntityNew,
     ComplexPojoTest,
     PrimitivePojoTest,
-    CreationalRequest
+    CreateRequest
 } from "../Entities";
 
 describe("Custom endpoint", () => {
@@ -175,7 +175,7 @@ describe("Custom endpoint", () => {
     });
 
     it("calls custom endpoint to create contact using pojo as body param", async () => {
-        const request: CreationalRequest = {
+        const request: CreateRequest = {
             userName: "UserOne",
             firstName: "firstName",
             lastName: "lastName",

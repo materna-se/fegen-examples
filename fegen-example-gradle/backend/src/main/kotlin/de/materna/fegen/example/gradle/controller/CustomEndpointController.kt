@@ -23,7 +23,7 @@ package de.materna.fegen.example.gradle.controller
 
 import de.materna.fegen.example.gradle.entity.Address
 import de.materna.fegen.example.gradle.entity.Contact
-import de.materna.fegen.example.gradle.entity.CreationalRequest
+import de.materna.fegen.example.gradle.pojo.CreateRequest
 import de.materna.fegen.example.gradle.repository.AddressRepository
 import de.materna.fegen.example.gradle.repository.ContactRepository
 import de.materna.fegen.example.gradle.repository.UserRepository
@@ -86,22 +86,22 @@ open class CustomEndpointController(
 
     @Transactional
     @RequestMapping("create", method = [RequestMethod.POST])
-    open fun createContact(@RequestBody creationalRequest: CreationalRequest): ResponseEntity<EntityModel<Contact>> {
-        val user = userRepository.findUserByName(creationalRequest.userName) ?: return ResponseEntity.notFound().build()
+    open fun createContact(@RequestBody createRequest: CreateRequest): ResponseEntity<EntityModel<Contact>> {
+        val user = userRepository.findUserByName(createRequest.userName) ?: return ResponseEntity.notFound().build()
 
         val contact = Contact()
 
         contact.owner = user
-        contact.firstName = creationalRequest.firstName
-        contact.lastName = creationalRequest.lastName
-        contact.number = creationalRequest.number.ifBlank { null }
+        contact.firstName = createRequest.firstName
+        contact.lastName = createRequest.lastName
+        contact.number = createRequest.number.ifBlank { null }
 
-        if (arrayOf(creationalRequest.street, creationalRequest.zip, creationalRequest.city, creationalRequest.country).any { it.isNotBlank() }) {
+        if (arrayOf(createRequest.street, createRequest.zip, createRequest.city, createRequest.country).any { it.isNotBlank() }) {
             var address = Address()
-            address.street = creationalRequest.street
-            address.zip = creationalRequest.zip
-            address.city = creationalRequest.city
-            address.country = creationalRequest.country
+            address.street = createRequest.street
+            address.zip = createRequest.zip
+            address.city = createRequest.city
+            address.country = createRequest.country
             address = addressRepository.save(address)
             contact.address = address
         } else {

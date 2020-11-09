@@ -980,6 +980,10 @@ data class PrimitiveTestEntity(
          )
  }
 
+data class ComplexTestPojo (
+    val pojos: List<PrimitiveTestPojo>
+)
+
 data class CreateRequest (
     val city: String,
     val country: String,
@@ -991,12 +995,12 @@ data class CreateRequest (
     val zip: String
 )
 
-data class ComplexPojoTest (
-    val pojos: List<PrimitivePojoTest>
-)
-
-data class PrimitivePojoTest (
+data class PrimitiveTestPojo (
     val boolean: Boolean?,
     val number: Double?,
     val string: String?
+)
+
+data class RecursiveTestPojo (
+    val recursive: RecursiveTestPojo?
 )

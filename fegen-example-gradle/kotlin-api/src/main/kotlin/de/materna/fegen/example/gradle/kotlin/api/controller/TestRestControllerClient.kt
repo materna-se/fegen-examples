@@ -1,11 +1,12 @@
 package de.materna.fegen.example.gradle.kotlin.api.controller
 
 import com.fasterxml.jackson.core.type.TypeReference
-import de.materna.fegen.example.gradle.kotlin.api.ComplexPojoTest
-import de.materna.fegen.example.gradle.kotlin.api.PrimitivePojoTest
+import de.materna.fegen.example.gradle.kotlin.api.ComplexTestPojo
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityBase
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityDto
+import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestPojo
+import de.materna.fegen.example.gradle.kotlin.api.RecursiveTestPojo
 import de.materna.fegen.runtime.ApiHateoasList
 import de.materna.fegen.runtime.ApiHateoasPage
 import de.materna.fegen.runtime.PagedItems
@@ -98,7 +99,7 @@ class TestRestControllerClient(
     }
 
     @Suppress("UNUSED")
-    suspend fun pojoAsBodyAndListReturnValue(body: ComplexPojoTest): List<ComplexPojoTest> {
+    suspend fun pojoAsBodyAndListReturnValue(body: ComplexTestPojo): List<ComplexTestPojo> {
         val url =
                 """/api/custom/primitiveTestEntities/pojoAsBodyAndListReturnValue""".appendParams()
         return requestAdapter.doListRequestSimple(
@@ -110,11 +111,11 @@ class TestRestControllerClient(
     }
 
     @Suppress("UNUSED")
-    suspend fun pojoAsBodyAndReturnValue(body: ComplexPojoTest): ComplexPojoTest {
+    suspend fun pojoAsBodyAndReturnValue(body: ComplexTestPojo): ComplexTestPojo {
         val url =
                 """/api/custom/primitiveTestEntities/pojoAsBodyAndSingleReturnValue""".appendParams()
-        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<ComplexPojoTest,
-                ComplexPojoTest>(
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<ComplexTestPojo,
+                ComplexTestPojo>(
             url = url,
             method = "POST",
             body = body,
@@ -123,7 +124,7 @@ class TestRestControllerClient(
     }
 
     @Suppress("UNUSED")
-    suspend fun pojoListAsBody(body: List<PrimitivePojoTest>): List<PrimitivePojoTest> {
+    suspend fun pojoListAsBody(body: List<PrimitiveTestPojo>): List<PrimitiveTestPojo> {
         val url = """/api/custom/primitiveTestEntities/pojoListAsBody""".appendParams()
         return requestAdapter.doListRequestSimple(
             url = url,
@@ -134,7 +135,7 @@ class TestRestControllerClient(
     }
 
     @Suppress("UNUSED")
-    suspend fun pojosAsReturnValue(): List<PrimitivePojoTest> {
+    suspend fun pojosAsReturnValue(): List<PrimitiveTestPojo> {
         val url = """/api/custom/primitiveTestEntities/pojosAsReturnValue""".appendParams()
         return requestAdapter.doListRequestSimple(
             url = url,
@@ -215,6 +216,16 @@ class TestRestControllerClient(
             ignoreBasePath = true,
             type = object : TypeReference<ApiHateoasPage<PrimitiveTestEntityDto,
                 PrimitiveTestEntity>>() {}
+        )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun returnRecursivePojo(): RecursiveTestPojo {
+        val url = """/api/custom/primitiveTestEntities/recursivePojo""".appendParams()
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<RecursiveTestPojo>(
+            url = url,
+            method = "GET",
+            ignoreBasePath = true
         )
     }
 

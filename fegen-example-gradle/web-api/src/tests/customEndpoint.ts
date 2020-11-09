@@ -23,8 +23,8 @@ import {apiClient, setupFetch, setupTest} from "./util";
 import {expect} from "chai";
 import {
     PrimitiveTestEntityNew,
-    ComplexPojoTest,
-    PrimitivePojoTest,
+    ComplexTestPojo,
+    PrimitiveTestPojo,
     CreateRequest
 } from "../Entities";
 
@@ -45,7 +45,7 @@ describe("Custom endpoint", () => {
         stringText: "27"
     };
 
-    const pojos: PrimitivePojoTest[] = [
+    const pojos: PrimitiveTestPojo[] = [
         {
             string: "test",
             number: 42,
@@ -53,7 +53,7 @@ describe("Custom endpoint", () => {
         }
     ];
 
-    const pojo: ComplexPojoTest = {
+    const pojo: ComplexTestPojo = {
         pojos: pojos,
     };
 

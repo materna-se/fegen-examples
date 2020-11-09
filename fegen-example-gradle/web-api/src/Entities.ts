@@ -268,6 +268,10 @@ export interface User extends UserDto {
     id: number
 }
 
+export interface ComplexTestPojo {
+    pojos: PrimitiveTestPojo[]
+}
+
 export interface CreateRequest {
     city: string
     country: string
@@ -279,12 +283,12 @@ export interface CreateRequest {
     zip: string
 }
 
-export interface ComplexPojoTest {
-    pojos: PrimitivePojoTest[]
-}
-
-export interface PrimitivePojoTest {
+export interface PrimitiveTestPojo {
     boolean: boolean | null
     number: number | null
     string: string | null
+}
+
+export interface RecursiveTestPojo {
+    recursive: RecursiveTestPojo | null
 }

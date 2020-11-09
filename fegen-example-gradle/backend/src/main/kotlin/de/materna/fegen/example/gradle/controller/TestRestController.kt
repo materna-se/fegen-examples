@@ -22,8 +22,9 @@
 package de.materna.fegen.example.gradle.controller
 
 import de.materna.fegen.example.gradle.entity.*
-import de.materna.fegen.example.gradle.pojo.ComplexPojoTest
-import de.materna.fegen.example.gradle.pojo.PrimitivePojoTest
+import de.materna.fegen.example.gradle.pojo.ComplexTestPojo
+import de.materna.fegen.example.gradle.pojo.PrimitiveTestPojo
+import de.materna.fegen.example.gradle.pojo.RecursiveTestPojo
 import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
@@ -157,13 +158,14 @@ open class TestRestController(
         return ResponseEntity.ok(EntityModel(savedEntity))
     }
 
-     @GetMapping("returnList")
-     @ResponseBody
-     fun returnList(): ResponseEntity<CollectionModel<PrimitiveTestEntity>> =
-        ResponseEntity.ok(CollectionModel(primitiveTestEntityRepository.findAll()))
+    @GetMapping("returnList")
+    @ResponseBody
+    fun returnList(): ResponseEntity<CollectionModel<PrimitiveTestEntity>> =
+            ResponseEntity.ok(CollectionModel(primitiveTestEntityRepository.findAll()))
 
     @GetMapping("returnVoid")
-    fun returnVoid() {}
+    fun returnVoid() {
+    }
 
     @GetMapping("returnPaged")
     @ResponseBody
@@ -182,30 +184,42 @@ open class TestRestController(
 
     @RequestMapping("pojosAsReturnValue", method = [RequestMethod.GET])
     @ResponseBody
-    fun pojosAsReturnValue(): ResponseEntity<List<PrimitivePojoTest>> {
-        val testList = listOf(PrimitivePojoTest("test1", 12.2, true), PrimitivePojoTest("test2", 13.3, false))
+    fun pojosAsReturnValue(): ResponseEntity<List<PrimitiveTestPojo>> {
+        val testList = listOf(PrimitiveTestPojo("test1", 12.2, true), PrimitiveTestPojo("test2", 13.3, false))
         return ResponseEntity.ok(testList)
     }
 
     @RequestMapping("pojoAsBodyAndSingleReturnValue", method = [RequestMethod.POST])
     @ResponseBody
-    fun pojoAsBodyAndReturnValue(@RequestBody body: ComplexPojoTest): ResponseEntity<ComplexPojoTest> {
+    fun pojoAsBodyAndReturnValue(@RequestBody body: ComplexTestPojo): ResponseEntity<ComplexTestPojo> {
         println("Pojo $body")
         return ResponseEntity.ok(body)
     }
 
     @RequestMapping("pojoAsBodyAndListReturnValue", method = [RequestMethod.POST])
     @ResponseBody
-    fun pojoAsBodyAndListReturnValue(@RequestBody body: ComplexPojoTest): ResponseEntity<List<ComplexPojoTest>> {
+    fun pojoAsBodyAndListReturnValue(@RequestBody body: ComplexTestPojo): ResponseEntity<List<ComplexTestPojo>> {
         println("Pojo $body")
-        val testList = listOf(ComplexPojoTest(listOf(PrimitivePojoTest("test2", 13.3, false))), body)
+        val testList = listOf(ComplexTestPojo(listOf(PrimitiveTestPojo("test2", 13.3, false))), body)
         return ResponseEntity.ok(testList)
     }
 
     @RequestMapping("pojoListAsBody", method = [RequestMethod.POST])
     @ResponseBody
-    fun pojoListAsBody(@RequestBody body: List<PrimitivePojoTest>): ResponseEntity<List<PrimitivePojoTest>> {
+    fun pojoListAsBody(@RequestBody body: List<PrimitiveTestPojo>): ResponseEntity<List<PrimitiveTestPojo>> {
         println("Pojo $body")
         return ResponseEntity.ok(body)
+    }
+
+    @RequestMapping("recursivePojo", method = [RequestMethod.GET])
+    @ResponseBody
+    fun returnRecursivePojo(): ResponseEntity<RecursiveTestPojo> {
+        return ResponseEntity.ok(
+                RecursiveTestPojo(
+                        recursive = RecursiveTestPojo(
+                                recursive = null
+                        )
+                )
+        )
     }
 }

@@ -21,11 +21,6 @@
  */
 package de.materna.fegen.example.gradle.pojo
 
-import org.springframework.lang.Nullable
-import javax.validation.constraints.NotNull
-
-class PrimitivePojoTest(
-        @NotNull var string: String,
-        @Nullable var number: Double?,
-        @Nullable var boolean: Boolean?
+data class ComplexTestPojo(
+        val pojos: List<PrimitiveTestPojo>
 )

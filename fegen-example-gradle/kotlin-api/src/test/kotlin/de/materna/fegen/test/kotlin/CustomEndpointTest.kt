@@ -21,9 +21,9 @@
  */
 package de.materna.fegen.test.kotlin
 
-import de.materna.fegen.example.gradle.kotlin.api.ComplexPojoTest
+import de.materna.fegen.example.gradle.kotlin.api.ComplexTestPojo
 import de.materna.fegen.example.gradle.kotlin.api.CreateRequest
-import de.materna.fegen.example.gradle.kotlin.api.PrimitivePojoTest
+import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestPojo
 import io.kotlintest.matchers.collections.shouldContain
 import io.kotlintest.matchers.collections.shouldNotHaveSize
 import io.kotlintest.shouldBe
@@ -180,20 +180,20 @@ class CustomEndpointTest : ApiSpec() {
         }
 
         "pojo as body and single return value" {
-            val result = apiClient().testRestControllerClient.pojoAsBodyAndReturnValue(ComplexPojoTest(listOf(PrimitivePojoTest(true, 42.0, "test"))))
+            val result = apiClient().testRestControllerClient.pojoAsBodyAndReturnValue(ComplexTestPojo(listOf(PrimitiveTestPojo(true, 42.0, "test"))))
             result shouldNotBe null
             result.pojos.size shouldBe 1
         }
 
         "pojo as body and list return value" {
-            val body = ComplexPojoTest(listOf(PrimitivePojoTest(true, 42.0, "test")))
+            val body = ComplexTestPojo(listOf(PrimitiveTestPojo(true, 42.0, "test")))
             val result = apiClient().testRestControllerClient.pojoAsBodyAndListReturnValue(body)
             result shouldNotBe null
             result.size shouldBe 2
         }
 
         "pojo list as body " {
-            val body = listOf(PrimitivePojoTest(true, 42.0, "test"))
+            val body = listOf(PrimitiveTestPojo(true, 42.0, "test"))
             val result = apiClient().testRestControllerClient.pojoListAsBody(body)
             result shouldNotBe null
             result.size shouldBe 1

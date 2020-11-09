@@ -22,9 +22,7 @@
 package de.materna.fegen.example.gradle.controller
 
 import de.materna.fegen.example.gradle.entity.*
-import de.materna.fegen.example.gradle.pojo.ComplexTestPojo
-import de.materna.fegen.example.gradle.pojo.PrimitiveTestPojo
-import de.materna.fegen.example.gradle.pojo.RecursiveTestPojo
+import de.materna.fegen.example.gradle.pojo.*
 import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
@@ -217,6 +215,18 @@ open class TestRestController(
         return ResponseEntity.ok(
                 RecursiveTestPojo(
                         recursive = input
+                )
+        )
+    }
+
+    @RequestMapping("cyclicPojo", method = [RequestMethod.POST])
+    @ResponseBody
+    fun cyclicPojo(@RequestBody input: CyclicTestPojoA): ResponseEntity<CyclicTestPojoA> {
+        return ResponseEntity.ok(
+                CyclicTestPojoA(
+                        CyclicTestPojoB(
+                                input
+                        )
                 )
         )
     }

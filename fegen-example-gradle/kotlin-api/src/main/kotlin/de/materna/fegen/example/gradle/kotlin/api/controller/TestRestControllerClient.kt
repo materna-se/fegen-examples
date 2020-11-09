@@ -2,6 +2,7 @@ package de.materna.fegen.example.gradle.kotlin.api.controller
 
 import com.fasterxml.jackson.core.type.TypeReference
 import de.materna.fegen.example.gradle.kotlin.api.ComplexTestPojo
+import de.materna.fegen.example.gradle.kotlin.api.CyclicTestPojoA
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityBase
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityDto
@@ -24,6 +25,18 @@ import kotlin.collections.List
 class TestRestControllerClient(
     private val requestAdapter: RequestAdapter
 ) {
+    @Suppress("UNUSED")
+    suspend fun cyclicPojo(body: CyclicTestPojoA): CyclicTestPojoA {
+        val url = """/api/custom/primitiveTestEntities/cyclicPojo""".appendParams()
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<CyclicTestPojoA,
+                CyclicTestPojoA>(
+            url = url,
+            method = "POST",
+            body = body,
+            ignoreBasePath = true
+        )
+    }
+
     @Suppress("UNUSED")
     suspend fun mixed(
         body: PrimitiveTestEntityBase,

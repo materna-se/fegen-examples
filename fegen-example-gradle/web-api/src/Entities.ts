@@ -283,6 +283,14 @@ export interface CreateRequest {
     zip: string
 }
 
+export interface CyclicTestPojoA {
+    b: CyclicTestPojoB | null
+}
+
+export interface CyclicTestPojoB {
+    a: CyclicTestPojoA | null
+}
+
 export interface PrimitiveTestPojo {
     boolean: boolean | null
     number: number | null

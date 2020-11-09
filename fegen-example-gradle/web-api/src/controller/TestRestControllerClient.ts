@@ -1,4 +1,4 @@
-import {PrimitiveTestEntity, PrimitiveTestEntityNew, ComplexTestPojo, PrimitiveTestPojo, RecursiveTestPojo} from "../Entities";
+import {CyclicTestPojoA, PrimitiveTestEntity, PrimitiveTestEntityNew, ComplexTestPojo, PrimitiveTestPojo, RecursiveTestPojo} from "../Entities";
 import {RequestAdapter, stringHelper, Items, ApiHateoasObjectBase, apiHelper, PagedItems, ApiHateoasObjectReadMultiple} from "@materna-se/fegen-runtime";
 
 export class TestRestControllerClient {
@@ -9,6 +9,37 @@ export class TestRestControllerClient {
         if (requestAdapter) {
             this.requestAdapter = requestAdapter;
         }
+    }
+    
+    public async cyclicPojo(body: CyclicTestPojoA): Promise<CyclicTestPojoA>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/cyclicPojo`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        const responseObj = (await response.json()) as CyclicTestPojoA;
+        return responseObj;
+        
+        
     }
     
     public async mixed(int32: number, body: PrimitiveTestEntityNew, long64: number): Promise<PrimitiveTestEntity>  {

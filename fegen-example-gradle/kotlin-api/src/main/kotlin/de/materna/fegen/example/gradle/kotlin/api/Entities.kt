@@ -995,6 +995,14 @@ data class CreateRequest (
     val zip: String
 )
 
+data class CyclicTestPojoA (
+    val b: CyclicTestPojoB?
+)
+
+data class CyclicTestPojoB (
+    val a: CyclicTestPojoA?
+)
+
 data class PrimitiveTestPojo (
     val boolean: Boolean?,
     val number: Double?,

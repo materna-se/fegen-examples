@@ -21,52 +21,20 @@
  */
 package de.materna.fegen.example.gradle.component
 
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import org.springframework.http.HttpMethod
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 
-@Profile("security")
+@Profile("!security")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-open class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
-
-    @Bean
-    open fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
-
+open class DisabledWebSecurityConfig: WebSecurityConfigurerAdapter(){
 
     override fun configure(http: HttpSecurity) {
-        http.httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/contactAddresses", "/api/contacts", "/api/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/contactAddresses/*", "/api/contacts/*").hasRole("ADMIN")
-                .antMatchers("/api/users").hasRole("ADMIN")
-                //.antMatchers(HttpMethod.PUT, "/api/contactAddresses/*", "/api/contacts/*", "/api/users/*").hasRole("ADMIN")
-                //.antMatchers(HttpMethod.PATCH, "/api/contactAddresses/*", "/api/contacts/*", "/api/users/*").hasRole("ADMIN")
-                .anyRequest()
-                .authenticated()
-    }
-
-    override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("admin")
-                .password(passwordEncoder().encode("pwd"))
-                .roles("ADMIN")
-                .and()
-                .withUser("user")
-                .password(passwordEncoder().encode("pwd"))
-                .roles("USER")
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll()
     }
 }

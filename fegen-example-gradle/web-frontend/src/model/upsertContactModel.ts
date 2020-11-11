@@ -54,7 +54,7 @@ class UpsertContactModel {
     }
 
     save() {
-        apiClient.contactClient.postCreateOrUpdate(
+        apiClient.customEndpointControllerClient.createOrUpdateContact(
             mainModel.loggedInUser!!.name,
             this.contact.firstName,
             this.contact.lastName,
@@ -63,7 +63,7 @@ class UpsertContactModel {
             this.contact.address?.zip || "",
             this.contact.address?.city || "",
             this.contact.address?.country || ""
-        )
+        ).catch(e => console.error("Upserting contact failed", e));
     }
 }
 

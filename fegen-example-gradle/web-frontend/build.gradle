@@ -2,9 +2,16 @@
 apply plugin: 'base'
 apply plugin: 'com.github.node-gradle.node'
 
+assemble {
+    dependsOn npmInstall
+}
+
+check {
+    // Make sure the example frontend compiles when building
+    dependsOn npm_run_build
+}
+
 npmInstall {
     inputs.file 'package.json'
     outputs.file 'package-lock.json'
 }
-
-assemble.dependsOn npmInstall

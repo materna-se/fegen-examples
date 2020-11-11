@@ -19,8 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.materna.fegen.example.gradle.entity
+package de.materna.fegen.example.gradle.pojo
 
-data class ComplexPojoTest(
-        val pojos: List<PrimitivePojoTest>
+import org.springframework.lang.Nullable
+import javax.validation.constraints.NotNull
+
+class PrimitiveTestPojo(
+        @NotNull var string: String,
+        @Nullable var number: Double?,
+        @Nullable var boolean: Boolean?
 )

@@ -19,33 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.materna.fegen.example.gradle.entity
+package de.materna.fegen.example.gradle.pojo
 
-import javax.validation.constraints.NotNull
+data class CyclicTestPojoA(
+        val b: CyclicTestPojoB
+)
 
-class CreationalRequest{
-
-    @NotNull
-    lateinit var userName: String
-
-    @NotNull
-    lateinit var firstName: String
-
-    @NotNull
-    lateinit var lastName: String
-
-    @NotNull
-    lateinit var number: String
-
-    @NotNull
-    lateinit var street: String
-
-    @NotNull
-    lateinit var zip: String
-
-    @NotNull
-    lateinit var city: String
-
-    @NotNull
-    lateinit var country: String
-}
+data class CyclicTestPojoB(
+        val a: CyclicTestPojoA?
+)

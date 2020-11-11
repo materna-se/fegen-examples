@@ -1,4 +1,4 @@
-import {PrimitiveTestEntity, PrimitiveTestEntityNew, ComplexPojoTest, PrimitivePojoTest} from "../Entities";
+import {CyclicTestPojoA, PrimitiveTestEntity, PrimitiveTestEntityNew, ComplexTestPojo, PrimitiveTestPojo, RecursiveTestPojo} from "../Entities";
 import {RequestAdapter, stringHelper, Items, ApiHateoasObjectBase, apiHelper, PagedItems, ApiHateoasObjectReadMultiple} from "@materna-se/fegen-runtime";
 
 export class TestRestControllerClient {
@@ -9,6 +9,37 @@ export class TestRestControllerClient {
         if (requestAdapter) {
             this.requestAdapter = requestAdapter;
         }
+    }
+    
+    public async cyclicPojo(body: CyclicTestPojoA): Promise<CyclicTestPojoA>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/cyclicPojo`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        const responseObj = (await response.json()) as CyclicTestPojoA;
+        return responseObj;
+        
+        
     }
     
     public async mixed(int32: number, body: PrimitiveTestEntityNew, long64: number): Promise<PrimitiveTestEntity>  {
@@ -158,7 +189,7 @@ export class TestRestControllerClient {
         
     }
     
-    public async pojoAsBodyAndListReturnValue(body: ComplexPojoTest): Promise<ComplexPojoTest[]>  {
+    public async pojoAsBodyAndListReturnValue(body: ComplexTestPojo): Promise<ComplexTestPojo[]>  {
         const request = this.requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/pojoAsBodyAndListReturnValue`;
@@ -183,12 +214,12 @@ export class TestRestControllerClient {
         }
         
         
-        return (await response.json()) as ComplexPojoTest[];
+        return (await response.json()) as ComplexTestPojo[];
         
         
     }
     
-    public async pojoAsBodyAndReturnValue(body: ComplexPojoTest): Promise<ComplexPojoTest>  {
+    public async pojoAsBodyAndReturnValue(body: ComplexTestPojo): Promise<ComplexTestPojo>  {
         const request = this.requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/pojoAsBodyAndSingleReturnValue`;
@@ -213,13 +244,13 @@ export class TestRestControllerClient {
         }
         
         
-        const responseObj = (await response.json()) as ComplexPojoTest;
+        const responseObj = (await response.json()) as ComplexTestPojo;
         return responseObj;
         
         
     }
     
-    public async pojoListAsBody(body: PrimitivePojoTest[]): Promise<PrimitivePojoTest[]>  {
+    public async pojoListAsBody(body: PrimitiveTestPojo[]): Promise<PrimitiveTestPojo[]>  {
         const request = this.requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/pojoListAsBody`;
@@ -244,12 +275,12 @@ export class TestRestControllerClient {
         }
         
         
-        return (await response.json()) as PrimitivePojoTest[];
+        return (await response.json()) as PrimitiveTestPojo[];
         
         
     }
     
-    public async pojosAsReturnValue(): Promise<PrimitivePojoTest[]>  {
+    public async pojosAsReturnValue(): Promise<PrimitiveTestPojo[]>  {
         const request = this.requestAdapter.getRequest();
     
         const baseUrl = `/api/custom/primitiveTestEntities/pojosAsReturnValue`;
@@ -270,7 +301,38 @@ export class TestRestControllerClient {
         }
         
         
-        return (await response.json()) as PrimitivePojoTest[];
+        return (await response.json()) as PrimitiveTestPojo[];
+        
+        
+    }
+    
+    public async recursivePojo(body: RecursiveTestPojo): Promise<RecursiveTestPojo>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/recursivePojo`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body),
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        const responseObj = (await response.json()) as RecursiveTestPojo;
+        return responseObj;
         
         
     }

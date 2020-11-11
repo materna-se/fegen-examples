@@ -37,15 +37,7 @@ export interface Address extends AddressDto {
     id: number
 }
 
-export interface AddressBaseProjection extends Address {
-    
-}
-
 export interface ContactBaseProjection extends Contact {
-    
-}
-
-export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
     
 }
 
@@ -53,11 +45,19 @@ export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
     
 }
 
+export interface UserBaseProjection extends User {
+    
+}
+
+export interface AddressBaseProjection extends Address {
+    
+}
+
 export interface RelTestEntityBaseProjection extends RelTestEntity {
     
 }
 
-export interface UserBaseProjection extends User {
+export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
     
 }
 
@@ -268,6 +268,10 @@ export interface User extends UserDto {
     id: number
 }
 
+export interface ComplexPojoTest {
+    pojos: PrimitivePojoTest[]
+}
+
 export interface CreationalRequest {
     city: string
     country: string
@@ -277,10 +281,6 @@ export interface CreationalRequest {
     street: string
     userName: string
     zip: string
-}
-
-export interface ComplexPojoTest {
-    pojos: PrimitivePojoTest[]
 }
 
 export interface PrimitivePojoTest {

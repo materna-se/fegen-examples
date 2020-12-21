@@ -46,16 +46,17 @@ open class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
 
 
     override fun configure(http: HttpSecurity) {
-        http.httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/contactAddresses", "/api/contacts", "/api/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/contactAddresses/*", "/api/contacts/*").hasRole("ADMIN")
-                .antMatchers("/api/users").hasRole("ADMIN")
-                //.antMatchers(HttpMethod.PUT, "/api/contactAddresses/*", "/api/contacts/*", "/api/users/*").hasRole("ADMIN")
-                //.antMatchers(HttpMethod.PATCH, "/api/contactAddresses/*", "/api/contacts/*", "/api/users/*").hasRole("ADMIN")
-                .anyRequest()
-                .authenticated()
+        http
+            .authorizeRequests()
+            .antMatchers(HttpMethod.POST, "/api/contactAddresses", "/api/contacts", "/api/users").hasRole("ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/contactAddresses/*", "/api/contacts/*").hasRole("ADMIN")
+            .antMatchers("/api/users").hasRole("ADMIN")
+            .anyRequest()
+            .authenticated()
+            .and()
+            .httpBasic()
+            .and()
+            .csrf().disable()
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {

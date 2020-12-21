@@ -21,20 +21,18 @@
  */
 package de.materna.fegen.example.gradle.component
 
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 
 @Profile("!security")
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 open class DisabledWebSecurityConfig: WebSecurityConfigurerAdapter(){
 
     override fun configure(http: HttpSecurity) {
-        http.csrf().disable().authorizeRequests().anyRequest().permitAll()
+        http
+            .httpBasic().disable()
+            .csrf().disable()
     }
 }

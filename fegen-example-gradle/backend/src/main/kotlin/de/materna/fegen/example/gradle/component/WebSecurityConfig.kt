@@ -22,7 +22,6 @@
 package de.materna.fegen.example.gradle.component
 
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -34,10 +33,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @Profile("security")
-@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-open class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
+open class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
     @Bean
     open fun passwordEncoder(): PasswordEncoder {

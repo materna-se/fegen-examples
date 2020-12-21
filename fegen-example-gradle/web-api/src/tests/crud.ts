@@ -71,4 +71,12 @@ describe("CRUD", () => {
         const usersAfter = await apiClient.userClient.readAll();
         expect(usersAfter.page.totalElements).to.equal(usersBefore.page.totalElements - 1);
     });
+
+    //base path overridden
+    it("can read all addresses", async () => {
+        const allAddresses = await apiClient.addressClient.readAll();
+
+        expect(allAddresses.items).not.to.be.empty
+    });
+
 });

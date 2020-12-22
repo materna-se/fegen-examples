@@ -65,6 +65,12 @@ class CrudTest : ApiSpec() {
 
             userCount() shouldBe userCountBefore - 1
         }
+
+        "read all addresses" {
+            val allAddresses = apiClient().addressRepository.readAll()
+
+            allAddresses.items shouldNotHaveSize 0
+        }
     }
 
     private fun userCount() =

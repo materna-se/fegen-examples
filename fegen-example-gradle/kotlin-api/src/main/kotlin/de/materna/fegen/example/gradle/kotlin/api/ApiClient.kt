@@ -64,7 +64,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         ) =
             requestAdapter.doPageRequest<T, U>(
                 url = "/contactAddresses",
-                embeddedPropName = "contactAddresses",
+                embeddedPropName = "addresses",
                 projectionName = projectionName,
                 page = page,
                 size = size,

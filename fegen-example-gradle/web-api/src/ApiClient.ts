@@ -7,7 +7,7 @@ import {
 } from '@materna-se/fegen-runtime';
 import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
-import { ContactBaseProjection, PrimitiveTestEntityBaseProjection, UserBaseProjection, AddressBaseProjection, RelTestEntityBaseProjection, NotExportedTestEntityBaseProjection, ContactFull, FullRelTestEntity } from './Entities';
+import { AddressBaseProjection, ContactBaseProjection, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection, ContactFull, FullRelTestEntity } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
 
@@ -38,7 +38,7 @@ export class ApiClient {
 export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
-        super("/contactAddresses", "addresses", apiClient, requestAdapter);
+        super("api/contactAddresses", "addresses", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
@@ -86,7 +86,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
 export class ContactClient extends BaseClient<ApiClient, ContactNew, Contact> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
-        super("/contacts", "contacts", apiClient, requestAdapter);
+        super("api/contacts", "contacts", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         this.readAddressProjection = this.readAddressProjection.bind(this);
@@ -135,11 +135,11 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     }
   
     public async deleteFromAddress(returnType: Contact, childToDelete: Address) {
-        await this._requestAdapter.getRequest().delete(`/contacts/${returnType.id}/address/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/contacts/${returnType.id}/address/${childToDelete.id}`);
     }
     
     public async deleteFromOwner(returnType: Contact, childToDelete: User) {
-        await this._requestAdapter.getRequest().delete(`/contacts/${returnType.id}/owner/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/contacts/${returnType.id}/owner/${childToDelete.id}`);
     }
   
     public async readAddress(obj: ContactDto): Promise<Address | undefined> {
@@ -217,7 +217,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             parameters["size"] = `${size}`;
         }
             
-        const url = stringHelper.appendParams("/contacts/search/findByNameContaining", parameters);
+        const url = stringHelper.appendParams("api/contacts/search/findByNameContaining", parameters);
     
         const response = await request.get(url);
         const responseObj = ((await response.json()) as ApiHateoasObjectReadMultiple<T[]>);
@@ -236,7 +236,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         
         const parameters: {[key: string]: string | number | boolean | undefined} = {firstName, lastName};
             
-        const url = stringHelper.appendParams("/contacts/search/findByNames", parameters);
+        const url = stringHelper.appendParams("api/contacts/search/findByNames", parameters);
     
         const response = await request.get(url);
         const responseObj = ((await response.json()) as T);
@@ -249,7 +249,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         
         const parameters: {[key: string]: string | number | boolean | undefined} = {nameRegex};
             
-        const url = stringHelper.appendParams("/search/contactsByRegex", parameters);
+        const url = stringHelper.appendParams("api/search/contactsByRegex", parameters);
     
         const response = await request.get(url);
         const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
@@ -266,7 +266,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
 export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityNew, PrimitiveTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
-        super("/primitiveTestEntities", "primitiveTestEntities", apiClient, requestAdapter);
+        super("api/primitiveTestEntities", "primitiveTestEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
@@ -324,7 +324,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
 export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew, RelTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
-        super("/relTestEntities", "relTestEntities", apiClient, requestAdapter);
+        super("api/relTestEntities", "relTestEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         this.readManyToManyProjection = this.readManyToManyProjection.bind(this);
@@ -381,27 +381,27 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
     }
   
     public async deleteFromManyToMany(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToMany/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/relTestEntities/${returnType.id}/manyToMany/${childToDelete.id}`);
     }
     
     public async deleteFromManyToOneOptional(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToOneOptional/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/relTestEntities/${returnType.id}/manyToOneOptional/${childToDelete.id}`);
     }
     
     public async deleteFromManyToOneRequired(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/manyToOneRequired/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/relTestEntities/${returnType.id}/manyToOneRequired/${childToDelete.id}`);
     }
     
     public async deleteFromOneToMany(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/oneToMany/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/relTestEntities/${returnType.id}/oneToMany/${childToDelete.id}`);
     }
     
     public async deleteFromOneToOneOptional(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/oneToOneOptional/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/relTestEntities/${returnType.id}/oneToOneOptional/${childToDelete.id}`);
     }
     
     public async deleteFromOneToOneRequired(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.getRequest().delete(`/relTestEntities/${returnType.id}/oneToOneRequired/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/relTestEntities/${returnType.id}/oneToOneRequired/${childToDelete.id}`);
     }
   
     public async readManyToMany(obj: RelTestEntityDto): Promise<User[]> {
@@ -610,7 +610,7 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
 export class UserClient extends BaseClient<ApiClient, UserNew, User> {
 
     constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
-        super("/users", "users", apiClient, requestAdapter);
+        super("api/users", "users", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         this.readContactsProjection = this.readContactsProjection.bind(this);
@@ -644,7 +644,7 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     }
   
     public async deleteFromContacts(returnType: User, childToDelete: Contact) {
-        await this._requestAdapter.getRequest().delete(`/users/${returnType.id}/contacts/${childToDelete.id}`);
+        await this._requestAdapter.getRequest().delete(`api/users/${returnType.id}/contacts/${childToDelete.id}`);
     }
   
     public async readContacts(obj: UserDto): Promise<Contact[]> {
@@ -694,7 +694,7 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
         
         const parameters: {[key: string]: string | number | boolean | undefined} = {name};
             
-        const url = stringHelper.appendParams("/users/search/findUserByName", parameters);
+        const url = stringHelper.appendParams("api/users/search/findUserByName", parameters);
     
         const response = await request.get(url);
         const responseObj = ((await response.json()) as T);

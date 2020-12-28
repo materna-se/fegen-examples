@@ -83,7 +83,7 @@ open class ApiSpec(body: ApiSpec.() -> Unit = {}) : StringSpec() {
     }
 
     fun apiClient() =
-            ApiClient(FetchRequestWrapper("http://localhost:8080/api"))
+            ApiClient(FetchRequestWrapper("http://localhost:8080/"))
 
     override fun beforeTest(testCase: TestCase) {
         setupTest()

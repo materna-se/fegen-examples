@@ -44,7 +44,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: AddressBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "/contactAddresses"
+            createURI = "api/contactAddresses"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -63,7 +63,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "/contactAddresses",
+                url = "api/contactAddresses",
                 embeddedPropName = "addresses",
                 projectionName = projectionName,
                 page = page,
@@ -74,7 +74,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<Address, AddressDto>(
             id = id,
-            uri = "/contactAddresses"
+            uri = "api/contactAddresses"
         )
     
     
@@ -84,7 +84,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: Address) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/contactAddresses")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contactAddresses")
     
     
         
@@ -100,7 +100,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: ContactBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "/contacts"
+            createURI = "api/contacts"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -126,7 +126,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "/contacts",
+                url = "api/contacts",
                 embeddedPropName = "contacts",
                 projectionName = projectionName,
                 page = page,
@@ -137,14 +137,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<Contact, ContactDto>(
             id = id,
-            uri = "/contacts"
+            uri = "api/contacts"
         )
     
     
         suspend fun readOneContactFull(id: Long) =
             requestAdapter.readProjection<ContactFull, ContactFullDto>(
                 id = id,
-                uri = "/contacts",
+                uri = "api/contacts",
                 projectionName = "full"
             )
     
@@ -152,7 +152,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: Contact) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/contacts")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contacts")
     
     
         suspend fun readAddress(obj: Contact) =
@@ -172,7 +172,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromAddress(obj: Contact, childToDelete: Address) =
             requestAdapter.request.delete(
-                url = "/contacts/${obj.id}/address/${childToDelete.id}"
+                url = "api/contacts/${obj.id}/address/${childToDelete.id}"
             )
         
         
@@ -193,12 +193,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromOwner(obj: Contact, childToDelete: User) =
             requestAdapter.request.delete(
-                url = "/contacts/${obj.id}/owner/${childToDelete.id}"
+                url = "api/contacts/${obj.id}/owner/${childToDelete.id}"
             )
     
         suspend fun searchFindByNameContaining(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<Contact> {
         
-            val url = "/contacts/search/findByNameContaining".appendParams(
+            val url = "api/contacts/search/findByNameContaining".appendParams(
                 "name" to name
             )
         
@@ -215,7 +215,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun searchFindByNameContainingContactFull(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<ContactFull> {
         
-            val url = "/contacts/search/findByNameContaining".appendParams(
+            val url = "api/contacts/search/findByNameContaining".appendParams(
                 "name" to name
             )
         
@@ -234,7 +234,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun searchFindByNames(firstName: String, lastName: String): Contact? {
         
-            val url = "/contacts/search/findByNames".appendParams(
+            val url = "api/contacts/search/findByNames".appendParams(
                 "firstName" to firstName,
                     "lastName" to lastName
             )
@@ -246,7 +246,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? {
         
-            val url = "/contacts/search/findByNames".appendParams(
+            val url = "api/contacts/search/findByNames".appendParams(
                 "firstName" to firstName,
                     "lastName" to lastName
             )
@@ -261,7 +261,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun searchContactsByRegex(nameRegex: String): List<Contact> {
         
-            val url = "/search/contactsByRegex".appendParams(
+            val url = "api/search/contactsByRegex".appendParams(
                 "nameRegex" to nameRegex
             )
         
@@ -274,7 +274,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
         
-            val url = "/search/contactsByRegex".appendParams(
+            val url = "api/search/contactsByRegex".appendParams(
                 "nameRegex" to nameRegex
             )
         
@@ -295,7 +295,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: PrimitiveTestEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "/primitiveTestEntities"
+            createURI = "api/primitiveTestEntities"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -314,7 +314,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "/primitiveTestEntities",
+                url = "api/primitiveTestEntities",
                 embeddedPropName = "primitiveTestEntities",
                 projectionName = projectionName,
                 page = page,
@@ -325,7 +325,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<PrimitiveTestEntity, PrimitiveTestEntityDto>(
             id = id,
-            uri = "/primitiveTestEntities"
+            uri = "api/primitiveTestEntities"
         )
     
     
@@ -335,7 +335,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: PrimitiveTestEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/primitiveTestEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/primitiveTestEntities")
     
     
         
@@ -351,7 +351,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: RelTestEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "/relTestEntities"
+            createURI = "api/relTestEntities"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -377,7 +377,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "/relTestEntities",
+                url = "api/relTestEntities",
                 embeddedPropName = "relTestEntities",
                 projectionName = projectionName,
                 page = page,
@@ -388,14 +388,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<RelTestEntity, RelTestEntityDto>(
             id = id,
-            uri = "/relTestEntities"
+            uri = "api/relTestEntities"
         )
     
     
         suspend fun readOneFullRelTestEntity(id: Long) =
             requestAdapter.readProjection<FullRelTestEntity, FullRelTestEntityDto>(
                 id = id,
-                uri = "/relTestEntities",
+                uri = "api/relTestEntities",
                 projectionName = "full"
             )
     
@@ -403,7 +403,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: RelTestEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/relTestEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/relTestEntities")
     
     
         suspend fun readManyToMany(obj: RelTestEntity) =
@@ -432,7 +432,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromManyToMany(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.request.delete(
-                url = "/relTestEntities/${obj.id}/manyToMany/${childToDelete.id}"
+                url = "api/relTestEntities/${obj.id}/manyToMany/${childToDelete.id}"
             )
         
         
@@ -453,7 +453,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromManyToOneOptional(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.request.delete(
-                url = "/relTestEntities/${obj.id}/manyToOneOptional/${childToDelete.id}"
+                url = "api/relTestEntities/${obj.id}/manyToOneOptional/${childToDelete.id}"
             )
         
         
@@ -501,7 +501,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromOneToMany(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.request.delete(
-                url = "/relTestEntities/${obj.id}/oneToMany/${childToDelete.id}"
+                url = "api/relTestEntities/${obj.id}/oneToMany/${childToDelete.id}"
             )
         
         
@@ -522,7 +522,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromOneToOneOptional(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.request.delete(
-                url = "/relTestEntities/${obj.id}/oneToOneOptional/${childToDelete.id}"
+                url = "api/relTestEntities/${obj.id}/oneToOneOptional/${childToDelete.id}"
             )
         
         
@@ -554,7 +554,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: UserBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "/users"
+            createURI = "api/users"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -573,7 +573,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "/users",
+                url = "api/users",
                 embeddedPropName = "users",
                 projectionName = projectionName,
                 page = page,
@@ -584,7 +584,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<User, UserDto>(
             id = id,
-            uri = "/users"
+            uri = "api/users"
         )
     
     
@@ -594,7 +594,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: User) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/users")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/users")
     
     
         suspend fun readContacts(obj: User) =
@@ -630,12 +630,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromContacts(obj: User, childToDelete: Contact) =
             requestAdapter.request.delete(
-                url = "/users/${obj.id}/contacts/${childToDelete.id}"
+                url = "api/users/${obj.id}/contacts/${childToDelete.id}"
             )
     
         suspend fun searchFindUserByName(name: String): User? {
         
-            val url = "/users/search/findUserByName".appendParams(
+            val url = "api/users/search/findUserByName".appendParams(
                 "name" to name
             )
         

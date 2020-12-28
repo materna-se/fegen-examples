@@ -23,7 +23,7 @@ import fetch from "node-fetch";
 import {ApiClient} from "../ApiClient";
 
 
-export const apiClient = new ApiClient(undefined, "http://localhost:8080/api");
+export const apiClient = new ApiClient(undefined, "http://localhost:8080/");
 
 export function setupFetch() {
     // @ts-ignore Types do not match exactly, but good enough for FeGen

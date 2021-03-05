@@ -7,9 +7,10 @@ import {
 } from '@materna-se/fegen-runtime';
 import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
-import { AddressBaseProjection, ContactBaseProjection, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection, ContactFull, FullRelTestEntity } from './Entities';
+import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
+
 
 export class ApiClient {
     public readonly addressClient: AddressClient;
@@ -81,6 +82,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
     
   
     
+  
 }
 
 export class ContactClient extends BaseClient<ApiClient, ContactNew, Contact> {
@@ -261,6 +263,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             _links: responseObj._links
         };
     }
+  
 }
 
 export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityNew, PrimitiveTestEntity> {
@@ -319,6 +322,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
   
     
+  
 }
 
 export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew, RelTestEntity> {
@@ -359,21 +363,21 @@ export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew,
         };
     }
   
-    public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<RelTestEntityBaseProjection>> {
-        return this.readProjections<RelTestEntityBaseProjection>("baseProjection", page, size, sort);
-    }
-            
-    public async readProjectionRelTestEntityBaseProjection(id: number): Promise<RelTestEntityBaseProjection| undefined> {
-        return this.readProjection<RelTestEntityBaseProjection>(id, "baseProjection");
-    }
-    
-
-public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<FullRelTestEntity>> {
+    public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<FullRelTestEntity>> {
         return this.readProjections<FullRelTestEntity>("full", page, size, sort);
     }
             
     public async readProjectionFullRelTestEntity(id: number): Promise<FullRelTestEntity| undefined> {
         return this.readProjection<FullRelTestEntity>(id, "full");
+    }
+    
+
+public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<RelTestEntityBaseProjection>> {
+        return this.readProjections<RelTestEntityBaseProjection>("baseProjection", page, size, sort);
+    }
+            
+    public async readProjectionRelTestEntityBaseProjection(id: number): Promise<RelTestEntityBaseProjection| undefined> {
+        return this.readProjection<RelTestEntityBaseProjection>(id, "baseProjection");
     }
     
     public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "testString,ASC" | "testString,DESC") : Promise<PagedItems<RelTestEntity>> {
@@ -605,6 +609,7 @@ public async readProjectionsFullRelTestEntity(page?: number, size?: number, sort
     }
   
     
+  
 }
 
 export class UserClient extends BaseClient<ApiClient, UserNew, User> {
@@ -701,4 +706,5 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
         
         return responseObj;
     }
+  
 }

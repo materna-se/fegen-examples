@@ -157,6 +157,8 @@ data class Address(
 
 
 
+
+
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -295,6 +297,8 @@ data class Address(
              _links = _links
          )
  }
+ 
+ 
 
 data class ContactFullDto(
     override val id: Long?,
@@ -503,6 +507,8 @@ data class NotExportedTestEntity(
         )
 }
 
+
+
 data class OtherEmbeddableTestEntity (
     val embeddedNullableText: String? = "",
     val otherEmbeddedNullableInt: Int? = 0
@@ -689,6 +695,8 @@ data class PrimitiveTestEntity(
 }
 
 
+
+
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -865,6 +873,8 @@ data class PrimitiveTestEntity(
              _links = _links
          )
  }
+ 
+ 
 
 
  /**
@@ -979,6 +989,8 @@ data class PrimitiveTestEntity(
              _links = _links
          )
  }
+ 
+ 
 
 data class ComplexTestPojo (
     val pojos: List<PrimitiveTestPojo>

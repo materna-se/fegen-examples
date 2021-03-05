@@ -37,7 +37,17 @@ export interface Address extends AddressDto {
     id: number
 }
 
+
+
+export interface AddressBaseProjection extends Address {
+    
+}
+
 export interface ContactBaseProjection extends Contact {
+    
+}
+
+export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
     
 }
 
@@ -45,19 +55,11 @@ export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
     
 }
 
-export interface UserBaseProjection extends User {
-    
-}
-
-export interface AddressBaseProjection extends Address {
-    
-}
-
 export interface RelTestEntityBaseProjection extends RelTestEntity {
     
 }
 
-export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
+export interface UserBaseProjection extends User {
     
 }
 
@@ -95,6 +97,8 @@ export interface ContactDto {
 export interface Contact extends ContactDto {
     id: number
 }
+
+
 
 export interface ContactFull extends Contact {
     address: AddressBaseProjection | null
@@ -146,6 +150,8 @@ export interface NotExportedTestEntity extends NotExportedTestEntityDto {
     id: number
 }
 
+
+
 export interface OtherEmbeddableTestEntity {
     embeddedNullableText: string | null
     otherEmbeddedNullableInt: number | null
@@ -196,6 +202,8 @@ export interface PrimitiveTestEntity extends PrimitiveTestEntityDto {
     id: number
 }
 
+
+
 /**
  * This type is used for creaing this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -239,6 +247,8 @@ export interface RelTestEntity extends RelTestEntityDto {
     id: number
 }
 
+
+
 /**
  * This type is used for creaing this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -267,6 +277,8 @@ export interface UserDto {
 export interface User extends UserDto {
     id: number
 }
+
+
 
 export interface ComplexTestPojo {
     pojos: PrimitiveTestPojo[]

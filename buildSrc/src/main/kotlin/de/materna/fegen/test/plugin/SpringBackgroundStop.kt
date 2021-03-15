@@ -49,13 +49,17 @@ open class SpringBackgroundStop: DefaultTask() {
                     logger.info("Backend shut down successfully")
                     return
                 } else {
-                    throw GradleException("Backend did not shut down")
+                    throw GradleException("Backend did not shut down. Endpoint returned ${response.code}")
                 }
             }
         } catch (e: java.net.ConnectException) {
             logger.info("Backend was not running")
         } catch (e: Exception) {
-            throw GradleException("Backend could not reached", e)
+            if (e is GradleException) {
+                throw e
+            } else {
+                throw GradleException("Backend could not reached", e)
+            }
         }
     }
 

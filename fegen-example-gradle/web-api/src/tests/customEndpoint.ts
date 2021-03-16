@@ -111,6 +111,30 @@ describe("Custom endpoint", () => {
         expect(result).to.contain({...customEntity, long64: -65446545})
     });
 
+    it("receives booleans", async () => {
+        const result = await apiClient.testRestControllerClient.returnBoolean();
+
+        expect(result).to.eq(false);
+    });
+
+    it("receives integers", async () => {
+       const result = await apiClient.testRestControllerClient.returnInteger();
+
+       expect(result).to.eq(873296);
+    });
+
+    it("receives strings", async () => {
+        const result = await apiClient.testRestControllerClient.returnString();
+
+        expect(result).to.eq("SomeText");
+    });
+
+    it("receives string lists", async () => {
+       const result = await apiClient.testRestControllerClient.returnStringList();
+
+       expect(result).to.deep.eq(["FirstString", "SecondString"]);
+    });
+
     it("receives lists", async () => {
         const result = await apiClient.testRestControllerClient.returnList();
 

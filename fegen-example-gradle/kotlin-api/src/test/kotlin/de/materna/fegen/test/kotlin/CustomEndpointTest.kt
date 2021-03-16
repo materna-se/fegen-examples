@@ -123,6 +123,30 @@ class CustomEndpointTest : ApiSpec() {
             compareTestEntities(result, customEntity.copy(long64 = -65446545))
         }
 
+        "return boolean" {
+            val result = apiClient().testRestControllerClient.returnBoolean()
+
+            result shouldBe false
+        }
+
+        "return integer" {
+            val result = apiClient().testRestControllerClient.returnInteger()
+
+            result shouldBe 873296
+        }
+
+        "return string" {
+            val result = apiClient().testRestControllerClient.returnString()
+
+            result shouldBe "SomeText"
+        }
+
+        "return string list" {
+            val result = apiClient().testRestControllerClient.returnStringList()
+
+            result shouldBe listOf("FirstString", "SecondString")
+        }
+
         "return list" {
             val result = apiClient().testRestControllerClient.returnList()
 

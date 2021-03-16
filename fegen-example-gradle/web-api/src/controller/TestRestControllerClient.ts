@@ -36,8 +36,7 @@ export class TestRestControllerClient {
         }
         
         
-        const responseObj = (await response.json()) as CyclicTestPojoA;
-        return responseObj;
+        return (await response.json()) as CyclicTestPojoA;
         
         
     }
@@ -244,8 +243,7 @@ export class TestRestControllerClient {
         }
         
         
-        const responseObj = (await response.json()) as ComplexTestPojo;
-        return responseObj;
+        return (await response.json()) as ComplexTestPojo;
         
         
     }
@@ -331,8 +329,7 @@ export class TestRestControllerClient {
         }
         
         
-        const responseObj = (await response.json()) as RecursiveTestPojo;
-        return responseObj;
+        return (await response.json()) as RecursiveTestPojo;
         
         
     }
@@ -391,6 +388,58 @@ export class TestRestControllerClient {
         
         const responseObj = (await response.json()) as PrimitiveTestEntity;
         return responseObj;
+        
+        
+    }
+    
+    public async returnBoolean(): Promise<boolean>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/returnBoolean`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "GET"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as boolean;
+        
+        
+    }
+    
+    public async returnInteger(): Promise<number>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/returnInteger`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "GET"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as number;
         
         
     }
@@ -456,6 +505,58 @@ export class TestRestControllerClient {
                     _links: responseObj._links
     , page: responseObj.page
                 };
+        
+        
+    }
+    
+    public async returnString(): Promise<string>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/returnString`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "GET"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as string;
+        
+        
+    }
+    
+    public async returnStringList(): Promise<Items<string>>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/primitiveTestEntities/returnStringList`;
+    
+        const params = {};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "GET"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as Items<string>;
         
         
     }

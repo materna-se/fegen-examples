@@ -11,6 +11,8 @@ import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestE
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
 
+import {  } from './Entities';
+
 
 export class ApiClient {
     public readonly addressClient: AddressClient;

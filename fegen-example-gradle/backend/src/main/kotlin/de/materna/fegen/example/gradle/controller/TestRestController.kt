@@ -21,6 +21,7 @@
  */
 package de.materna.fegen.example.gradle.controller
 
+import com.fasterxml.jackson.databind.node.TextNode
 import de.materna.fegen.example.gradle.entity.*
 import de.materna.fegen.example.gradle.pojo.*
 import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
@@ -155,6 +156,26 @@ open class TestRestController(
 
         return ResponseEntity.ok(EntityModel(savedEntity))
     }
+
+    @GetMapping("returnBoolean")
+    @ResponseBody
+    fun returnBoolean(): ResponseEntity<Boolean> =
+        ResponseEntity.ok(false)
+
+    @GetMapping("returnInteger")
+    @ResponseBody
+    fun returnInteger(): ResponseEntity<Int> =
+        ResponseEntity.ok(873296)
+
+    @GetMapping("returnString")
+    @ResponseBody
+    fun returnString(): ResponseEntity<TextNode> =
+            ResponseEntity.ok(TextNode("SomeText"))
+
+    @GetMapping("returnStringList")
+    @ResponseBody
+    fun returnStringList(): ResponseEntity<List<String>> =
+            ResponseEntity.ok(listOf("FirstString", "SecondString"))
 
     @GetMapping("returnList")
     @ResponseBody

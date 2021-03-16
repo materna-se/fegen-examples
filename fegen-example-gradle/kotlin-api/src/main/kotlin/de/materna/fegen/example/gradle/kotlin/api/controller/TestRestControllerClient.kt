@@ -212,6 +212,26 @@ class TestRestControllerClient(
     }
 
     @Suppress("UNUSED")
+    suspend fun returnBoolean(): Boolean {
+        val url = """/api/custom/primitiveTestEntities/returnBoolean""".appendParams()
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<Boolean>(
+            url = url,
+            method = "GET",
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun returnInteger(): Int {
+        val url = """/api/custom/primitiveTestEntities/returnInteger""".appendParams()
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<Int>(
+            url = url,
+            method = "GET",
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
     suspend fun returnList(): List<PrimitiveTestEntity> {
         val url = """/api/custom/primitiveTestEntities/returnList""".appendParams()
         return requestAdapter.doListRequest(
@@ -241,6 +261,26 @@ class TestRestControllerClient(
             ignoreBasePath = true,
             type = object : TypeReference<ApiHateoasPage<PrimitiveTestEntityDto,
                 PrimitiveTestEntity>>() {}
+        )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun returnString(): String {
+        val url = """/api/custom/primitiveTestEntities/returnString""".appendParams()
+        return requestAdapter.doSingleRequestWithoutReturnValueTransformation<String>(
+            url = url,
+            method = "GET",
+            ignoreBasePath = true
+        )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun returnStringList(): List<String> {
+        val url = """/api/custom/primitiveTestEntities/returnStringList""".appendParams()
+        return requestAdapter.doListRequestSimple(
+            url = url,
+            method = "GET",
+            ignoreBasePath = true
         )
     }
 

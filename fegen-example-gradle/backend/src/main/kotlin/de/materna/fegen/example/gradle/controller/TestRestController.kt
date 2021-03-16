@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.node.TextNode
 import de.materna.fegen.example.gradle.entity.*
 import de.materna.fegen.example.gradle.pojo.*
 import de.materna.fegen.example.gradle.repository.PrimitiveTestEntityRepository
+import de.materna.fegen.util.spring.annotation.FegenIgnore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
@@ -37,7 +38,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @RestController
-@RequestMapping("/api/custom/primitiveTestEntities")
+@RequestMapping("/api/custom/testController")
 open class TestRestController(
         @Autowired private val primitiveTestEntityRepository: PrimitiveTestEntityRepository
 ) {
@@ -251,4 +252,10 @@ open class TestRestController(
                 )
         )
     }
+
+    @FegenIgnore
+    @GetMapping("ignoredCustomEndpoint")
+    @ResponseBody
+    fun ignoredCustomEndpoint(): ResponseEntity<String> =
+        ResponseEntity.ok("SomeText")
 }

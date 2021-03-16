@@ -21,6 +21,8 @@
  */
 package de.materna.fegen.test.kotlin
 
+import de.materna.fegen.example.gradle.kotlin.api.ApiClient
+import de.materna.fegen.example.gradle.kotlin.api.controller.TestRestControllerClient
 import io.kotlintest.matchers.collections.shouldNotHaveSize
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
@@ -164,6 +166,16 @@ class CustomEndpointTest : ApiSpec() {
 
             bothPages.items shouldNotHaveSize 0
             (firstPage.items + secondPage.items) shouldBe bothPages.items
+        }
+
+        "ignore methods" {
+            TestRestControllerClient::class shouldHaveMethodNamed "returnVoid"
+            TestRestControllerClient::class shouldNotHaveMethodNamed "ignoredCustomEndpoint"
+        }
+
+        "ignore classes" {
+            ApiClient::class shouldHavePropertyNamed "testRestControllerClient"
+            ApiClient::class shouldNotHavePropertyNamed "ignoredTestRestControllerClient"
         }
     }
 }

@@ -34,6 +34,9 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import java.time.LocalDate
 import java.time.LocalDateTime
+import kotlin.reflect.KClass
+import kotlin.reflect.full.declaredFunctions
+import kotlin.reflect.full.declaredMemberProperties
 
 fun setupTest() {
     val requestBody = RequestBody.create(null, byteArrayOf())
@@ -98,5 +101,21 @@ open class ApiSpec(body: ApiSpec.() -> Unit = {}) : StringSpec() {
         actual.optionalIntBillion shouldBe expected.optionalIntBillion
         actual.optionalIntNull shouldBe expected.optionalIntNull
         actual.stringText shouldBe expected.stringText
+    }
+
+    protected infix fun KClass<*>.shouldHaveMethodNamed(name: String) {
+        this.declaredFunctions.any { it.name == name } shouldBe true
+    }
+
+    protected infix fun KClass<*>.shouldNotHaveMethodNamed(name: String) {
+        this.declaredFunctions.any { it.name == name } shouldBe false
+    }
+
+    protected infix fun KClass<*>.shouldHavePropertyNamed(name: String) {
+        this.declaredMemberProperties.any { it.name == name } shouldBe true
+    }
+
+    protected infix fun KClass<*>.shouldNotHavePropertyNamed(name: String) {
+        this.declaredMemberProperties.any { it.name == name } shouldBe false
     }
 }

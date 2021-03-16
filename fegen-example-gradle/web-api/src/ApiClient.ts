@@ -5,9 +5,9 @@ import {
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
     apiHelper, stringHelper, Dto, Entity
 } from '@materna-se/fegen-runtime';
-import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities';
+import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
-import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection } from './Entities';
+import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, IgnoredSearchEntityBaseProjection, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
 
@@ -17,6 +17,7 @@ import {  } from './Entities';
 export class ApiClient {
     public readonly addressClient: AddressClient;
     public readonly contactClient: ContactClient;
+    public readonly ignoredSearchEntityClient: IgnoredSearchEntityClient;
     public readonly primitiveTestEntityClient: PrimitiveTestEntityClient;
     public readonly relTestEntityClient: RelTestEntityClient;
     public readonly userClient: UserClient;
@@ -30,6 +31,7 @@ export class ApiClient {
         const adapter = requestAdapter || new RequestAdapter(this.baseUrl);
         this.addressClient = new AddressClient(this, adapter);
         this.contactClient = new ContactClient(this, adapter);
+        this.ignoredSearchEntityClient = new IgnoredSearchEntityClient(this, adapter);
         this.primitiveTestEntityClient = new PrimitiveTestEntityClient(this, adapter);
         this.relTestEntityClient = new RelTestEntityClient(this, adapter);
         this.userClient = new UserClient(this, adapter);
@@ -265,6 +267,49 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             _links: responseObj._links
         };
     }
+  
+}
+
+export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSearchEntityNew, IgnoredSearchEntity> {
+
+    constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
+        super("api/ignoredSearchEntities", "ignoredSearchEntities", apiClient, requestAdapter);
+        this.readOne = this.readOne.bind(this);
+        this.readProjection = this.readProjection.bind(this);
+        
+    }
+  
+    public static build(base: Partial<IgnoredSearchEntityNew> = {}): IgnoredSearchEntityNew {
+        return {
+            text: base.text !== undefined ? base.text : ""
+        }
+    }
+  
+    protected toPlainObj(obj: IgnoredSearchEntity): IgnoredSearchEntity {
+        return {
+            id: obj.id,
+            text: obj.text,
+            _links: obj._links
+        };
+    }
+  
+    public async readProjectionsIgnoredSearchEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "text,ASC" | "text,DESC") : Promise<PagedItems<IgnoredSearchEntityBaseProjection>> {
+        return this.readProjections<IgnoredSearchEntityBaseProjection>("baseProjection", page, size, sort);
+    }
+            
+    public async readProjectionIgnoredSearchEntityBaseProjection(id: number): Promise<IgnoredSearchEntityBaseProjection| undefined> {
+        return this.readProjection<IgnoredSearchEntityBaseProjection>(id, "baseProjection");
+    }
+    
+    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "text,ASC" | "text,DESC") : Promise<PagedItems<IgnoredSearchEntity>> {
+        return await this.readProjections<IgnoredSearchEntity>(undefined, page, size, sort);
+    }
+  
+    
+  
+    
+  
+    
   
 }
 

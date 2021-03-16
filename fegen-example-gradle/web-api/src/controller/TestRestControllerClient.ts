@@ -14,7 +14,7 @@ export class TestRestControllerClient {
     public async cyclicPojo(body: CyclicTestPojoA): Promise<CyclicTestPojoA>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/cyclicPojo`;
+        const baseUrl = `/api/custom/testController/cyclicPojo`;
     
         const params = {};
     
@@ -44,7 +44,7 @@ export class TestRestControllerClient {
     public async mixed(int32: number, body: PrimitiveTestEntityNew, long64: number): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/mixedCreate/${int32}`;
+        const baseUrl = `/api/custom/testController/mixedCreate/${int32}`;
     
         const params = {long64};
     
@@ -75,7 +75,7 @@ export class TestRestControllerClient {
     public async noBody(int32: number, long64: number): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/noBodyCreate/${int32}`;
+        const baseUrl = `/api/custom/testController/noBodyCreate/${int32}`;
     
         const params = {long64};
     
@@ -102,7 +102,7 @@ export class TestRestControllerClient {
     public async noPathVariable(body: PrimitiveTestEntityNew, long64: number): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/noPathVariableCreate`;
+        const baseUrl = `/api/custom/testController/noPathVariableCreate`;
     
         const params = {long64};
     
@@ -133,7 +133,7 @@ export class TestRestControllerClient {
     public async noRequestParam(int32: number, body: PrimitiveTestEntityNew): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/noRequestParamCreate/${int32}`;
+        const baseUrl = `/api/custom/testController/noRequestParamCreate/${int32}`;
     
         const params = {};
     
@@ -164,7 +164,7 @@ export class TestRestControllerClient {
     public async pathVariable(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/pathVariableCreate/${int32}/${long64Custom}/${intMinusBillion}/${stringText}/${booleanTrue}/${dateCustom}`;
+        const baseUrl = `/api/custom/testController/pathVariableCreate/${int32}/${long64Custom}/${intMinusBillion}/${stringText}/${booleanTrue}/${dateCustom}`;
     
         const params = {};
     
@@ -191,7 +191,7 @@ export class TestRestControllerClient {
     public async pojoAsBodyAndListReturnValue(body: ComplexTestPojo): Promise<ComplexTestPojo[]>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/pojoAsBodyAndListReturnValue`;
+        const baseUrl = `/api/custom/testController/pojoAsBodyAndListReturnValue`;
     
         const params = {};
     
@@ -221,7 +221,7 @@ export class TestRestControllerClient {
     public async pojoAsBodyAndReturnValue(body: ComplexTestPojo): Promise<ComplexTestPojo>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/pojoAsBodyAndSingleReturnValue`;
+        const baseUrl = `/api/custom/testController/pojoAsBodyAndSingleReturnValue`;
     
         const params = {};
     
@@ -251,7 +251,7 @@ export class TestRestControllerClient {
     public async pojoListAsBody(body: PrimitiveTestPojo[]): Promise<PrimitiveTestPojo[]>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/pojoListAsBody`;
+        const baseUrl = `/api/custom/testController/pojoListAsBody`;
     
         const params = {};
     
@@ -281,7 +281,7 @@ export class TestRestControllerClient {
     public async pojosAsReturnValue(): Promise<PrimitiveTestPojo[]>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/pojosAsReturnValue`;
+        const baseUrl = `/api/custom/testController/pojosAsReturnValue`;
     
         const params = {};
     
@@ -307,7 +307,7 @@ export class TestRestControllerClient {
     public async recursivePojo(body: RecursiveTestPojo): Promise<RecursiveTestPojo>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/recursivePojo`;
+        const baseUrl = `/api/custom/testController/recursivePojo`;
     
         const params = {};
     
@@ -337,7 +337,7 @@ export class TestRestControllerClient {
     public async requestParam(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string, optionalIntNull?: number, optionalIntBillion?: number, dateTime2000_1_1_12_30?: string): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/requestParamCreate`;
+        const baseUrl = `/api/custom/testController/requestParamCreate`;
     
         const params = {int32, long64Custom, optionalIntNull, optionalIntBillion, intMinusBillion, stringText, booleanTrue, dateCustom, dateTime2000_1_1_12_30};
     
@@ -364,7 +364,7 @@ export class TestRestControllerClient {
     public async responseBody(body: PrimitiveTestEntityNew): Promise<PrimitiveTestEntity>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/requestBodyCreate`;
+        const baseUrl = `/api/custom/testController/requestBodyCreate`;
     
         const params = {};
     
@@ -395,7 +395,7 @@ export class TestRestControllerClient {
     public async returnBoolean(): Promise<boolean>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/returnBoolean`;
+        const baseUrl = `/api/custom/testController/returnBoolean`;
     
         const params = {};
     
@@ -421,7 +421,7 @@ export class TestRestControllerClient {
     public async returnInteger(): Promise<number>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/returnInteger`;
+        const baseUrl = `/api/custom/testController/returnInteger`;
     
         const params = {};
     
@@ -447,7 +447,7 @@ export class TestRestControllerClient {
     public async returnList(): Promise<Items<PrimitiveTestEntity>>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/returnList`;
+        const baseUrl = `/api/custom/testController/returnList`;
     
         const params = {};
     
@@ -479,7 +479,7 @@ export class TestRestControllerClient {
     public async returnPaged(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC"): Promise<PagedItems<PrimitiveTestEntity>>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/returnPaged`;
+        const baseUrl = `/api/custom/testController/returnPaged`;
     
         const params = {page, size, sort};
     
@@ -512,7 +512,7 @@ export class TestRestControllerClient {
     public async returnString(): Promise<string>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/returnString`;
+        const baseUrl = `/api/custom/testController/returnString`;
     
         const params = {};
     
@@ -538,7 +538,7 @@ export class TestRestControllerClient {
     public async returnStringList(): Promise<Items<string>>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/returnStringList`;
+        const baseUrl = `/api/custom/testController/returnStringList`;
     
         const params = {};
     
@@ -564,7 +564,7 @@ export class TestRestControllerClient {
     public async returnVoid(): Promise<void>  {
         const request = this.requestAdapter.getRequest();
     
-        const baseUrl = `/api/custom/primitiveTestEntities/returnVoid`;
+        const baseUrl = `/api/custom/testController/returnVoid`;
     
         const params = {};
     

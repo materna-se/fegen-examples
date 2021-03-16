@@ -21,6 +21,7 @@
  */
 package de.materna.fegen.test.kotlin
 
+import de.materna.fegen.example.gradle.kotlin.api.ContactClient
 import io.kotlintest.fail
 import io.kotlintest.matchers.collections.shouldNotHaveSize
 
@@ -49,6 +50,16 @@ class CustomSearchTest: ApiSpec() {
                     fail("${it.firstName} or ${it.lastName} should contain ${regexStr}")
                 }
             }
+        }
+
+        "ignore methods" {
+            ContactClient::class shouldHaveMethodNamed "searchContactsByRegex"
+            ContactClient::class shouldNotHaveMethodNamed "searchIgnoredContactsByRegex"
+        }
+
+        "ignore classes" {
+            ContactClient::class shouldNotHaveMethodNamed "findAllByTextIsStartingWith"
+            ContactClient::class shouldNotHaveMethodNamed "findAllByTextIsEndingWith"
         }
     }
 }

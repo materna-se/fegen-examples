@@ -27,7 +27,7 @@ class TestRestControllerClient(
 ) {
     @Suppress("UNUSED")
     suspend fun cyclicPojo(body: CyclicTestPojoA): CyclicTestPojoA {
-        val url = """/api/custom/primitiveTestEntities/cyclicPojo""".appendParams()
+        val url = """/api/custom/testController/cyclicPojo""".appendParams()
         return requestAdapter.doSingleRequestWithoutReturnValueTransformation<CyclicTestPojoA,
                 CyclicTestPojoA>(
             url = url,
@@ -43,7 +43,7 @@ class TestRestControllerClient(
         int32: Int,
         long64: Long
     ): PrimitiveTestEntity {
-        val url = """/api/custom/primitiveTestEntities/mixedCreate/$int32""".appendParams(
+        val url = """/api/custom/testController/mixedCreate/$int32""".appendParams(
             "long64" to long64
         )
         return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto,
@@ -57,7 +57,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun noBody(int32: Int, long64: Long): PrimitiveTestEntity {
-        val url = """/api/custom/primitiveTestEntities/noBodyCreate/$int32""".appendParams(
+        val url = """/api/custom/testController/noBodyCreate/$int32""".appendParams(
             "long64" to long64
         )
         return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
@@ -69,7 +69,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun noPathVariable(body: PrimitiveTestEntityBase, long64: Long): PrimitiveTestEntity {
-        val url = """/api/custom/primitiveTestEntities/noPathVariableCreate""".appendParams(
+        val url = """/api/custom/testController/noPathVariableCreate""".appendParams(
             "long64" to long64
         )
         return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto,
@@ -83,7 +83,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun noRequestParam(body: PrimitiveTestEntityBase, int32: Int): PrimitiveTestEntity {
-        val url = """/api/custom/primitiveTestEntities/noRequestParamCreate/$int32""".appendParams()
+        val url = """/api/custom/testController/noRequestParamCreate/$int32""".appendParams()
         return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto,
                 PrimitiveTestEntityBase>(
             url = url,
@@ -103,7 +103,7 @@ class TestRestControllerClient(
         dateCustom: LocalDate
     ): PrimitiveTestEntity {
         val url =
-                """/api/custom/primitiveTestEntities/pathVariableCreate/$int32/$long64Custom/$intMinusBillion/$stringText/$booleanTrue/$dateCustom""".appendParams()
+                """/api/custom/testController/pathVariableCreate/$int32/$long64Custom/$intMinusBillion/$stringText/$booleanTrue/$dateCustom""".appendParams()
         return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
             url = url,
             method = "POST",
@@ -113,8 +113,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun pojoAsBodyAndListReturnValue(body: ComplexTestPojo): List<ComplexTestPojo> {
-        val url =
-                """/api/custom/primitiveTestEntities/pojoAsBodyAndListReturnValue""".appendParams()
+        val url = """/api/custom/testController/pojoAsBodyAndListReturnValue""".appendParams()
         return requestAdapter.doListRequestSimple(
             url = url,
             method = "POST",
@@ -125,8 +124,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun pojoAsBodyAndReturnValue(body: ComplexTestPojo): ComplexTestPojo {
-        val url =
-                """/api/custom/primitiveTestEntities/pojoAsBodyAndSingleReturnValue""".appendParams()
+        val url = """/api/custom/testController/pojoAsBodyAndSingleReturnValue""".appendParams()
         return requestAdapter.doSingleRequestWithoutReturnValueTransformation<ComplexTestPojo,
                 ComplexTestPojo>(
             url = url,
@@ -138,7 +136,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun pojoListAsBody(body: List<PrimitiveTestPojo>): List<PrimitiveTestPojo> {
-        val url = """/api/custom/primitiveTestEntities/pojoListAsBody""".appendParams()
+        val url = """/api/custom/testController/pojoListAsBody""".appendParams()
         return requestAdapter.doListRequestSimple(
             url = url,
             method = "POST",
@@ -149,7 +147,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun pojosAsReturnValue(): List<PrimitiveTestPojo> {
-        val url = """/api/custom/primitiveTestEntities/pojosAsReturnValue""".appendParams()
+        val url = """/api/custom/testController/pojosAsReturnValue""".appendParams()
         return requestAdapter.doListRequestSimple(
             url = url,
             method = "GET",
@@ -159,7 +157,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun recursivePojo(body: RecursiveTestPojo): RecursiveTestPojo {
-        val url = """/api/custom/primitiveTestEntities/recursivePojo""".appendParams()
+        val url = """/api/custom/testController/recursivePojo""".appendParams()
         return requestAdapter.doSingleRequestWithoutReturnValueTransformation<RecursiveTestPojo,
                 RecursiveTestPojo>(
             url = url,
@@ -181,7 +179,7 @@ class TestRestControllerClient(
         dateCustom: LocalDate,
         dateTime2000_1_1_12_30: LocalDateTime?
     ): PrimitiveTestEntity {
-        val url = """/api/custom/primitiveTestEntities/requestParamCreate""".appendParams(
+        val url = """/api/custom/testController/requestParamCreate""".appendParams(
             "int32" to int32,
             "long64Custom" to long64Custom,
             "optionalIntNull" to optionalIntNull,
@@ -201,7 +199,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun responseBody(body: PrimitiveTestEntityBase): PrimitiveTestEntity {
-        val url = """/api/custom/primitiveTestEntities/requestBodyCreate""".appendParams()
+        val url = """/api/custom/testController/requestBodyCreate""".appendParams()
         return requestAdapter.doSingleRequest<PrimitiveTestEntity, PrimitiveTestEntityDto,
                 PrimitiveTestEntityBase>(
             url = url,
@@ -213,7 +211,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun returnBoolean(): Boolean {
-        val url = """/api/custom/primitiveTestEntities/returnBoolean""".appendParams()
+        val url = """/api/custom/testController/returnBoolean""".appendParams()
         return requestAdapter.doSingleRequestWithoutReturnValueTransformation<Boolean>(
             url = url,
             method = "GET",
@@ -223,7 +221,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun returnInteger(): Int {
-        val url = """/api/custom/primitiveTestEntities/returnInteger""".appendParams()
+        val url = """/api/custom/testController/returnInteger""".appendParams()
         return requestAdapter.doSingleRequestWithoutReturnValueTransformation<Int>(
             url = url,
             method = "GET",
@@ -233,7 +231,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun returnList(): List<PrimitiveTestEntity> {
-        val url = """/api/custom/primitiveTestEntities/returnList""".appendParams()
+        val url = """/api/custom/testController/returnList""".appendParams()
         return requestAdapter.doListRequest(
             url = url,
             method = "GET",
@@ -250,7 +248,7 @@ class TestRestControllerClient(
         size: Int? = null,
         sort: String? = null
     ): PagedItems<PrimitiveTestEntity> {
-        val url = """/api/custom/primitiveTestEntities/returnPaged""".appendParams()
+        val url = """/api/custom/testController/returnPaged""".appendParams()
         return requestAdapter.doPageRequest(
             url = url,
             method = "GET",
@@ -266,7 +264,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun returnString(): String {
-        val url = """/api/custom/primitiveTestEntities/returnString""".appendParams()
+        val url = """/api/custom/testController/returnString""".appendParams()
         return requestAdapter.doSingleRequestWithoutReturnValueTransformation<String>(
             url = url,
             method = "GET",
@@ -276,7 +274,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun returnStringList(): List<String> {
-        val url = """/api/custom/primitiveTestEntities/returnStringList""".appendParams()
+        val url = """/api/custom/testController/returnStringList""".appendParams()
         return requestAdapter.doListRequestSimple(
             url = url,
             method = "GET",
@@ -286,7 +284,7 @@ class TestRestControllerClient(
 
     @Suppress("UNUSED")
     suspend fun returnVoid() {
-        val url = """/api/custom/primitiveTestEntities/returnVoid""".appendParams()
+        val url = """/api/custom/testController/returnVoid""".appendParams()
         return requestAdapter.doVoidRequest(
             url = url,
             method = "GET",

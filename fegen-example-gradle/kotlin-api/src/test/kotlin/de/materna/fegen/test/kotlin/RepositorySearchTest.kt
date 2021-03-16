@@ -21,6 +21,8 @@
  */
 package de.materna.fegen.test.kotlin
 
+import de.materna.fegen.example.gradle.kotlin.api.ContactClient
+import de.materna.fegen.example.gradle.kotlin.api.IgnoredSearchEntityClient
 import io.kotlintest.matchers.collections.shouldNotHaveSize
 import io.kotlintest.matchers.string.shouldContain
 import io.kotlintest.shouldNotBe
@@ -43,6 +45,16 @@ class RepositorySearchTest: ApiSpec() {
             val result = results.find { it.firstName == "With number" && it.lastName == "and address" }
             result shouldNotBe null
             result!!.address shouldNotBe null
+        }
+
+        "ignore methods" {
+            ContactClient::class shouldHaveMethodNamed "searchFindByNameContainingContactFull"
+            ContactClient::class shouldNotHaveMethodNamed "searchFindByFirstNameStartingWith"
+        }
+
+        "ignore classes" {
+            IgnoredSearchEntityClient::class shouldNotHavePropertyNamed "searchFindAllByTextIsStartingWith"
+            IgnoredSearchEntityClient::class shouldNotHavePropertyNamed "searchFindAllByTextIsEndingWith"
         }
     }
 }

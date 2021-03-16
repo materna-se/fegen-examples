@@ -27,6 +27,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         open val addressRepository by lazy { AddressRepository(client = addressClient) }
         open val contactClient by lazy { ContactClient(apiClient = this, requestAdapter = adapter) }
         open val contactRepository by lazy { ContactRepository(client = contactClient) }
+        open val ignoredSearchEntityClient by lazy { IgnoredSearchEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val ignoredSearchEntityRepository by lazy { IgnoredSearchEntityRepository(client = ignoredSearchEntityClient) }
         open val primitiveTestEntityClient by lazy { PrimitiveTestEntityClient(apiClient = this, requestAdapter = adapter) }
         open val primitiveTestEntityRepository by lazy { PrimitiveTestEntityRepository(client = primitiveTestEntityClient) }
         open val relTestEntityClient by lazy { RelTestEntityClient(apiClient = this, requestAdapter = adapter) }
@@ -285,6 +287,62 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type = object : TypeReference<ApiHateoasList<ContactFullDto, ContactFull>>() {}
             )
         }
+    
+    }
+    
+    open class IgnoredSearchEntityClient(
+            override val apiClient: ApiClient,
+            override val requestAdapter: RequestAdapter
+    ): BaseClient<ApiClient>(apiClient, requestAdapter) {
+    
+        suspend fun create(obj: IgnoredSearchEntityBase) = requestAdapter.createObject(
+            newObject = obj,
+            createURI = "api/ignoredSearchEntities"
+        )
+    
+        suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            readProjections<IgnoredSearchEntity, IgnoredSearchEntityDto>(
+                projectionName = null,
+                page = page,
+                size = size,
+                sort = sort,
+                type = object : TypeReference<ApiHateoasPage<IgnoredSearchEntityDto, IgnoredSearchEntity>>() {}
+            )
+    
+        
+    
+        private suspend inline fun <reified T: ApiObj<U>, reified U: ApiDto<T>> readProjections(
+                projectionName: String?, page: Int?, size: Int?, sort: String?,
+                type: TypeReference<ApiHateoasPage<U, T>>
+        ) =
+            requestAdapter.doPageRequest<T, U>(
+                url = "api/ignoredSearchEntities",
+                embeddedPropName = "ignoredSearchEntities",
+                projectionName = projectionName,
+                page = page,
+                size = size,
+                sort = sort,
+                type = type
+            )
+    
+        suspend fun readOne(id: Long) = requestAdapter.readProjection<IgnoredSearchEntity, IgnoredSearchEntityDto>(
+            id = id,
+            uri = "api/ignoredSearchEntities"
+        )
+    
+    
+        
+    
+        suspend fun update(obj: IgnoredSearchEntity) = requestAdapter.updateObject(obj)
+    
+        suspend fun delete(obj: IgnoredSearchEntity) = requestAdapter.deleteObject(obj)
+    
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/ignoredSearchEntities")
+    
+    
+        
+    
+        
     
     }
     
@@ -749,6 +807,36 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
             runBlocking { client.searchContactsByRegexContactFull(nameRegex) }
+    }
+    
+    open class IgnoredSearchEntityRepository( val client: IgnoredSearchEntityClient ) {
+    
+        fun create(obj: IgnoredSearchEntityBase) =
+            runBlocking { client.create(obj) }
+    
+        fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            runBlocking { client.readAll(page, size, sort) }
+    
+        
+    
+        fun readOne(id: Long) =
+            runBlocking { client.readOne(id) }
+    
+        
+    
+        fun update(obj: IgnoredSearchEntity) =
+            runBlocking { client.update(obj) }
+    
+        fun delete(obj: IgnoredSearchEntity) =
+            runBlocking { client.delete(obj) }
+    
+        fun delete(id: Long) =
+            runBlocking { client.delete(id) }
+    
+    
+        
+    
+        
     }
     
     open class PrimitiveTestEntityRepository( val client: PrimitiveTestEntityClient ) {

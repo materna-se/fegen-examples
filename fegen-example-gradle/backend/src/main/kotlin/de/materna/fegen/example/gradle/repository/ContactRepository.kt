@@ -22,6 +22,7 @@
 package de.materna.fegen.example.gradle.repository
 
 import de.materna.fegen.example.gradle.entity.Contact
+import de.materna.fegen.util.spring.annotation.FegenIgnore
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -50,4 +51,7 @@ interface ContactRepository : JpaRepository<Contact, Long> {
             @Param("firstName") firstName: String,
             @Param("lastName") lastName: String
     ): Contact?
+
+    @FegenIgnore
+    fun findByFirstNameStartingWith(prefix: String): List<Contact.BaseProjection>
 }

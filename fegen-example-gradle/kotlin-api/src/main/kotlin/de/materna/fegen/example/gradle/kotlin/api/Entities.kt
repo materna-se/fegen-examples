@@ -159,6 +159,8 @@ data class Address(
 
 
 
+
+
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -398,6 +400,116 @@ data class FullRelTestEntity(
             _links = _links
         )
 }
+
+
+/**
+ * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+data class IgnoredSearchEntityBase(
+
+    override val id: Long? = -1L,
+    val text: String = "",
+    override val _links: IgnoredSearchEntityLinks? = null
+): ApiBase<IgnoredSearchEntity, IgnoredSearchEntityDto> {
+
+    data class Builder(
+        private var id: Long? = -1L,
+        private var text: String = "",
+        private var _links: IgnoredSearchEntityLinks? = null
+    ) {
+
+        constructor(base: IgnoredSearchEntityBase): this(
+            base.id,
+            base.text,
+            base._links
+        )
+
+        fun id(id: Long?) = apply { this.id = id }
+        fun text(text: String) = apply { this.text = text }
+        fun _links(_links: IgnoredSearchEntityLinks) = apply { this._links = _links }
+        fun build() = IgnoredSearchEntityBase(id, text, _links)
+    }
+
+    fun toBuilder() = Builder(this)
+
+    companion object {
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /**
+     * Create a DTO from a base value
+     */
+    fun toDto(_links: IgnoredSearchEntityLinks) = IgnoredSearchEntityDto(
+        id = id, 
+        text = text,
+        _links = _links
+    )
+    
+    /**
+     * A convenience method for the creation of a dto from a base value for testing.
+     * Don't use this method in production code.
+     */
+    fun toDto(id: Long) = toDto(IgnoredSearchEntityLinks(mapOf(
+        "self" to ApiNavigationLink("api/ignoredSearchEntities/$id", false)
+    )))
+}
+
+@JsonDeserialize(using = IgnoredSearchEntityLinksDeserializer::class)
+data class IgnoredSearchEntityLinks(
+    override val linkMap: Map<String, ApiNavigationLink>
+): BaseApiNavigationLinks(linkMap) {
+    
+}
+
+class IgnoredSearchEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<IgnoredSearchEntityLinks>(vc) {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): IgnoredSearchEntityLinks {
+        val jacksonType = ctxt.typeFactory.constructType(object : TypeReference<Map<String, ApiNavigationLink>>() {})
+        val deserializer = ctxt.findRootValueDeserializer(jacksonType)
+        val map = deserializer.deserialize(p, ctxt)
+        return IgnoredSearchEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
+    }
+}
+
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+data class IgnoredSearchEntityDto(
+    override val id: Long?,
+    val text: String,
+
+    override val _links: IgnoredSearchEntityLinks
+): ApiDto<IgnoredSearchEntity> {
+
+    override fun toObj() = IgnoredSearchEntity(
+            id = objId, 
+            text = text,
+            _links = _links
+        )
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `IgnoredSearchEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+data class IgnoredSearchEntity(
+    override val id: Long,
+    val text: String,
+
+    override val _links: IgnoredSearchEntityLinks
+): ApiObj<IgnoredSearchEntityDto> {
+        fun toBuilder(
+            
+        ) = IgnoredSearchEntityBase.Builder(
+            id = id,
+            text = text,
+            _links = _links
+        )
+}
+
+
 
 
 /**

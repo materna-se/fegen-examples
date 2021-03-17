@@ -47,4 +47,13 @@ describe("Custom search", () => {
         checkSearchCriteria(results.items, regexStr);
     });
 
+    it("ignores method", () => {
+        expect(apiClient.contactClient).to.have.property("searchContactsByRegex");
+        expect(apiClient.contactClient).to.not.have.property("searchIgnoredContactsByRegex");
+    });
+
+    it("ignores class", () => {
+        expect(apiClient.contactClient).to.not.have.property("findAllByTextIsStartingWith");
+        expect(apiClient.contactClient).to.not.have.property("findAllByTextIsEndingWith");
+    });
 });

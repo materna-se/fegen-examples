@@ -36,4 +36,14 @@ describe("Repository search", () => {
             expect(`${result.firstName} ${result.lastName}`).to.contain(searchStr);
         }
     });
+
+    it("ignores methods", () => {
+        expect(apiClient.contactClient).to.have.property("searchFindByNameContaining");
+        expect(apiClient.contactClient).to.not.have.property("searchFindByFirstNameStartingWith");
+    });
+
+    it("ignores class", () => {
+        expect(apiClient.ignoredSearchEntityClient).to.not.have.property("searchFindAllByTextIsStartingWith");
+        expect(apiClient.ignoredSearchEntityClient).to.not.have.property("searchFindAllByTextIsEndingWith");
+    });
 });

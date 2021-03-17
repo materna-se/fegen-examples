@@ -155,4 +155,14 @@ describe("Custom endpoint", () => {
         expect(bothPages.items).to.not.be.empty;
         expect(pageOne.items.concat(pageTwo.items)).to.deep.eq(bothPages.items)
     });
+
+    it("ignores method", () => {
+        expect(apiClient.testRestControllerClient).to.have.property("returnVoid");
+        expect(apiClient.testRestControllerClient).to.not.have.property("ignoredCustomEndpoint");
+    });
+
+    it("ignores class", () => {
+        expect(apiClient).to.have.property("testRestControllerClient");
+        expect(apiClient).to.not.have.property("ignoredTestRestControllerClient");
+    })
 });

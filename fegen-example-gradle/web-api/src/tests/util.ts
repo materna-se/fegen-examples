@@ -20,14 +20,18 @@
  * SOFTWARE.
  */
 import fetch from "node-fetch";
+import * as fetchCookie from "fetch-cookie";
 import {ApiClient} from "../ApiClient";
 
+export const BASE_URL = "http://localhost:8080/"
 
-export const apiClient = new ApiClient(undefined, "http://localhost:8080/");
+export const apiClient = new ApiClient(undefined, BASE_URL);
 
 export function setupFetch() {
+    // Use fetchCookie on order for authorization to work.
+    // A new instance is created each time, so sessions are not retained between tests
     // @ts-ignore Types do not match exactly, but good enough for FeGen
-    window.fetch = fetch
+    window.fetch = fetchCookie(fetch);
 }
 
 export async function setupTest() {

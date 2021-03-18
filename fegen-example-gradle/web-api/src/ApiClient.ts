@@ -3,7 +3,7 @@
 import {
     BaseClient, RequestAdapter,
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
-    apiHelper, stringHelper, Dto, Entity
+    apiHelper, stringHelper, Dto, Entity, EntitySecurity
 } from '@materna-se/fegen-runtime';
 import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
@@ -82,6 +82,11 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
   
     
   
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/contactAddresses");
+    }
+
+  
     
   
     
@@ -145,6 +150,11 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     public async deleteFromOwner(returnType: Contact, childToDelete: User) {
         await this._requestAdapter.getRequest().delete(`api/contacts/${returnType.id}/owner/${childToDelete.id}`);
     }
+  
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/contacts");
+    }
+
   
     public async readAddress(obj: ContactDto): Promise<Address | undefined> {
         return this.readAddressProjection<Address>(obj);
@@ -304,6 +314,11 @@ export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSear
   
     
   
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/ignoredSearchEntities");
+    }
+
+  
     
   
     
@@ -361,6 +376,11 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     }
   
     
+  
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/primitiveTestEntities");
+    }
+
   
     
   
@@ -449,6 +469,11 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
     public async deleteFromOneToOneRequired(returnType: RelTestEntity, childToDelete: User) {
         await this._requestAdapter.getRequest().delete(`api/relTestEntities/${returnType.id}/oneToOneRequired/${childToDelete.id}`);
     }
+  
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/relTestEntities");
+    }
+
   
     public async readManyToMany(obj: RelTestEntityDto): Promise<User[]> {
         return this.readManyToManyProjection<User>(obj);
@@ -690,6 +715,11 @@ export class SecuredEntityClient extends BaseClient<ApiClient, SecuredEntityNew,
   
     
   
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/securedEntities");
+    }
+
+  
     
   
     
@@ -734,6 +764,11 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     public async deleteFromContacts(returnType: User, childToDelete: Contact) {
         await this._requestAdapter.getRequest().delete(`api/users/${returnType.id}/contacts/${childToDelete.id}`);
     }
+  
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/users");
+    }
+
   
     public async readContacts(obj: UserDto): Promise<Contact[]> {
         return this.readContactsProjection<Contact>(obj);

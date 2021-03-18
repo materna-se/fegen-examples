@@ -27,10 +27,7 @@ import de.materna.fegen.example.gradle.repository.*
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -48,6 +45,15 @@ open class TestController(
         private val shutdownComponent: ShutdownComponent
 ) {
 
+    /**
+     * Dummy endpoint that can be used to do basic authentication in tests
+     * since it may only be accessed by authenticated users
+     */
+    @PostMapping("/login")
+    @ResponseBody
+    fun login() {
+
+    }
 
     /**
      * Sets the database to a predefined state

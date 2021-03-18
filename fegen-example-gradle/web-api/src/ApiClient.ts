@@ -5,14 +5,11 @@ import {
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
     apiHelper, stringHelper, Dto, Entity
 } from '@materna-se/fegen-runtime';
-import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, UserNew, UserDto, User } from './Entities';
+import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
-import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, IgnoredSearchEntityBaseProjection, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, UserBaseProjection } from './Entities';
+import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, IgnoredSearchEntityBaseProjection, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, SecuredEntityBaseProjection, UserBaseProjection } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
-
-import {  } from './Entities';
-
 
 export class ApiClient {
     public readonly addressClient: AddressClient;
@@ -20,6 +17,7 @@ export class ApiClient {
     public readonly ignoredSearchEntityClient: IgnoredSearchEntityClient;
     public readonly primitiveTestEntityClient: PrimitiveTestEntityClient;
     public readonly relTestEntityClient: RelTestEntityClient;
+    public readonly securedEntityClient: SecuredEntityClient;
     public readonly userClient: UserClient;
     public readonly customEndpointControllerClient: CustomEndpointControllerClient;
     public readonly testRestControllerClient: TestRestControllerClient;
@@ -34,6 +32,7 @@ export class ApiClient {
         this.ignoredSearchEntityClient = new IgnoredSearchEntityClient(this, adapter);
         this.primitiveTestEntityClient = new PrimitiveTestEntityClient(this, adapter);
         this.relTestEntityClient = new RelTestEntityClient(this, adapter);
+        this.securedEntityClient = new SecuredEntityClient(this, adapter);
         this.userClient = new UserClient(this, adapter);
         this.customEndpointControllerClient = new CustomEndpointControllerClient(adapter);
         this.testRestControllerClient = new TestRestControllerClient(adapter);
@@ -86,7 +85,6 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
     
   
     
-  
 }
 
 export class ContactClient extends BaseClient<ApiClient, ContactNew, Contact> {
@@ -267,7 +265,6 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             _links: responseObj._links
         };
     }
-  
 }
 
 export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSearchEntityNew, IgnoredSearchEntity> {
@@ -310,7 +307,6 @@ export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSear
     
   
     
-  
 }
 
 export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityNew, PrimitiveTestEntity> {
@@ -369,7 +365,6 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
   
     
-  
 }
 
 export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew, RelTestEntity> {
@@ -656,7 +651,48 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
     }
   
     
+}
+
+export class SecuredEntityClient extends BaseClient<ApiClient, SecuredEntityNew, SecuredEntity> {
+
+    constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
+        super("api/securedEntities", "securedEntities", apiClient, requestAdapter);
+        this.readOne = this.readOne.bind(this);
+        this.readProjection = this.readProjection.bind(this);
+        
+    }
   
+    public static build(base: Partial<SecuredEntityNew> = {}): SecuredEntityNew {
+        return {
+            secretText: base.secretText !== undefined ? base.secretText : ""
+        }
+    }
+  
+    protected toPlainObj(obj: SecuredEntity): SecuredEntity {
+        return {
+            id: obj.id,
+            secretText: obj.secretText,
+            _links: obj._links
+        };
+    }
+  
+    public async readProjectionsSecuredEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "secretText,ASC" | "secretText,DESC") : Promise<PagedItems<SecuredEntityBaseProjection>> {
+        return this.readProjections<SecuredEntityBaseProjection>("baseProjection", page, size, sort);
+    }
+            
+    public async readProjectionSecuredEntityBaseProjection(id: number): Promise<SecuredEntityBaseProjection| undefined> {
+        return this.readProjection<SecuredEntityBaseProjection>(id, "baseProjection");
+    }
+    
+    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "secretText,ASC" | "secretText,DESC") : Promise<PagedItems<SecuredEntity>> {
+        return await this.readProjections<SecuredEntity>(undefined, page, size, sort);
+    }
+  
+    
+  
+    
+  
+    
 }
 
 export class UserClient extends BaseClient<ApiClient, UserNew, User> {
@@ -753,5 +789,4 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
         
         return responseObj;
     }
-  
 }

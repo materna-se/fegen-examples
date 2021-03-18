@@ -34,8 +34,6 @@ class PagingSortingTest : ApiSpec() {
     val pageSize = 5
 
     init {
-        setupTest()
-
         "first page" {
             val page = 0
             val response = apiClient().contactRepository.readAll(page, pageSize)

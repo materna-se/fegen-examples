@@ -32,7 +32,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
-@Profile("security")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 open class WebSecurityConfig: WebSecurityConfigurerAdapter() {
@@ -46,11 +45,11 @@ open class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/api/contactAddresses", "/api/contacts", "/api/users").hasRole("ADMIN")
-            .antMatchers(HttpMethod.DELETE, "/api/contactAddresses/*", "/api/contacts/*").hasRole("ADMIN")
-            .antMatchers("/api/users").hasRole("ADMIN")
-            .anyRequest()
-            .authenticated()
+            .antMatchers(HttpMethod.GET, "/api/securedEntities", "/api/securedEntities/*").hasRole("READER")
+            .antMatchers(HttpMethod.POST, "/api/securedEntities").hasRole("WRITER")
+            .antMatchers("/api/securedEntities", "/api/securedEntities/*").hasRole("ADMIN")
+            .antMatchers("/api/login").authenticated()
+            .anyRequest().permitAll()
             .and()
             .httpBasic()
             .and()
@@ -59,13 +58,17 @@ open class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("admin")
-                .password(passwordEncoder().encode("pwd"))
-                .roles("ADMIN")
-                .and()
-                .withUser("user")
-                .password(passwordEncoder().encode("pwd"))
-                .roles("USER")
+            .withUser("reader")
+            .password(passwordEncoder().encode("pwd"))
+            .roles("READER")
+            .and()
+            .withUser("writer")
+            .password(passwordEncoder().encode("pwd"))
+            .roles("READER", "WRITER")
+            .and()
+            .withUser("admin")
+            .password(passwordEncoder().encode("pwd"))
+            .roles("READER", "WRITER", "ADMIN")
+            .and()
     }
 }

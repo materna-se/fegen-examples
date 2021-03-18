@@ -38,7 +38,6 @@ export interface Address extends AddressDto {
 }
 
 
-
 export interface AddressBaseProjection extends Address {
     
 }
@@ -60,6 +59,10 @@ export interface PrimitiveTestEntityBaseProjection extends PrimitiveTestEntity {
 }
 
 export interface RelTestEntityBaseProjection extends RelTestEntity {
+    
+}
+
+export interface SecuredEntityBaseProjection extends SecuredEntity {
     
 }
 
@@ -101,7 +104,6 @@ export interface ContactDto {
 export interface Contact extends ContactDto {
     id: number
 }
-
 
 
 export interface ContactFull extends Contact {
@@ -155,7 +157,6 @@ export interface IgnoredSearchEntity extends IgnoredSearchEntityDto {
 }
 
 
-
 /**
  * This type is used for creaing this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -184,7 +185,6 @@ export interface NotExportedTestEntityDto {
 export interface NotExportedTestEntity extends NotExportedTestEntityDto {
     id: number
 }
-
 
 
 export interface OtherEmbeddableTestEntity {
@@ -238,7 +238,6 @@ export interface PrimitiveTestEntity extends PrimitiveTestEntityDto {
 }
 
 
-
 /**
  * This type is used for creaing this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -283,6 +282,35 @@ export interface RelTestEntity extends RelTestEntityDto {
 }
 
 
+/**
+ * This type is used for creaing this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+export interface SecuredEntityNew {
+    secretText: string
+    
+}
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+export interface SecuredEntityDto {
+    secretText: string
+    _links: {
+        self: ApiNavigationLink
+        
+    }
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `SecuredEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+export interface SecuredEntity extends SecuredEntityDto {
+    id: number
+}
+
 
 /**
  * This type is used for creaing this domain type. It can be created in the frontend
@@ -312,7 +340,6 @@ export interface UserDto {
 export interface User extends UserDto {
     id: number
 }
-
 
 
 export interface ComplexTestPojo {

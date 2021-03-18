@@ -19,20 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.materna.fegen.example.gradle.component
+package de.materna.fegen.example.gradle.repository
 
-import org.springframework.context.annotation.Profile
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import de.materna.fegen.example.gradle.entity.SecuredEntity
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@Profile("!security")
-@EnableWebSecurity
-open class DisabledWebSecurityConfig: WebSecurityConfigurerAdapter(){
-
-    override fun configure(http: HttpSecurity) {
-        http
-            .httpBasic().disable()
-            .csrf().disable()
-    }
-}
+@RepositoryRestResource
+interface SecuredEntityRepository: JpaRepository<SecuredEntity, Long>

@@ -33,6 +33,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         open val primitiveTestEntityRepository by lazy { PrimitiveTestEntityRepository(client = primitiveTestEntityClient) }
         open val relTestEntityClient by lazy { RelTestEntityClient(apiClient = this, requestAdapter = adapter) }
         open val relTestEntityRepository by lazy { RelTestEntityRepository(client = relTestEntityClient) }
+        open val securedEntityClient by lazy { SecuredEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val securedEntityRepository by lazy { SecuredEntityRepository(client = securedEntityClient) }
         open val userClient by lazy { UserClient(apiClient = this, requestAdapter = adapter) }
         open val userRepository by lazy { UserRepository(client = userClient) }
         open val customEndpointControllerClient by lazy { CustomEndpointControllerClient(adapter) }
@@ -87,12 +89,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun delete(obj: Address) = requestAdapter.deleteObject(obj)
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contactAddresses")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/contactAddresses")
     
     
         
     
         
-    
     }
     
     open class ContactClient(
@@ -155,6 +158,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun delete(obj: Contact) = requestAdapter.deleteObject(obj)
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contacts")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/contacts")
     
     
         suspend fun readAddress(obj: Contact) =
@@ -287,7 +292,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type = object : TypeReference<ApiHateoasList<ContactFullDto, ContactFull>>() {}
             )
         }
-    
     }
     
     open class IgnoredSearchEntityClient(
@@ -338,12 +342,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun delete(obj: IgnoredSearchEntity) = requestAdapter.deleteObject(obj)
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/ignoredSearchEntities")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/ignoredSearchEntities")
     
     
         
     
         
-    
     }
     
     open class PrimitiveTestEntityClient(
@@ -394,12 +399,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun delete(obj: PrimitiveTestEntity) = requestAdapter.deleteObject(obj)
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/primitiveTestEntities")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/primitiveTestEntities")
     
     
         
     
         
-    
     }
     
     open class RelTestEntityClient(
@@ -462,6 +468,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun delete(obj: RelTestEntity) = requestAdapter.deleteObject(obj)
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/relTestEntities")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/relTestEntities")
     
     
         suspend fun readManyToMany(obj: RelTestEntity) =
@@ -602,7 +610,63 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
     
         
+    }
     
+    open class SecuredEntityClient(
+            override val apiClient: ApiClient,
+            override val requestAdapter: RequestAdapter
+    ): BaseClient<ApiClient>(apiClient, requestAdapter) {
+    
+        suspend fun create(obj: SecuredEntityBase) = requestAdapter.createObject(
+            newObject = obj,
+            createURI = "api/securedEntities"
+        )
+    
+        suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            readProjections<SecuredEntity, SecuredEntityDto>(
+                projectionName = null,
+                page = page,
+                size = size,
+                sort = sort,
+                type = object : TypeReference<ApiHateoasPage<SecuredEntityDto, SecuredEntity>>() {}
+            )
+    
+        
+    
+        private suspend inline fun <reified T: ApiObj<U>, reified U: ApiDto<T>> readProjections(
+                projectionName: String?, page: Int?, size: Int?, sort: String?,
+                type: TypeReference<ApiHateoasPage<U, T>>
+        ) =
+            requestAdapter.doPageRequest<T, U>(
+                url = "api/securedEntities",
+                embeddedPropName = "securedEntities",
+                projectionName = projectionName,
+                page = page,
+                size = size,
+                sort = sort,
+                type = type
+            )
+    
+        suspend fun readOne(id: Long) = requestAdapter.readProjection<SecuredEntity, SecuredEntityDto>(
+            id = id,
+            uri = "api/securedEntities"
+        )
+    
+    
+        
+    
+        suspend fun update(obj: SecuredEntity) = requestAdapter.updateObject(obj)
+    
+        suspend fun delete(obj: SecuredEntity) = requestAdapter.deleteObject(obj)
+    
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/securedEntities")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/securedEntities")
+    
+    
+        
+    
+        
     }
     
     open class UserClient(
@@ -653,6 +717,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun delete(obj: User) = requestAdapter.deleteObject(obj)
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/users")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/users")
     
     
         suspend fun readContacts(obj: User) =
@@ -703,7 +769,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         
-    
     }
 
     open class AddressRepository( val client: AddressClient ) {
@@ -729,6 +794,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         fun delete(id: Long) =
             runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
     
     
         
@@ -761,6 +828,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         fun delete(id: Long) =
             runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
     
     
         fun readAddress(obj: Contact) =
@@ -832,6 +901,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         fun delete(id: Long) =
             runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
     
     
         
@@ -862,6 +933,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         fun delete(id: Long) =
             runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
     
     
         
@@ -894,6 +967,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         fun delete(id: Long) =
             runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
     
     
         fun readManyToMany(obj: RelTestEntity) =
@@ -974,6 +1049,38 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
     }
     
+    open class SecuredEntityRepository( val client: SecuredEntityClient ) {
+    
+        fun create(obj: SecuredEntityBase) =
+            runBlocking { client.create(obj) }
+    
+        fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            runBlocking { client.readAll(page, size, sort) }
+    
+        
+    
+        fun readOne(id: Long) =
+            runBlocking { client.readOne(id) }
+    
+        
+    
+        fun update(obj: SecuredEntity) =
+            runBlocking { client.update(obj) }
+    
+        fun delete(obj: SecuredEntity) =
+            runBlocking { client.delete(obj) }
+    
+        fun delete(id: Long) =
+            runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
+    
+    
+        
+    
+        
+    }
+    
     open class UserRepository( val client: UserClient ) {
     
         fun create(obj: UserBase) =
@@ -997,6 +1104,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         fun delete(id: Long) =
             runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
     
     
         fun readContacts(obj: User) =

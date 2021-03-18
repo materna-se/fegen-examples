@@ -19,17 +19,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.materna.fegen.example.gradle.repository
+package de.materna.fegen.example.gradle.entity
 
-import de.materna.fegen.example.gradle.entity.IgnoredSearchEntity
-import de.materna.fegen.util.spring.annotation.FegenIgnore
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.rest.core.config.Projection
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.validation.constraints.NotNull
 
-@FegenIgnore
-interface IgnoredSearchEntityRepository: JpaRepository<IgnoredSearchEntity, Long> {
+@Entity
+class SecuredEntity {
 
-    fun findAllByTextIsStartingWith(prefix: String): List<IgnoredSearchEntity>
+    @Id
+    @GeneratedValue
+    var id: Long = -1
 
-    @FegenIgnore
-    fun findAllByTextIsEndingWith(prefix: String): List<IgnoredSearchEntity>
+    @NotNull
+    lateinit var secretText: String
+
+    @Projection(name = "baseProjection", types = [SecuredEntity::class])
+    interface BaseProjection {
+        val id: Long
+        val secretText: String
+    }
 }

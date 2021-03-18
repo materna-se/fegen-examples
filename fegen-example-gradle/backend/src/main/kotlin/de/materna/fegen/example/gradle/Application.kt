@@ -21,12 +21,11 @@
  */
 package de.materna.fegen.example.gradle
 
+import de.materna.fegen.util.spring.annotation.Fegen
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
-import org.springframework.data.projection.ProjectionFactory
-import org.springframework.data.projection.SpelAwareProxyProjectionFactory
 
+@Fegen
 @SpringBootApplication
 open class Application
 

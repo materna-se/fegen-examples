@@ -29,19 +29,58 @@ import io.kotlintest.TestCase
 import io.kotlintest.provided.SERVER_ADDRESS
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredFunctions
 import kotlin.reflect.full.declaredMemberProperties
 
+fun apiClient(): ApiClient {
+    val client = OkHttpClient.Builder()
+        .cookieJar(object : CookieJar {
+
+            private val cookies = mutableMapOf<String, Cookie>()
+
+            override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
+                this.cookies.putAll(cookies.associateBy { it.name() })
+            }
+
+            override fun loadForRequest(url: HttpUrl): MutableList<Cookie> {
+                return this.cookies.values.toMutableList()
+            }
+
+        })
+        .build()
+
+    return ApiClient(FetchRequestWrapper("http://localhost:8080/", client = client))
+}
+
+fun login(username: String, password: String): ApiClient {
+    val apiClient = apiClient()
+
+    val request = Request.Builder().run {
+        url("$SERVER_ADDRESS/api/login")
+        method("POST", RequestBody.create(null, byteArrayOf()))
+        val encodedPassword = Base64.getEncoder().encodeToString("$username:$password".toByteArray())
+        addHeader("Authorization", "Basic $encodedPassword")
+        build()
+    }
+
+    apiClient.request.client.newCall(request).execute().use { response ->
+        if (!response.isSuccessful) {
+            throw RuntimeException("Failed to log in: Server returned ${response.code()}")
+        }
+    }
+
+    return apiClient
+}
+
 fun setupTest() {
     val requestBody = RequestBody.create(null, byteArrayOf())
     val request = Request.Builder().run {
-        url(SERVER_ADDRESS + "/api/setupTest")
+        url("$SERVER_ADDRESS/api/setupTest")
         method("POST", requestBody)
         build()
     }
@@ -84,9 +123,6 @@ open class ApiSpec(body: ApiSpec.() -> Unit = {}) : StringSpec() {
     init {
         body()
     }
-
-    fun apiClient() =
-            ApiClient(FetchRequestWrapper("http://localhost:8080/"))
 
     override fun beforeTest(testCase: TestCase) {
         setupTest()

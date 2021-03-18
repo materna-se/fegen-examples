@@ -164,5 +164,5 @@ describe("Custom endpoint", () => {
     it("ignores class", () => {
         expect(apiClient).to.have.property("testRestControllerClient");
         expect(apiClient).to.not.have.property("ignoredTestRestControllerClient");
-    })
+    });
 });

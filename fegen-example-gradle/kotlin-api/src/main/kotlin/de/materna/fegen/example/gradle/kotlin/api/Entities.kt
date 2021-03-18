@@ -161,6 +161,7 @@ data class Address(
 
 
 
+
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -299,7 +300,6 @@ data class Address(
              _links = _links
          )
  }
- 
  
 
 data class ContactFullDto(
@@ -511,7 +511,6 @@ data class IgnoredSearchEntity(
 
 
 
-
 /**
  * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -618,7 +617,6 @@ data class NotExportedTestEntity(
             _links = _links
         )
 }
-
 
 
 data class OtherEmbeddableTestEntity (
@@ -808,7 +806,6 @@ data class PrimitiveTestEntity(
 
 
 
-
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -986,7 +983,115 @@ data class PrimitiveTestEntity(
          )
  }
  
- 
+
+
+/**
+ * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+data class SecuredEntityBase(
+
+    override val id: Long? = -1L,
+    val secretText: String = "",
+    override val _links: SecuredEntityLinks? = null
+): ApiBase<SecuredEntity, SecuredEntityDto> {
+
+    data class Builder(
+        private var id: Long? = -1L,
+        private var secretText: String = "",
+        private var _links: SecuredEntityLinks? = null
+    ) {
+
+        constructor(base: SecuredEntityBase): this(
+            base.id,
+            base.secretText,
+            base._links
+        )
+
+        fun id(id: Long?) = apply { this.id = id }
+        fun secretText(secretText: String) = apply { this.secretText = secretText }
+        fun _links(_links: SecuredEntityLinks) = apply { this._links = _links }
+        fun build() = SecuredEntityBase(id, secretText, _links)
+    }
+
+    fun toBuilder() = Builder(this)
+
+    companion object {
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /**
+     * Create a DTO from a base value
+     */
+    fun toDto(_links: SecuredEntityLinks) = SecuredEntityDto(
+        id = id, 
+        secretText = secretText,
+        _links = _links
+    )
+    
+    /**
+     * A convenience method for the creation of a dto from a base value for testing.
+     * Don't use this method in production code.
+     */
+    fun toDto(id: Long) = toDto(SecuredEntityLinks(mapOf(
+        "self" to ApiNavigationLink("api/securedEntities/$id", false)
+    )))
+}
+
+@JsonDeserialize(using = SecuredEntityLinksDeserializer::class)
+data class SecuredEntityLinks(
+    override val linkMap: Map<String, ApiNavigationLink>
+): BaseApiNavigationLinks(linkMap) {
+    
+}
+
+class SecuredEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<SecuredEntityLinks>(vc) {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): SecuredEntityLinks {
+        val jacksonType = ctxt.typeFactory.constructType(object : TypeReference<Map<String, ApiNavigationLink>>() {})
+        val deserializer = ctxt.findRootValueDeserializer(jacksonType)
+        val map = deserializer.deserialize(p, ctxt)
+        return SecuredEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
+    }
+}
+
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+data class SecuredEntityDto(
+    override val id: Long?,
+    val secretText: String,
+
+    override val _links: SecuredEntityLinks
+): ApiDto<SecuredEntity> {
+
+    override fun toObj() = SecuredEntity(
+            id = objId, 
+            secretText = secretText,
+            _links = _links
+        )
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `SecuredEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+data class SecuredEntity(
+    override val id: Long,
+    val secretText: String,
+
+    override val _links: SecuredEntityLinks
+): ApiObj<SecuredEntityDto> {
+        fun toBuilder(
+            
+        ) = SecuredEntityBase.Builder(
+            id = id,
+            secretText = secretText,
+            _links = _links
+        )
+}
+
 
 
  /**
@@ -1101,7 +1206,6 @@ data class PrimitiveTestEntity(
              _links = _links
          )
  }
- 
  
 
 data class ComplexTestPojo (

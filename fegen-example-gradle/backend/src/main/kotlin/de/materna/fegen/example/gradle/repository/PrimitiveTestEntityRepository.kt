@@ -23,7 +23,13 @@ package de.materna.fegen.example.gradle.repository
 
 import de.materna.fegen.example.gradle.entity.PrimitiveTestEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
 @RepositoryRestResource
-interface PrimitiveTestEntityRepository : JpaRepository<PrimitiveTestEntity, Long>
+interface PrimitiveTestEntityRepository : JpaRepository<PrimitiveTestEntity, Long> {
+
+    fun findByInt32(
+        @Param("intValue") value: Int
+    ): List<PrimitiveTestEntity>
+}

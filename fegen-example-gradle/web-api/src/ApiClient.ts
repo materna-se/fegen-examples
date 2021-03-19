@@ -275,6 +275,24 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             _links: responseObj._links
         };
     }
+    
+    public async searchSecuredContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
+        const request = this._requestAdapter.getRequest();
+        
+        const parameters: {[key: string]: string | number | boolean | undefined} = {nameRegex};
+            
+        const url = stringHelper.appendParams("api/search/securedContactsByRegex", parameters);
+    
+        const response = await request.get(url);
+        const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
+        
+        const elements = ((responseObj._embedded && responseObj._embedded.contacts) || []).map(item => (apiHelper.injectIds(item)));
+        
+        return {
+            items: elements,
+            _links: responseObj._links
+        };
+    }
 }
 
 export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSearchEntityNew, IgnoredSearchEntity> {
@@ -384,7 +402,23 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
   
     
   
+    public async searchFindByInt32<T extends PrimitiveTestEntity>(intValue: number, projection?: string, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC"): Promise<Items<T>> {
+        const request = this._requestAdapter.getRequest();
+        
+        const parameters: {[key: string]: string | number | boolean | undefined} = {intValue};
+            
+        const url = stringHelper.appendParams("api/primitiveTestEntities/search/findByInt32", parameters);
     
+        const response = await request.get(url);
+        const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
+        
+        const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
+        
+        return {
+            items: elements,
+            _links: responseObj._links
+        };
+    }
 }
 
 export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew, RelTestEntity> {

@@ -19,12 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.materna.fegen.test.kotlin
+package de.materna.fegen.test.kotlin.security
 
 import de.materna.fegen.runtime.EntitySecurity
+import de.materna.fegen.test.kotlin.ApiSpec
+import de.materna.fegen.test.kotlin.apiClient
+import de.materna.fegen.test.kotlin.login
 import io.kotlintest.shouldBe
 
-class SecurityTest: ApiSpec() {
+class EntitySecurityTest: ApiSpec() {
 
     init {
         "all permissions for unsecured entity if anonymous" {

@@ -220,6 +220,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
         
+        suspend fun isSearchFindByNameContainingAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNameContaining")
+        }
+        
         suspend fun searchFindByNameContainingContactFull(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<ContactFull> {
         
             val url = "api/contacts/search/findByNameContaining".appendParams(
@@ -237,6 +241,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
         
+        suspend fun isSearchFindByNameContainingContactFullAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNameContaining")
+        }
+        
         
         
         suspend fun searchFindByNames(firstName: String, lastName: String): Contact? {
@@ -251,6 +259,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
         
+        suspend fun isSearchFindByNamesAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNames")
+        }
+        
         suspend fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? {
         
             val url = "api/contacts/search/findByNames".appendParams(
@@ -262,6 +274,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 url = url,
                 projectionName = "full"
             )
+        }
+        
+        suspend fun isSearchFindByNamesContactFullAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNames")
         }
         
         
@@ -279,6 +295,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
         
+        suspend fun isSearchContactsByRegexAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/contactsByRegex")
+        }
+        
         suspend fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
         
             val url = "api/search/contactsByRegex".appendParams(
@@ -291,6 +311,47 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 projectionName = "full",
                 type = object : TypeReference<ApiHateoasList<ContactFullDto, ContactFull>>() {}
             )
+        }
+        
+        suspend fun isSearchContactsByRegexContactFullAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/contactsByRegex")
+        }
+        
+        
+        
+        suspend fun searchSecuredContactsByRegex(nameRegex: String): List<Contact> {
+        
+            val url = "api/search/securedContactsByRegex".appendParams(
+                "nameRegex" to nameRegex
+            )
+        
+            return requestAdapter.doListRequest<Contact, ContactDto>(
+                url = url,
+                embeddedPropName = "contacts",
+                type = object : TypeReference<ApiHateoasList<ContactDto, Contact>>() {}
+            )
+        }
+        
+        suspend fun isSearchSecuredContactsByRegexAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/securedContactsByRegex")
+        }
+        
+        suspend fun searchSecuredContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
+        
+            val url = "api/search/securedContactsByRegex".appendParams(
+                "nameRegex" to nameRegex
+            )
+        
+            return requestAdapter.doListRequest<ContactFull, ContactFullDto>(
+                url = url,
+                embeddedPropName = "contacts",
+                projectionName = "full",
+                type = object : TypeReference<ApiHateoasList<ContactFullDto, ContactFull>>() {}
+            )
+        }
+        
+        suspend fun isSearchSecuredContactsByRegexContactFullAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/securedContactsByRegex")
         }
     }
     
@@ -405,6 +466,23 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
+        suspend fun searchFindByInt32(intValue: Int): List<PrimitiveTestEntity> {
+        
+            val url = "api/primitiveTestEntities/search/findByInt32".appendParams(
+                "intValue" to intValue
+            )
+        
+            return requestAdapter.doListRequest<PrimitiveTestEntity, PrimitiveTestEntityDto>(
+                url = url,
+                embeddedPropName = "primitiveTestEntities",
+                type = object : TypeReference<ApiHateoasList<PrimitiveTestEntityDto, PrimitiveTestEntity>>() {}
+            )
+        }
+        
+        suspend fun isSearchFindByInt32Allowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/primitiveTestEntities/search/findByInt32")
+        }
+        
         
     }
     
@@ -768,6 +846,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         }
         
+        suspend fun isSearchFindUserByNameAllowed(): Boolean {
+            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/users/search/findUserByName")
+        }
+        
         
     }
 
@@ -858,24 +940,64 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchFindByNameContaining(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<Contact> =
             runBlocking { client.searchFindByNameContaining(name, page, size, sort) }
         
+        suspend fun isSearchFindByNameContainingAllowed(): Boolean {
+            return runBlocking { client.isSearchFindByNameContainingAllowed() }
+        }
+        
         fun searchFindByNameContainingContactFull(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<ContactFull> =
             runBlocking { client.searchFindByNameContainingContactFull(name, page, size, sort) }
+        
+        suspend fun isSearchFindByNameContainingContactFullAllowed(): Boolean {
+            return runBlocking { client.isSearchFindByNameContainingContactFullAllowed() }
+        }
         
         
         
         fun searchFindByNames(firstName: String, lastName: String): Contact? =
             runBlocking { client.searchFindByNames(firstName, lastName) }
         
+        suspend fun isSearchFindByNamesAllowed(): Boolean {
+            return runBlocking { client.isSearchFindByNamesAllowed() }
+        }
+        
         fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? =
             runBlocking { client.searchFindByNamesContactFull(firstName, lastName) }
+        
+        suspend fun isSearchFindByNamesContactFullAllowed(): Boolean {
+            return runBlocking { client.isSearchFindByNamesContactFullAllowed() }
+        }
         
         
         
         fun searchContactsByRegex(nameRegex: String): List<Contact> =
             runBlocking { client.searchContactsByRegex(nameRegex) }
         
+        suspend fun isSearchContactsByRegexAllowed(): Boolean {
+            return runBlocking { client.isSearchContactsByRegexAllowed() }
+        }
+        
         fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
             runBlocking { client.searchContactsByRegexContactFull(nameRegex) }
+        
+        suspend fun isSearchContactsByRegexContactFullAllowed(): Boolean {
+            return runBlocking { client.isSearchContactsByRegexContactFullAllowed() }
+        }
+        
+        
+        
+        fun searchSecuredContactsByRegex(nameRegex: String): List<Contact> =
+            runBlocking { client.searchSecuredContactsByRegex(nameRegex) }
+        
+        suspend fun isSearchSecuredContactsByRegexAllowed(): Boolean {
+            return runBlocking { client.isSearchSecuredContactsByRegexAllowed() }
+        }
+        
+        fun searchSecuredContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
+            runBlocking { client.searchSecuredContactsByRegexContactFull(nameRegex) }
+        
+        suspend fun isSearchSecuredContactsByRegexContactFullAllowed(): Boolean {
+            return runBlocking { client.isSearchSecuredContactsByRegexContactFullAllowed() }
+        }
     }
     
     open class IgnoredSearchEntityRepository( val client: IgnoredSearchEntityClient ) {
@@ -939,6 +1061,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         
     
+        fun searchFindByInt32(intValue: Int): List<PrimitiveTestEntity> =
+            runBlocking { client.searchFindByInt32(intValue) }
+        
+        suspend fun isSearchFindByInt32Allowed(): Boolean {
+            return runBlocking { client.isSearchFindByInt32Allowed() }
+        }
+        
         
     }
     
@@ -1125,6 +1254,10 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         fun searchFindUserByName(name: String): User? =
             runBlocking { client.searchFindUserByName(name) }
+        
+        suspend fun isSearchFindUserByNameAllowed(): Boolean {
+            return runBlocking { client.isSearchFindUserByNameAllowed() }
+        }
         
         
     }

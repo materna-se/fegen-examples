@@ -58,4 +58,11 @@ open class SearchController {
     ): ResponseEntity<CollectionModel<EntityModel<Contact.BaseProjection>>> {
         return ResponseEntity(HttpStatus.BAD_REQUEST)
     }
+
+    @RequestMapping("securedContactsByRegex")
+    fun securedContactsByRegex(
+        @RequestParam(name = "nameRegex") name: String
+    ): ResponseEntity<CollectionModel<EntityModel<Contact.BaseProjection>>> {
+        return contactsByRegex(name)
+    }
 }

@@ -48,6 +48,8 @@ open class WebSecurityConfig: WebSecurityConfigurerAdapter() {
             .antMatchers(HttpMethod.GET, "/api/securedEntities", "/api/securedEntities/*").hasRole("READER")
             .antMatchers(HttpMethod.POST, "/api/securedEntities").hasRole("WRITER")
             .antMatchers("/api/securedEntities", "/api/securedEntities/*").hasRole("ADMIN")
+            .antMatchers("/api/primitiveTestEntities/search/findByInt32").hasRole("ADMIN")
+            .antMatchers("/api/search/securedContactsByRegex").hasRole("ADMIN")
             .antMatchers("/api/login").authenticated()
             .anyRequest().permitAll()
             .and()

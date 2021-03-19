@@ -19,12 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {apiClient, setupFetch, setupTest} from "./util";
+import {apiClient, setupTest} from "./util";
 import {expect} from 'chai';
 
 describe("Repository search", () => {
 
-    before(setupFetch);
     beforeEach(setupTest);
 
     it("calls repository searches", async () => {

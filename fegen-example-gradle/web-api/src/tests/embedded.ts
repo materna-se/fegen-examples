@@ -20,13 +20,12 @@
  * SOFTWARE.
  */
 
-import {apiClient, setupFetch, setupTest} from "./util";
+import {apiClient, setupTest} from "./util";
 import { expect } from "chai";
 import {RelTestEntity, User} from "../Entities";
 
 describe("Embedded", () => {
 
-    before(setupFetch)
     beforeEach(setupTest)
 
     async function getUserOne(): Promise<User> {

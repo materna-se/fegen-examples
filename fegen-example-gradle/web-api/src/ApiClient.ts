@@ -3,7 +3,7 @@
 import {
     BaseClient, RequestAdapter,
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
-    apiHelper, stringHelper, Dto, Entity, EntitySecurity
+    apiHelper, stringHelper, Dto, Entity, EntitySecurity, isEndpointCallAllowed
 } from '@materna-se/fegen-runtime';
 import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
@@ -245,6 +245,10 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
                     };
     }
     
+    public async isSearchFindByNameContainingAllowed(): Promise<boolean> {
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/contacts/search/findByNameContaining");
+    }
+    
     public async searchFindByNames<T extends Contact>(firstName: string, lastName: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<T | undefined> {
         const request = this._requestAdapter.getRequest();
         
@@ -256,6 +260,10 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         const responseObj = ((await response.json()) as T);
         
         return responseObj;
+    }
+    
+    public async isSearchFindByNamesAllowed(): Promise<boolean> {
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/contacts/search/findByNames");
     }
     
     public async searchContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
@@ -276,6 +284,10 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         };
     }
     
+    public async isSearchContactsByRegexAllowed(): Promise<boolean> {
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/search/contactsByRegex");
+    }
+    
     public async searchSecuredContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
         const request = this._requestAdapter.getRequest();
         
@@ -292,6 +304,10 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             items: elements,
             _links: responseObj._links
         };
+    }
+    
+    public async isSearchSecuredContactsByRegexAllowed(): Promise<boolean> {
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/search/securedContactsByRegex");
     }
 }
 
@@ -418,6 +434,10 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             items: elements,
             _links: responseObj._links
         };
+    }
+    
+    public async isSearchFindByInt32Allowed(): Promise<boolean> {
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/primitiveTestEntities/search/findByInt32");
     }
 }
 
@@ -857,5 +877,9 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
         const responseObj = ((await response.json()) as T);
         
         return responseObj;
+    }
+    
+    public async isSearchFindUserByNameAllowed(): Promise<boolean> {
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/users/search/findUserByName");
     }
 }

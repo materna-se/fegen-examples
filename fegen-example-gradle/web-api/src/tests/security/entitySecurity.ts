@@ -19,22 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {apiClient, BASE_URL} from "./util";
+import {apiClient, setupTest} from "../util";
 import {expect} from "chai";
+import {login} from "./util";
 
-describe("Security", () => {
+describe("Entity Security", () => {
 
-    const login = async (username: string, password: string) => {
-        const response = await window.fetch(`${BASE_URL}api/login`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Basic ${btoa(`${username}:${password}`)}`
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Failed to log in: Server returned code ${response.status}`);
-        }
-    }
+    beforeEach(setupTest);
 
     it("returns all permissions for unsecured entity if anonymous", async () => {
         const allowedMethods = await apiClient.primitiveTestEntityClient.allowedMethods();

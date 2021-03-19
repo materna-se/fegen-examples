@@ -20,12 +20,11 @@
  * SOFTWARE.
  */
 import {expect} from "chai";
-import {apiClient, setupFetch, setupTest} from "./util";
+import {apiClient, setupTest} from "./util";
 import {UserNew} from "../Entities";
 
 describe("CRUD", () => {
 
-    before(setupFetch);
     beforeEach(setupTest);
 
     it("reads all", async () => {

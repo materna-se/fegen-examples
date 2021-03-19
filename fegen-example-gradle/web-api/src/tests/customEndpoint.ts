@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {apiClient, setupFetch, setupTest} from "./util";
+import {apiClient, setupTest} from "./util";
 import {expect} from "chai";
 import {
     PrimitiveTestEntityNew
@@ -27,7 +27,6 @@ import {
 
 describe("Custom endpoint", () => {
 
-    before(setupFetch);
     beforeEach(setupTest);
 
     const customEntity: PrimitiveTestEntityNew = {

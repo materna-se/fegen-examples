@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {apiClient, setupFetch, setupTest} from "./util";
+import {apiClient, setupTest} from "./util";
 import {expect} from "chai";
 import * as assert from "assert";
 import {Contact} from "../Entities";
@@ -27,7 +27,6 @@ import {Contact} from "../Entities";
 
 describe("Custom search", () => {
 
-    before(setupFetch);
     beforeEach(setupTest);
 
     function checkSearchCriteria(contacts: Contact[], regexStr: string) {

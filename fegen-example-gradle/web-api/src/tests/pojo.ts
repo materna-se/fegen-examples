@@ -19,14 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {apiClient, setupFetch, setupTest} from "./util";
+import {apiClient, setupTest} from "./util";
 import {ComplexTestPojo, CreateRequest, CyclicTestPojoA, PrimitiveTestPojo, RecursiveTestPojo} from "../Entities";
 import {expect} from "chai";
 
 
 describe("Pojo", () => {
 
-    before(setupFetch);
     beforeEach(setupTest);
 
     const pojos: PrimitiveTestPojo[] = [

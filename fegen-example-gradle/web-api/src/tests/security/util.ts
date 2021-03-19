@@ -19,22 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import fetch from "node-fetch";
-import * as fetchCookie from "fetch-cookie";
-import {ApiClient} from "../ApiClient";
+import {BASE_URL} from "../util";
 
-export const BASE_URL = "http://localhost:8080/"
-
-export const apiClient = new ApiClient(undefined, BASE_URL);
-
-function setupFetch() {
-    // Use fetchCookie on order for authorization to work.
-    // A new instance is created each time, so sessions are not retained between tests
-    // @ts-ignore Types do not match exactly, but good enough for FeGen
-    window.fetch = fetchCookie(fetch);
-}
-
-export async function setupTest() {
-    setupFetch()
-    await fetch("http://localhost:8080/api/setupTest", { method: "POST" });
+export const login = async (username: string, password: string) => {
+    const response = await window.fetch(`${BASE_URL}api/login`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Basic ${btoa(`${username}:${password}`)}`
+        }
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to log in: Server returned code ${response.status}`);
+    }
 }

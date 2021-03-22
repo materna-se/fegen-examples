@@ -221,7 +221,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNameContainingAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNameContaining")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNameContaining")
         }
         
         suspend fun searchFindByNameContainingContactFull(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<ContactFull> {
@@ -242,7 +242,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNameContainingContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNameContaining")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNameContaining")
         }
         
         
@@ -260,7 +260,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNamesAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNames")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNames")
         }
         
         suspend fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? {
@@ -277,7 +277,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNamesContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/contacts/search/findByNames")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNames")
         }
         
         
@@ -296,7 +296,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchContactsByRegexAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/contactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/contactsByRegex")
         }
         
         suspend fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
@@ -314,7 +314,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchContactsByRegexContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/contactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/contactsByRegex")
         }
         
         
@@ -333,7 +333,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchSecuredContactsByRegexAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/securedContactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/securedContactsByRegex")
         }
         
         suspend fun searchSecuredContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
@@ -351,7 +351,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchSecuredContactsByRegexContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/search/securedContactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/securedContactsByRegex")
         }
     }
     
@@ -480,7 +480,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByInt32Allowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/primitiveTestEntities/search/findByInt32")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/primitiveTestEntities/search/findByInt32")
         }
         
         
@@ -847,7 +847,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindUserByNameAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "GET", "/api/users/search/findUserByName")
+            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/users/search/findUserByName")
         }
         
         

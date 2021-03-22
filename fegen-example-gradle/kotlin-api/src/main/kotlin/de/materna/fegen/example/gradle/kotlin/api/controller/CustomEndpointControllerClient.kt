@@ -27,7 +27,7 @@ class CustomEndpointControllerClient(
     @Suppress("UNUSED")
     suspend fun isCreateContactAllowed(): Boolean {
         val url = """/api/custom/contacts/create"""
-        return isEndpointCallAllowed(requestAdapter.request, "POST", url)
+        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -61,6 +61,6 @@ class CustomEndpointControllerClient(
     @Suppress("UNUSED")
     suspend fun isCreateOrUpdateContactAllowed(): Boolean {
         val url = """/api/custom/contacts/createOrUpdate"""
-        return isEndpointCallAllowed(requestAdapter.request, "POST", url)
+        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
     }
 }

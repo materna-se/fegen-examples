@@ -83,7 +83,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/contactAddresses");
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/contactAddresses");
     }
 
   
@@ -152,7 +152,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/contacts");
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/contacts");
     }
 
   
@@ -349,7 +349,7 @@ export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSear
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/ignoredSearchEntities");
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/ignoredSearchEntities");
     }
 
   
@@ -412,7 +412,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/primitiveTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/primitiveTestEntities");
     }
 
   
@@ -525,7 +525,7 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/relTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/relTestEntities");
     }
 
   
@@ -770,7 +770,7 @@ export class SecuredEntityClient extends BaseClient<ApiClient, SecuredEntityNew,
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/securedEntities");
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/securedEntities");
     }
 
   
@@ -820,7 +820,7 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "/api/users");
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/users");
     }
 
   

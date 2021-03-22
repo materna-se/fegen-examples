@@ -212,14 +212,12 @@ open class TestRestController(
     @RequestMapping("pojoAsBodyAndSingleReturnValue", method = [RequestMethod.POST])
     @ResponseBody
     fun pojoAsBodyAndReturnValue(@RequestBody body: ComplexTestPojo): ResponseEntity<ComplexTestPojo> {
-        println("Pojo $body")
         return ResponseEntity.ok(body)
     }
 
     @RequestMapping("pojoAsBodyAndListReturnValue", method = [RequestMethod.POST])
     @ResponseBody
     fun pojoAsBodyAndListReturnValue(@RequestBody body: ComplexTestPojo): ResponseEntity<List<ComplexTestPojo>> {
-        println("Pojo $body")
         val testList = listOf(ComplexTestPojo(listOf(PrimitiveTestPojo("test2", 13.3, false))), body)
         return ResponseEntity.ok(testList)
     }
@@ -227,7 +225,6 @@ open class TestRestController(
     @RequestMapping("pojoListAsBody", method = [RequestMethod.POST])
     @ResponseBody
     fun pojoListAsBody(@RequestBody body: List<PrimitiveTestPojo>): ResponseEntity<List<PrimitiveTestPojo>> {
-        println("Pojo $body")
         return ResponseEntity.ok(body)
     }
 
@@ -258,4 +255,13 @@ open class TestRestController(
     @ResponseBody
     fun ignoredCustomEndpoint(): ResponseEntity<String> =
         ResponseEntity.ok("SomeText")
+
+    @PutMapping("securedEndpoint/{pathParam}")
+    @ResponseBody
+    fun securedEndpoint(
+        @PathVariable pathParam: String,
+        @RequestParam queryParam: Long
+    ): ResponseEntity<TextNode> {
+        return ResponseEntity.ok(TextNode("Success"))
+    }
 }

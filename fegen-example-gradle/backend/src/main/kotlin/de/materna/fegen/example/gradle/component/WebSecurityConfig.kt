@@ -50,6 +50,8 @@ open class WebSecurityConfig: WebSecurityConfigurerAdapter() {
             .antMatchers("/api/securedEntities", "/api/securedEntities/*").hasRole("ADMIN")
             .antMatchers("/api/primitiveTestEntities/search/findByInt32").hasRole("ADMIN")
             .antMatchers("/api/search/securedContactsByRegex").hasRole("ADMIN")
+            .antMatchers("/api/custom/testController/securedEndpoint/admin").hasRole("ADMIN")
+            .antMatchers("/api/custom/testController/securedEndpoint/*").hasRole("READER")
             .antMatchers("/api/login").authenticated()
             .anyRequest().permitAll()
             .and()

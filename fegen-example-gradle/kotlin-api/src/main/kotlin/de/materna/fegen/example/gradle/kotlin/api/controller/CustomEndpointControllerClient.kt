@@ -5,6 +5,8 @@ import de.materna.fegen.example.gradle.kotlin.api.ContactDto
 import de.materna.fegen.example.gradle.kotlin.api.CreateRequest
 import de.materna.fegen.runtime.RequestAdapter
 import de.materna.fegen.runtime.appendParams
+import de.materna.fegen.runtime.isEndpointCallAllowed
+import kotlin.Boolean
 import kotlin.String
 import kotlin.Suppress
 
@@ -20,6 +22,12 @@ class CustomEndpointControllerClient(
             body = body,
             ignoreBasePath = true
         )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun isCreateContactAllowed(): Boolean {
+        val url = """/api/custom/contacts/create"""
+        return isEndpointCallAllowed(requestAdapter.request, "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -48,5 +56,11 @@ class CustomEndpointControllerClient(
             method = "POST",
             ignoreBasePath = true
         )
+    }
+
+    @Suppress("UNUSED")
+    suspend fun isCreateOrUpdateContactAllowed(): Boolean {
+        val url = """/api/custom/contacts/createOrUpdate"""
+        return isEndpointCallAllowed(requestAdapter.request, "POST", url)
     }
 }

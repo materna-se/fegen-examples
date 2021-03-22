@@ -582,4 +582,30 @@ export class TestRestControllerClient {
         }
         
     }
+    
+    public async securedEndpoint(pathParam: string, queryParam: number): Promise<string>  {
+        const request = this.requestAdapter.getRequest();
+    
+        const baseUrl = `/api/custom/testController/securedEndpoint/${pathParam}`;
+    
+        const params = {queryParam};
+    
+        const url = stringHelper.appendParams(baseUrl, params);
+    
+        const response = await request.fetch(
+            url,
+            {
+                method: "PUT"
+            },
+            true);
+    
+        if(!response.ok) {
+            throw response;
+        }
+        
+        
+        return (await response.json()) as string;
+        
+        
+    }
 }

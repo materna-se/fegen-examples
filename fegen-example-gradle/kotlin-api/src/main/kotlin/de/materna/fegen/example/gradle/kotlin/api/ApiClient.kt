@@ -90,7 +90,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contactAddresses")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/contactAddresses")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/contactAddresses")
     
     
         
@@ -159,7 +159,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contacts")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/contacts")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/contacts")
     
     
         suspend fun readAddress(obj: Contact) =
@@ -404,7 +404,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/ignoredSearchEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/ignoredSearchEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/ignoredSearchEntities")
     
     
         
@@ -461,7 +461,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/primitiveTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/primitiveTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/primitiveTestEntities")
     
     
         
@@ -547,7 +547,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/relTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/relTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/relTestEntities")
     
     
         suspend fun readManyToMany(obj: RelTestEntity) =
@@ -739,7 +739,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/securedEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/securedEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/securedEntities")
     
     
         
@@ -796,7 +796,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/users")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "/api/users")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/users")
     
     
         suspend fun readContacts(obj: User) =

@@ -1,5 +1,5 @@
 import {Contact, CreateRequest} from "../Entities";
-import {RequestAdapter, stringHelper} from "@materna-se/fegen-runtime";
+import {RequestAdapter, stringHelper, isEndpointCallAllowed} from "@materna-se/fegen-runtime";
 
 export class CustomEndpointControllerClient {
 
@@ -42,6 +42,11 @@ export class CustomEndpointControllerClient {
         
     }
     
+    public isCreateContactAllowed(): Promise<boolean> {
+        const url = `/api/custom/contacts/create`;
+        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "POST", url);
+    }
+    
     public async createOrUpdateContact(userName: string, firstName: string, lastName: string, number: string, street: string, zip: string, city: string, country: string): Promise<Contact>  {
         const request = this.requestAdapter.getRequest();
     
@@ -67,5 +72,10 @@ export class CustomEndpointControllerClient {
         return responseObj;
         
         
+    }
+    
+    public isCreateOrUpdateContactAllowed(): Promise<boolean> {
+        const url = `/api/custom/contacts/createOrUpdate`;
+        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "POST", url);
     }
 }

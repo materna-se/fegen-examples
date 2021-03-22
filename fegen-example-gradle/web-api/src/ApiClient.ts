@@ -236,36 +236,36 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         const response = await request.get(url);
         const responseObj = ((await response.json()) as ApiHateoasObjectReadMultiple<T[]>);
         
-                    const elements = ((responseObj._embedded && responseObj._embedded.contacts) || []).map(item => (apiHelper.injectIds(item)));
-                
-                    return {
-                        items: elements,
-                        _links: responseObj._links
-        , page: responseObj.page
-                    };
+        const elements = ((responseObj._embedded && responseObj._embedded.contacts) || []).map(item => (apiHelper.injectIds(item)));
+
+return {
+    items: elements,
+    _links: responseObj._links,
+    page: responseObj.page
+};
     }
     
     public async isSearchFindByNameContainingAllowed(): Promise<boolean> {
         return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/contacts/search/findByNameContaining");
     }
+
+public async searchFindByNames<T extends Contact>(firstName: string, lastName: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<T | undefined> {
+    const request = this._requestAdapter.getRequest();
     
-    public async searchFindByNames<T extends Contact>(firstName: string, lastName: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<T | undefined> {
-        const request = this._requestAdapter.getRequest();
+    const parameters: {[key: string]: string | number | boolean | undefined} = {firstName, lastName};
         
-        const parameters: {[key: string]: string | number | boolean | undefined} = {firstName, lastName};
-            
-        const url = stringHelper.appendParams("api/contacts/search/findByNames", parameters);
+    const url = stringHelper.appendParams("api/contacts/search/findByNames", parameters);
+
+    const response = await request.get(url);
+    const responseObj = ((await response.json()) as T);
     
-        const response = await request.get(url);
-        const responseObj = ((await response.json()) as T);
-        
-        return responseObj;
-    }
-    
-    public async isSearchFindByNamesAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/contacts/search/findByNames");
-    }
-    
+    return responseObj;
+}
+
+public async isSearchFindByNamesAllowed(): Promise<boolean> {
+    return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/contacts/search/findByNames");
+}
+
     public async searchContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
         const request = this._requestAdapter.getRequest();
         
@@ -277,17 +277,17 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
         
         const elements = ((responseObj._embedded && responseObj._embedded.contacts) || []).map(item => (apiHelper.injectIds(item)));
-        
-        return {
-            items: elements,
-            _links: responseObj._links
-        };
+
+return {
+    items: elements,
+    _links: responseObj._links
+};
     }
     
     public async isSearchContactsByRegexAllowed(): Promise<boolean> {
         return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/search/contactsByRegex");
     }
-    
+
     public async searchSecuredContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
         const request = this._requestAdapter.getRequest();
         
@@ -299,11 +299,11 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
         const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
         
         const elements = ((responseObj._embedded && responseObj._embedded.contacts) || []).map(item => (apiHelper.injectIds(item)));
-        
-        return {
-            items: elements,
-            _links: responseObj._links
-        };
+
+return {
+    items: elements,
+    _links: responseObj._links
+};
     }
     
     public async isSearchSecuredContactsByRegexAllowed(): Promise<boolean> {
@@ -429,11 +429,11 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
         const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
         
         const elements = ((responseObj._embedded && responseObj._embedded.primitiveTestEntities) || []).map(item => (apiHelper.injectIds(item)));
-        
-        return {
-            items: elements,
-            _links: responseObj._links
-        };
+
+return {
+    items: elements,
+    _links: responseObj._links
+};
     }
     
     public async isSearchFindByInt32Allowed(): Promise<boolean> {

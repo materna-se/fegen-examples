@@ -246,7 +246,7 @@ return {
     }
     
     public async isSearchFindByNameContainingAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/contacts/search/findByNameContaining");
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "/api", "GET", "/api/contacts/search/findByNameContaining");
     }
 
 public async searchFindByNames<T extends Contact>(firstName: string, lastName: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<T | undefined> {
@@ -263,7 +263,7 @@ public async searchFindByNames<T extends Contact>(firstName: string, lastName: s
 }
 
 public async isSearchFindByNamesAllowed(): Promise<boolean> {
-    return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/contacts/search/findByNames");
+    return isEndpointCallAllowed(this._requestAdapter.getRequest(), "/api", "GET", "/api/contacts/search/findByNames");
 }
 
     public async searchContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
@@ -285,7 +285,7 @@ return {
     }
     
     public async isSearchContactsByRegexAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/search/contactsByRegex");
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "/api", "GET", "/api/search/contactsByRegex");
     }
 
     public async searchSecuredContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
@@ -307,7 +307,7 @@ return {
     }
     
     public async isSearchSecuredContactsByRegexAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/search/securedContactsByRegex");
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "/api", "GET", "/api/search/securedContactsByRegex");
     }
 }
 
@@ -437,7 +437,7 @@ return {
     }
     
     public async isSearchFindByInt32Allowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/primitiveTestEntities/search/findByInt32");
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "/api", "GET", "/api/primitiveTestEntities/search/findByInt32");
     }
 }
 
@@ -880,6 +880,6 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     }
     
     public async isSearchFindUserByNameAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "GET", "/api/users/search/findUserByName");
+        return isEndpointCallAllowed(this._requestAdapter.getRequest(), "/api", "GET", "/api/users/search/findUserByName");
     }
 }

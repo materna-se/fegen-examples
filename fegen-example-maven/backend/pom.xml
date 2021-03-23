@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>com.github.materna-se.fegen</groupId>
 			<artifactId>fegen-spring-util</artifactId>
-			<version>1.0-RC8</version>
+			<version>1.0-RC9</version>
 		</dependency>
 
 		<dependency>

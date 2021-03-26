@@ -21,36 +21,9 @@
  */
 package de.materna.fegen.example.gradle.repository
 
-import de.materna.fegen.example.gradle.entity.Contact
-import de.materna.fegen.util.spring.annotation.FegenIgnore
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import de.materna.fegen.example.gradle.entity.PlainFieldTestEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 
 @RepositoryRestResource
-interface ContactRepository : JpaRepository<Contact, Long> {
-
-    @RequestMapping
-    @Query("SELECT c FROM Contact c WHERE c.firstName LIKE CONCAT('%', :name, '%') OR c.lastName LIKE CONCAT('%', :name, '%')")
-    fun findByNameContaining(
-            @RequestParam("name") @Param("name") name: String,
-            pageable: Pageable
-    ): Page<Contact>
-
-    @Query("SELECT c FROM Contact c")
-    fun getAllBaseProjected(): List<Contact.BaseProjection>
-
-    @Query("SELECT c FROM Contact c WHERE c.firstName = :firstName AND c.lastName = :lastName")
-    fun findByNames(
-            @Param("firstName") firstName: String,
-            @Param("lastName") lastName: String
-    ): Contact?
-
-    @FegenIgnore
-    fun findByFirstNameStartingWith(prefix: String): List<Contact.BaseProjection>
-}
+interface PlainFieldTestEntityRepository : JpaRepository<PlainFieldTestEntity, Long>

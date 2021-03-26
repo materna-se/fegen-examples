@@ -42,6 +42,7 @@ open class TestController(
         private val addressRepository: AddressRepository,
         private val primitiveTestEntityRepository: PrimitiveTestEntityRepository,
         private val relTestEntityRepository: RelTestEntityRepository,
+        private val plainFieldTestEntityRepository: PlainFieldTestEntityRepository,
         private val shutdownComponent: ShutdownComponent
 ) {
 
@@ -86,6 +87,13 @@ open class TestController(
         initPrimitiveTestEntities()
 
         initRelationTestEntities(userOne, userTwo)
+
+        plainFieldTestEntityRepository.save(PlainFieldTestEntity().apply {
+            notNullField = "notNullField"
+            bothWithNotNullOnField = "bothWithNotNullOnField"
+            bothWithNotNullOnGetter = "bothWithNotNullOnGetter"
+            transientFieldWithGetter = "transientFieldWithGetter"
+        })
     }
 
     private fun initContacts(userOne: User, userTwo: User) {

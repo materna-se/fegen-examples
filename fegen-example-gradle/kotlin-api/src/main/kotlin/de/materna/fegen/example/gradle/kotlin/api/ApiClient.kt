@@ -29,6 +29,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
         open val contactRepository by lazy { ContactRepository(client = contactClient) }
         open val ignoredSearchEntityClient by lazy { IgnoredSearchEntityClient(apiClient = this, requestAdapter = adapter) }
         open val ignoredSearchEntityRepository by lazy { IgnoredSearchEntityRepository(client = ignoredSearchEntityClient) }
+        open val plainFieldTestEntityClient by lazy { PlainFieldTestEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val plainFieldTestEntityRepository by lazy { PlainFieldTestEntityRepository(client = plainFieldTestEntityClient) }
         open val primitiveTestEntityClient by lazy { PrimitiveTestEntityClient(apiClient = this, requestAdapter = adapter) }
         open val primitiveTestEntityRepository by lazy { PrimitiveTestEntityRepository(client = primitiveTestEntityClient) }
         open val relTestEntityClient by lazy { RelTestEntityClient(apiClient = this, requestAdapter = adapter) }
@@ -405,6 +407,63 @@ import com.fasterxml.jackson.databind.SerializationFeature
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/ignoredSearchEntities")
         
         suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/ignoredSearchEntities")
+    
+    
+        
+    
+        
+    }
+    
+    open class PlainFieldTestEntityClient(
+            override val apiClient: ApiClient,
+            override val requestAdapter: RequestAdapter
+    ): BaseClient<ApiClient>(apiClient, requestAdapter) {
+    
+        suspend fun create(obj: PlainFieldTestEntityBase) = requestAdapter.createObject(
+            newObject = obj,
+            createURI = "api/plainFieldTestEntities"
+        )
+    
+        suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            readProjections<PlainFieldTestEntity, PlainFieldTestEntityDto>(
+                projectionName = null,
+                page = page,
+                size = size,
+                sort = sort,
+                type = object : TypeReference<ApiHateoasPage<PlainFieldTestEntityDto, PlainFieldTestEntity>>() {}
+            )
+    
+        
+    
+        private suspend inline fun <reified T: ApiObj<U>, reified U: ApiDto<T>> readProjections(
+                projectionName: String?, page: Int?, size: Int?, sort: String?,
+                type: TypeReference<ApiHateoasPage<U, T>>
+        ) =
+            requestAdapter.doPageRequest<T, U>(
+                url = "api/plainFieldTestEntities",
+                embeddedPropName = "plainFieldTestEntities",
+                projectionName = projectionName,
+                page = page,
+                size = size,
+                sort = sort,
+                type = type
+            )
+    
+        suspend fun readOne(id: Long) = requestAdapter.readProjection<PlainFieldTestEntity, PlainFieldTestEntityDto>(
+            id = id,
+            uri = "api/plainFieldTestEntities"
+        )
+    
+    
+        
+    
+        suspend fun update(obj: PlainFieldTestEntity) = requestAdapter.updateObject(obj)
+    
+        suspend fun delete(obj: PlainFieldTestEntity) = requestAdapter.deleteObject(obj)
+    
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/plainFieldTestEntities")
+        
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/plainFieldTestEntities")
     
     
         
@@ -1019,6 +1078,38 @@ import com.fasterxml.jackson.databind.SerializationFeature
             runBlocking { client.update(obj) }
     
         fun delete(obj: IgnoredSearchEntity) =
+            runBlocking { client.delete(obj) }
+    
+        fun delete(id: Long) =
+            runBlocking { client.delete(id) }
+            
+        fun allowedMethods() = runBlocking { client.allowedMethods() }
+    
+    
+        
+    
+        
+    }
+    
+    open class PlainFieldTestEntityRepository( val client: PlainFieldTestEntityClient ) {
+    
+        fun create(obj: PlainFieldTestEntityBase) =
+            runBlocking { client.create(obj) }
+    
+        fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
+            runBlocking { client.readAll(page, size, sort) }
+    
+        
+    
+        fun readOne(id: Long) =
+            runBlocking { client.readOne(id) }
+    
+        
+    
+        fun update(obj: PlainFieldTestEntity) =
+            runBlocking { client.update(obj) }
+    
+        fun delete(obj: PlainFieldTestEntity) =
             runBlocking { client.delete(obj) }
     
         fun delete(id: Long) =

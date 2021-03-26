@@ -5,7 +5,7 @@ import {
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
     apiHelper, stringHelper, Dto, Entity, EntitySecurity, isEndpointCallAllowed
 } from '@materna-se/fegen-runtime';
-import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';
+import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PlainFieldTestEntityNew, PlainFieldTestEntityDto, PlainFieldTestEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
 import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, IgnoredSearchEntityBaseProjection, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, SecuredEntityBaseProjection, UserBaseProjection } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
@@ -15,6 +15,7 @@ export class ApiClient {
     public readonly addressClient: AddressClient;
     public readonly contactClient: ContactClient;
     public readonly ignoredSearchEntityClient: IgnoredSearchEntityClient;
+    public readonly plainFieldTestEntityClient: PlainFieldTestEntityClient;
     public readonly primitiveTestEntityClient: PrimitiveTestEntityClient;
     public readonly relTestEntityClient: RelTestEntityClient;
     public readonly securedEntityClient: SecuredEntityClient;
@@ -30,6 +31,7 @@ export class ApiClient {
         this.addressClient = new AddressClient(this, adapter);
         this.contactClient = new ContactClient(this, adapter);
         this.ignoredSearchEntityClient = new IgnoredSearchEntityClient(this, adapter);
+        this.plainFieldTestEntityClient = new PlainFieldTestEntityClient(this, adapter);
         this.primitiveTestEntityClient = new PrimitiveTestEntityClient(this, adapter);
         this.relTestEntityClient = new RelTestEntityClient(this, adapter);
         this.securedEntityClient = new SecuredEntityClient(this, adapter);
@@ -350,6 +352,55 @@ export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSear
   
     public allowedMethods(): Promise<EntitySecurity> {
         return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/ignoredSearchEntities");
+    }
+
+  
+    
+  
+    
+}
+
+export class PlainFieldTestEntityClient extends BaseClient<ApiClient, PlainFieldTestEntityNew, PlainFieldTestEntity> {
+
+    constructor(apiClient: ApiClient, requestAdapter?: RequestAdapter){
+        super("api/plainFieldTestEntities", "plainFieldTestEntities", apiClient, requestAdapter);
+        this.readOne = this.readOne.bind(this);
+        this.readProjection = this.readProjection.bind(this);
+        
+    }
+  
+    public static build(base: Partial<PlainFieldTestEntityNew> = {}): PlainFieldTestEntityNew {
+        return {
+            bothWithNotNullOnField: base.bothWithNotNullOnField !== undefined ? base.bothWithNotNullOnField : "",
+            bothWithNotNullOnGetter: base.bothWithNotNullOnGetter !== undefined ? base.bothWithNotNullOnGetter : "",
+            notNullField: base.notNullField !== undefined ? base.notNullField : "",
+            nullableField: base.nullableField !== undefined ? base.nullableField : "",
+            transientFieldWithGetter: base.transientFieldWithGetter !== undefined ? base.transientFieldWithGetter : ""
+        }
+    }
+  
+    protected toPlainObj(obj: PlainFieldTestEntity): PlainFieldTestEntity {
+        return {
+            id: obj.id,
+            bothWithNotNullOnField: obj.bothWithNotNullOnField,
+            bothWithNotNullOnGetter: obj.bothWithNotNullOnGetter,
+            notNullField: obj.notNullField,
+            nullableField: obj.nullableField,
+            transientFieldWithGetter: obj.transientFieldWithGetter,
+            _links: obj._links
+        };
+    }
+  
+    
+    
+    public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "bothWithNotNullOnField,ASC" | "bothWithNotNullOnField,DESC" | "bothWithNotNullOnGetter,ASC" | "bothWithNotNullOnGetter,DESC" | "notNullField,ASC" | "notNullField,DESC" | "transientFieldWithGetter,ASC" | "transientFieldWithGetter,DESC") : Promise<PagedItems<PlainFieldTestEntity>> {
+        return await this.readProjections<PlainFieldTestEntity>(undefined, page, size, sort);
+    }
+  
+    
+  
+    public allowedMethods(): Promise<EntitySecurity> {
+        return EntitySecurity.fetch(this._requestAdapter.getRequest(), "api", "/api/plainFieldTestEntities");
     }
 
   

@@ -196,6 +196,44 @@ export interface OtherEmbeddableTestEntity {
  * This type is used for creaing this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
+export interface PlainFieldTestEntityNew {
+    bothWithNotNullOnField: string
+    bothWithNotNullOnGetter: string
+    notNullField: string
+    nullableField: string | null
+    transientFieldWithGetter: string
+    
+}
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+export interface PlainFieldTestEntityDto {
+    bothWithNotNullOnField: string
+    bothWithNotNullOnGetter: string
+    notNullField: string
+    nullableField: string | null
+    transientFieldWithGetter: string
+    _links: {
+        self: ApiNavigationLink
+        
+    }
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `PlainFieldTestEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+export interface PlainFieldTestEntity extends PlainFieldTestEntityDto {
+    id: number
+}
+
+
+/**
+ * This type is used for creaing this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
 export interface PrimitiveTestEntityNew {
     booleanTrue: boolean
     date2000_6_12: string

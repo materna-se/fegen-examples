@@ -629,6 +629,151 @@ data class OtherEmbeddableTestEntity (
  * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
+data class PlainFieldTestEntityBase(
+
+    override val id: Long? = -1L,
+    val bothWithNotNullOnField: String = "",
+    val bothWithNotNullOnGetter: String = "",
+    val notNullField: String = "",
+    val transientFieldWithGetter: String = "",
+    val nullableField: String? = null,
+    override val _links: PlainFieldTestEntityLinks? = null
+): ApiBase<PlainFieldTestEntity, PlainFieldTestEntityDto> {
+
+    data class Builder(
+        private var id: Long? = -1L,
+        private var bothWithNotNullOnField: String = "",
+        private var bothWithNotNullOnGetter: String = "",
+        private var notNullField: String = "",
+        private var nullableField: String? = null,
+        private var transientFieldWithGetter: String = "",
+        private var _links: PlainFieldTestEntityLinks? = null
+    ) {
+
+        constructor(base: PlainFieldTestEntityBase): this(
+            base.id,
+            base.bothWithNotNullOnField,
+            base.bothWithNotNullOnGetter,
+            base.notNullField,
+            base.nullableField,
+            base.transientFieldWithGetter,
+            base._links
+        )
+
+        fun id(id: Long?) = apply { this.id = id }
+        fun bothWithNotNullOnField(bothWithNotNullOnField: String) = apply { this.bothWithNotNullOnField = bothWithNotNullOnField }
+        fun bothWithNotNullOnGetter(bothWithNotNullOnGetter: String) = apply { this.bothWithNotNullOnGetter = bothWithNotNullOnGetter }
+        fun notNullField(notNullField: String) = apply { this.notNullField = notNullField }
+        fun nullableField(nullableField: String?) = apply { this.nullableField = nullableField }
+        fun transientFieldWithGetter(transientFieldWithGetter: String) = apply { this.transientFieldWithGetter = transientFieldWithGetter }
+        fun _links(_links: PlainFieldTestEntityLinks) = apply { this._links = _links }
+        fun build() = PlainFieldTestEntityBase(id, bothWithNotNullOnField, bothWithNotNullOnGetter, notNullField, transientFieldWithGetter, nullableField, _links)
+    }
+
+    fun toBuilder() = Builder(this)
+
+    companion object {
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /**
+     * Create a DTO from a base value
+     */
+    fun toDto(_links: PlainFieldTestEntityLinks) = PlainFieldTestEntityDto(
+        id = id, 
+        bothWithNotNullOnField = bothWithNotNullOnField, 
+        bothWithNotNullOnGetter = bothWithNotNullOnGetter, 
+        notNullField = notNullField, 
+        nullableField = nullableField, 
+        transientFieldWithGetter = transientFieldWithGetter,
+        _links = _links
+    )
+    
+    /**
+     * A convenience method for the creation of a dto from a base value for testing.
+     * Don't use this method in production code.
+     */
+    fun toDto(id: Long) = toDto(PlainFieldTestEntityLinks(mapOf(
+        "self" to ApiNavigationLink("api/plainFieldTestEntities/$id", false)
+    )))
+}
+
+@JsonDeserialize(using = PlainFieldTestEntityLinksDeserializer::class)
+data class PlainFieldTestEntityLinks(
+    override val linkMap: Map<String, ApiNavigationLink>
+): BaseApiNavigationLinks(linkMap) {
+    
+}
+
+class PlainFieldTestEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<PlainFieldTestEntityLinks>(vc) {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): PlainFieldTestEntityLinks {
+        val jacksonType = ctxt.typeFactory.constructType(object : TypeReference<Map<String, ApiNavigationLink>>() {})
+        val deserializer = ctxt.findRootValueDeserializer(jacksonType)
+        val map = deserializer.deserialize(p, ctxt)
+        return PlainFieldTestEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
+    }
+}
+
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+data class PlainFieldTestEntityDto(
+    override val id: Long?,
+    val bothWithNotNullOnField: String,
+    val bothWithNotNullOnGetter: String,
+    val notNullField: String,
+    val nullableField: String?,
+    val transientFieldWithGetter: String,
+
+    override val _links: PlainFieldTestEntityLinks
+): ApiDto<PlainFieldTestEntity> {
+
+    override fun toObj() = PlainFieldTestEntity(
+            id = objId, 
+            bothWithNotNullOnField = bothWithNotNullOnField, 
+            bothWithNotNullOnGetter = bothWithNotNullOnGetter, 
+            notNullField = notNullField, 
+            nullableField = nullableField, 
+            transientFieldWithGetter = transientFieldWithGetter,
+            _links = _links
+        )
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `PlainFieldTestEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+data class PlainFieldTestEntity(
+    override val id: Long,
+    val bothWithNotNullOnField: String,
+    val bothWithNotNullOnGetter: String,
+    val notNullField: String,
+    val nullableField: String?,
+    val transientFieldWithGetter: String,
+
+    override val _links: PlainFieldTestEntityLinks
+): ApiObj<PlainFieldTestEntityDto> {
+        fun toBuilder(
+            
+        ) = PlainFieldTestEntityBase.Builder(
+            id = id,
+            bothWithNotNullOnField = bothWithNotNullOnField,
+            bothWithNotNullOnGetter = bothWithNotNullOnGetter,
+            notNullField = notNullField,
+            nullableField = nullableField,
+            transientFieldWithGetter = transientFieldWithGetter,
+            _links = _links
+        )
+}
+
+
+
+/**
+ * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
 data class PrimitiveTestEntityBase(
 
     override val id: Long? = -1L,

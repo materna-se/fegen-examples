@@ -162,6 +162,10 @@ data class Address(
 
 
 
+
+
+
+
  /**
   * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
   * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
@@ -503,6 +507,115 @@ data class IgnoredSearchEntity(
         fun toBuilder(
             
         ) = IgnoredSearchEntityBase.Builder(
+            id = id,
+            text = text,
+            _links = _links
+        )
+}
+
+
+
+/**
+ * This type is used as a basis for the different variants of this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+data class NoRepoEntityBase(
+
+    override val id: Long? = -1L,
+    val text: String = "",
+    override val _links: NoRepoEntityLinks? = null
+): ApiBase<NoRepoEntity, NoRepoEntityDto> {
+
+    data class Builder(
+        private var id: Long? = -1L,
+        private var text: String = "",
+        private var _links: NoRepoEntityLinks? = null
+    ) {
+
+        constructor(base: NoRepoEntityBase): this(
+            base.id,
+            base.text,
+            base._links
+        )
+
+        fun id(id: Long?) = apply { this.id = id }
+        fun text(text: String) = apply { this.text = text }
+        fun _links(_links: NoRepoEntityLinks) = apply { this._links = _links }
+        fun build() = NoRepoEntityBase(id, text, _links)
+    }
+
+    fun toBuilder() = Builder(this)
+
+    companion object {
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /**
+     * Create a DTO from a base value
+     */
+    fun toDto(_links: NoRepoEntityLinks) = NoRepoEntityDto(
+        id = id, 
+        text = text,
+        _links = _links
+    )
+    
+    /**
+     * A convenience method for the creation of a dto from a base value for testing.
+     * Don't use this method in production code.
+     */
+    fun toDto(id: Long) = toDto(NoRepoEntityLinks(mapOf(
+        "self" to ApiNavigationLink("api/noRepoEntities/$id", false)
+    )))
+}
+
+@JsonDeserialize(using = NoRepoEntityLinksDeserializer::class)
+data class NoRepoEntityLinks(
+    override val linkMap: Map<String, ApiNavigationLink>
+): BaseApiNavigationLinks(linkMap) {
+    
+}
+
+class NoRepoEntityLinksDeserializer(private val vc: Class<*>? = null):  StdDeserializer<NoRepoEntityLinks>(vc) {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): NoRepoEntityLinks {
+        val jacksonType = ctxt.typeFactory.constructType(object : TypeReference<Map<String, ApiNavigationLink>>() {})
+        val deserializer = ctxt.findRootValueDeserializer(jacksonType)
+        val map = deserializer.deserialize(p, ctxt)
+        return NoRepoEntityLinks::class.java.getConstructor(Map::class.java).newInstance(map)
+    }
+}
+
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+data class NoRepoEntityDto(
+    override val id: Long?,
+    val text: String,
+
+    override val _links: NoRepoEntityLinks
+): ApiDto<NoRepoEntity> {
+
+    override fun toObj() = NoRepoEntity(
+            id = objId, 
+            text = text,
+            _links = _links
+        )
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `NoRepoEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+data class NoRepoEntity(
+    override val id: Long,
+    val text: String,
+
+    override val _links: NoRepoEntityLinks
+): ApiObj<NoRepoEntityDto> {
+        fun toBuilder(
+            
+        ) = NoRepoEntityBase.Builder(
             id = id,
             text = text,
             _links = _links

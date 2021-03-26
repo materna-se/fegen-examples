@@ -7,7 +7,7 @@ import {
 } from '@materna-se/fegen-runtime';
 import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PlainFieldTestEntityNew, PlainFieldTestEntityDto, PlainFieldTestEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';
 import {  } from './Entities';
-import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, IgnoredSearchEntityBaseProjection, NotExportedTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, SecuredEntityBaseProjection, UserBaseProjection } from './Entities';
+import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, IgnoredSearchEntityBaseProjection, NoRepoEntityBaseProjection, NotExportedTestEntityBaseProjection, PlainFieldTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, SecuredEntityBaseProjection, UserBaseProjection } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
 
@@ -391,7 +391,13 @@ export class PlainFieldTestEntityClient extends BaseClient<ApiClient, PlainField
         };
     }
   
-    
+    public async readProjectionsPlainFieldTestEntityBaseProjection(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "bothWithNotNullOnField,ASC" | "bothWithNotNullOnField,DESC" | "bothWithNotNullOnGetter,ASC" | "bothWithNotNullOnGetter,DESC" | "notNullField,ASC" | "notNullField,DESC" | "transientFieldWithGetter,ASC" | "transientFieldWithGetter,DESC") : Promise<PagedItems<PlainFieldTestEntityBaseProjection>> {
+        return this.readProjections<PlainFieldTestEntityBaseProjection>("baseProjection", page, size, sort);
+    }
+            
+    public async readProjectionPlainFieldTestEntityBaseProjection(id: number): Promise<PlainFieldTestEntityBaseProjection| undefined> {
+        return this.readProjection<PlainFieldTestEntityBaseProjection>(id, "baseProjection");
+    }
     
     public async readAll(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "bothWithNotNullOnField,ASC" | "bothWithNotNullOnField,DESC" | "bothWithNotNullOnGetter,ASC" | "bothWithNotNullOnGetter,DESC" | "notNullField,ASC" | "notNullField,DESC" | "transientFieldWithGetter,ASC" | "transientFieldWithGetter,DESC") : Promise<PagedItems<PlainFieldTestEntity>> {
         return await this.readProjections<PlainFieldTestEntity>(undefined, page, size, sort);

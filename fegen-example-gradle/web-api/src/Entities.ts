@@ -50,7 +50,15 @@ export interface IgnoredSearchEntityBaseProjection extends IgnoredSearchEntity {
     
 }
 
+export interface NoRepoEntityBaseProjection extends NoRepoEntity {
+    
+}
+
 export interface NotExportedTestEntityBaseProjection extends NotExportedTestEntity {
+    
+}
+
+export interface PlainFieldTestEntityBaseProjection extends PlainFieldTestEntity {
     
 }
 
@@ -153,6 +161,36 @@ export interface IgnoredSearchEntityDto {
  * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
  */
 export interface IgnoredSearchEntity extends IgnoredSearchEntityDto {
+    id: number
+}
+
+
+/**
+ * This type is used for creaing this domain type. It can be created in the frontend
+ * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
+ */
+export interface NoRepoEntityNew {
+    text: string
+    
+}
+
+/**
+ * This type is used for data transfer. Each time we read an object of this domain type from a rest service,
+ * this type will be returned.
+ */
+export interface NoRepoEntityDto {
+    text: string
+    _links: {
+        self: ApiNavigationLink
+        
+    }
+}
+
+/**
+ * This type is the default type of choice in the frontend as it has an id (which can be added to the `NoRepoEntityDto`
+ * via `apiHelper#getObjectId`). Consequently, this type is used for fields that reference this type.
+ */
+export interface NoRepoEntity extends NoRepoEntityDto {
     id: number
 }
 

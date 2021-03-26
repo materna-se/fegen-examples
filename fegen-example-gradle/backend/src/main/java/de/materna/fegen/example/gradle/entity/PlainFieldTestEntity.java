@@ -21,6 +21,7 @@
  */
 package de.materna.fegen.example.gradle.entity;
 
+import org.springframework.data.rest.core.config.Projection;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.Entity;
@@ -66,5 +67,15 @@ public class PlainFieldTestEntity {
 
     public String getTransientFieldWithGetter() {
         return transientFieldWithGetter;
+    }
+
+    @Projection(name = "baseProjection", types ={PlainFieldTestEntity.class})
+    interface BaseProjection {
+        long getId();
+        String getNotNullField();
+        String getNullableField();
+        String getBothWithNotNullOnField();
+        String getBothWithNotNullOnGetter();
+        String getTransientFieldWithGetter();
     }
 }

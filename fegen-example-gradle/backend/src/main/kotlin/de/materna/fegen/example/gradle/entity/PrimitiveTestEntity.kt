@@ -63,10 +63,10 @@ class PrimitiveTestEntity {
     @NotNull
     var booleanTrue: Boolean = true
 
-    @NotNull
+    @Column(nullable = false)
     var date2000_6_12: LocalDate = LocalDate.of(2000, 6, 12)
 
-    @Nullable
+    @Column(nullable = true)
     var dateTime2000_1_1_12_30: LocalDateTime? = LocalDateTime.of(2000, 1, 1, 12, 30)
 
     @Projection(name = "baseProjection", types = [PrimitiveTestEntity::class])

@@ -47,8 +47,7 @@ class RelTestEntity {
     @OneToOne
     var oneToOneOptional: User? = null
 
-    @Nullable
-    @ManyToOne
+    @ManyToOne(optional = true)
     var manyToOneOptional: User? = null
 
     @OneToMany

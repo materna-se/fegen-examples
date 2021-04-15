@@ -69,7 +69,7 @@ public class PlainFieldTestEntity {
         return transientFieldWithGetter;
     }
 
-    @Projection(name = "baseProjection", types ={PlainFieldTestEntity.class})
+    @Projection(name = "baseProjection", types = {PlainFieldTestEntity.class})
     interface BaseProjection {
         long getId();
         String getNotNullField();

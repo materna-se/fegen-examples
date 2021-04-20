@@ -999,14 +999,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchFindByNameContaining(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<Contact> =
             runBlocking { client.searchFindByNameContaining(name, page, size, sort) }
         
-        suspend fun isSearchFindByNameContainingAllowed(): Boolean {
+        fun isSearchFindByNameContainingAllowed(): Boolean {
             return runBlocking { client.isSearchFindByNameContainingAllowed() }
         }
         
         fun searchFindByNameContainingContactFull(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<ContactFull> =
             runBlocking { client.searchFindByNameContainingContactFull(name, page, size, sort) }
         
-        suspend fun isSearchFindByNameContainingContactFullAllowed(): Boolean {
+        fun isSearchFindByNameContainingContactFullAllowed(): Boolean {
             return runBlocking { client.isSearchFindByNameContainingContactFullAllowed() }
         }
         
@@ -1015,14 +1015,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchFindByNames(firstName: String, lastName: String): Contact? =
             runBlocking { client.searchFindByNames(firstName, lastName) }
         
-        suspend fun isSearchFindByNamesAllowed(): Boolean {
+        fun isSearchFindByNamesAllowed(): Boolean {
             return runBlocking { client.isSearchFindByNamesAllowed() }
         }
         
         fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? =
             runBlocking { client.searchFindByNamesContactFull(firstName, lastName) }
         
-        suspend fun isSearchFindByNamesContactFullAllowed(): Boolean {
+        fun isSearchFindByNamesContactFullAllowed(): Boolean {
             return runBlocking { client.isSearchFindByNamesContactFullAllowed() }
         }
         
@@ -1031,14 +1031,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchContactsByRegex(nameRegex: String): List<Contact> =
             runBlocking { client.searchContactsByRegex(nameRegex) }
         
-        suspend fun isSearchContactsByRegexAllowed(): Boolean {
+        fun isSearchContactsByRegexAllowed(): Boolean {
             return runBlocking { client.isSearchContactsByRegexAllowed() }
         }
         
         fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
             runBlocking { client.searchContactsByRegexContactFull(nameRegex) }
         
-        suspend fun isSearchContactsByRegexContactFullAllowed(): Boolean {
+        fun isSearchContactsByRegexContactFullAllowed(): Boolean {
             return runBlocking { client.isSearchContactsByRegexContactFullAllowed() }
         }
         
@@ -1047,14 +1047,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchSecuredContactsByRegex(nameRegex: String): List<Contact> =
             runBlocking { client.searchSecuredContactsByRegex(nameRegex) }
         
-        suspend fun isSearchSecuredContactsByRegexAllowed(): Boolean {
+        fun isSearchSecuredContactsByRegexAllowed(): Boolean {
             return runBlocking { client.isSearchSecuredContactsByRegexAllowed() }
         }
         
         fun searchSecuredContactsByRegexContactFull(nameRegex: String): List<ContactFull> =
             runBlocking { client.searchSecuredContactsByRegexContactFull(nameRegex) }
         
-        suspend fun isSearchSecuredContactsByRegexContactFullAllowed(): Boolean {
+        fun isSearchSecuredContactsByRegexContactFullAllowed(): Boolean {
             return runBlocking { client.isSearchSecuredContactsByRegexContactFullAllowed() }
         }
     }
@@ -1155,7 +1155,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchFindByInt32(intValue: Int): List<PrimitiveTestEntity> =
             runBlocking { client.searchFindByInt32(intValue) }
         
-        suspend fun isSearchFindByInt32Allowed(): Boolean {
+        fun isSearchFindByInt32Allowed(): Boolean {
             return runBlocking { client.isSearchFindByInt32Allowed() }
         }
         
@@ -1346,7 +1346,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         fun searchFindUserByName(name: String): User? =
             runBlocking { client.searchFindUserByName(name) }
         
-        suspend fun isSearchFindUserByNameAllowed(): Boolean {
+        fun isSearchFindUserByNameAllowed(): Boolean {
             return runBlocking { client.isSearchFindUserByNameAllowed() }
         }
         

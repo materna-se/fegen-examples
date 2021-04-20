@@ -41,7 +41,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isCyclicPojoAllowed(): Boolean {
         val url = """/api/custom/testController/cyclicPojo"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -65,7 +65,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isMixedAllowed(int32: Int): Boolean {
         val url = """/api/custom/testController/mixedCreate/$int32"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -83,7 +83,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isNoBodyAllowed(int32: Int): Boolean {
         val url = """/api/custom/testController/noBodyCreate/$int32"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -103,7 +103,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isNoPathVariableAllowed(): Boolean {
         val url = """/api/custom/testController/noPathVariableCreate"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -121,7 +121,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isNoRequestParamAllowed(int32: Int): Boolean {
         val url = """/api/custom/testController/noRequestParamCreate/$int32"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -153,7 +153,7 @@ class TestRestControllerClient(
     ): Boolean {
         val url =
                 """/api/custom/testController/pathVariableCreate/$int32/$long64Custom/$intMinusBillion/$stringText/$booleanTrue/$dateCustom"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -170,7 +170,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isPojoAsBodyAndListReturnValueAllowed(): Boolean {
         val url = """/api/custom/testController/pojoAsBodyAndListReturnValue"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -188,7 +188,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isPojoAsBodyAndReturnValueAllowed(): Boolean {
         val url = """/api/custom/testController/pojoAsBodyAndSingleReturnValue"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -205,7 +205,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isPojoListAsBodyAllowed(): Boolean {
         val url = """/api/custom/testController/pojoListAsBody"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -221,7 +221,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isPojosAsReturnValueAllowed(): Boolean {
         val url = """/api/custom/testController/pojosAsReturnValue"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -239,7 +239,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isRecursivePojoAllowed(): Boolean {
         val url = """/api/custom/testController/recursivePojo"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -275,7 +275,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isRequestParamAllowed(): Boolean {
         val url = """/api/custom/testController/requestParamCreate"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -293,7 +293,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isResponseBodyAllowed(): Boolean {
         val url = """/api/custom/testController/requestBodyCreate"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "POST", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "POST", url)
     }
 
     @Suppress("UNUSED")
@@ -309,7 +309,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isReturnBooleanAllowed(): Boolean {
         val url = """/api/custom/testController/returnBoolean"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -325,7 +325,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isReturnIntegerAllowed(): Boolean {
         val url = """/api/custom/testController/returnInteger"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -344,7 +344,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isReturnListAllowed(): Boolean {
         val url = """/api/custom/testController/returnList"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -370,7 +370,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isReturnPagedAllowed(): Boolean {
         val url = """/api/custom/testController/returnPaged"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -386,7 +386,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isReturnStringAllowed(): Boolean {
         val url = """/api/custom/testController/returnString"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -402,7 +402,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isReturnStringListAllowed(): Boolean {
         val url = """/api/custom/testController/returnStringList"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -418,7 +418,7 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isReturnVoidAllowed(): Boolean {
         val url = """/api/custom/testController/returnVoid"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", url)
     }
 
     @Suppress("UNUSED")
@@ -436,6 +436,6 @@ class TestRestControllerClient(
     @Suppress("UNUSED")
     suspend fun isSecuredEndpointAllowed(pathParam: String): Boolean {
         val url = """/api/custom/testController/securedEndpoint/$pathParam"""
-        return isEndpointCallAllowed(requestAdapter.request, "/api", "PUT", url)
+        return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "PUT", url)
     }
 }

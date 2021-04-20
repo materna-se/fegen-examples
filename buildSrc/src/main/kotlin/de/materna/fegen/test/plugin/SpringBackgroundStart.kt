@@ -91,7 +91,7 @@ open class SpringBackgroundStart : DefaultTask() {
             if (state.get().shouldLog()) {
                 System.err.println("  [ Backend ] $line")
             } else {
-                outputBuffer.appendln(line)
+                outputBuffer.appendLine(line)
             }
         }
     }

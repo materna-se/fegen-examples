@@ -21,15 +21,16 @@
  */
 package de.materna.fegen.test.kotlin
 
-import de.materna.fegen.runtime.FetchRequestWrapper
 import de.materna.fegen.example.gradle.kotlin.api.ApiClient
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntity
 import de.materna.fegen.example.gradle.kotlin.api.PrimitiveTestEntityBase
+import de.materna.fegen.runtime.FetchAdapter
 import io.kotlintest.TestCase
 import io.kotlintest.provided.SERVER_ADDRESS
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import okhttp3.*
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
@@ -43,8 +44,8 @@ fun apiClient(): ApiClient {
 
             private val cookies = mutableMapOf<String, Cookie>()
 
-            override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
-                this.cookies.putAll(cookies.associateBy { it.name() })
+            override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+                this.cookies.putAll(cookies.associateBy { it.name })
             }
 
             override fun loadForRequest(url: HttpUrl): MutableList<Cookie> {
@@ -54,7 +55,7 @@ fun apiClient(): ApiClient {
         })
         .build()
 
-    return ApiClient(FetchRequestWrapper("http://localhost:8080/", client = client))
+    return ApiClient(FetchAdapter("http://localhost:8080/", client = client))
 }
 
 fun login(username: String, password: String): ApiClient {
@@ -62,15 +63,15 @@ fun login(username: String, password: String): ApiClient {
 
     val request = Request.Builder().run {
         url("$SERVER_ADDRESS/api/login")
-        method("POST", RequestBody.create(null, byteArrayOf()))
+        method("POST", byteArrayOf().toRequestBody(null, 0, 0))
         val encodedPassword = Base64.getEncoder().encodeToString("$username:$password".toByteArray())
         addHeader("Authorization", "Basic $encodedPassword")
         build()
     }
 
-    apiClient.request.client.newCall(request).execute().use { response ->
+    apiClient.fetchAdapter.client.newCall(request).execute().use { response ->
         if (!response.isSuccessful) {
-            throw RuntimeException("Failed to log in: Server returned ${response.code()}")
+            throw RuntimeException("Failed to log in: Server returned ${response.code}")
         }
     }
 
@@ -78,7 +79,7 @@ fun login(username: String, password: String): ApiClient {
 }
 
 fun setupTest() {
-    val requestBody = RequestBody.create(null, byteArrayOf())
+    val requestBody = byteArrayOf().toRequestBody(null, 0, 0)
     val request = Request.Builder().run {
         url("$SERVER_ADDRESS/api/setupTest")
         method("POST", requestBody)

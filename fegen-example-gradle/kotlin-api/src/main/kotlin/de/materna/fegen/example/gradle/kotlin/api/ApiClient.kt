@@ -13,34 +13,34 @@ import com.fasterxml.jackson.databind.SerializationFeature
     import de.materna.fegen.example.gradle.kotlin.api.controller.CustomEndpointControllerClient
         import de.materna.fegen.example.gradle.kotlin.api.controller.TestRestControllerClient
 
-    open class ApiClient(val request: FetchRequest) {
-        val adapter: RequestAdapter
+    open class ApiClient(val fetchAdapter: FetchAdapter) {
+        val requestAdapter: RequestAdapter
         
         init {
-            request.mapper.registerModule(JavaTimeModule())
-            request.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            request.mapper.registerKotlinModule()
-            adapter = RequestAdapter(request)
+            fetchAdapter.mapper.registerModule(JavaTimeModule())
+            fetchAdapter.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            fetchAdapter.mapper.registerKotlinModule()
+            requestAdapter = RequestAdapter(fetchAdapter)
         }
     
-        open val addressClient by lazy { AddressClient(apiClient = this, requestAdapter = adapter) }
+        open val addressClient by lazy { AddressClient(apiClient = this, requestAdapter = requestAdapter) }
         open val addressRepository by lazy { AddressRepository(client = addressClient) }
-        open val contactClient by lazy { ContactClient(apiClient = this, requestAdapter = adapter) }
+        open val contactClient by lazy { ContactClient(apiClient = this, requestAdapter = requestAdapter) }
         open val contactRepository by lazy { ContactRepository(client = contactClient) }
-        open val ignoredSearchEntityClient by lazy { IgnoredSearchEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val ignoredSearchEntityClient by lazy { IgnoredSearchEntityClient(apiClient = this, requestAdapter = requestAdapter) }
         open val ignoredSearchEntityRepository by lazy { IgnoredSearchEntityRepository(client = ignoredSearchEntityClient) }
-        open val plainFieldTestEntityClient by lazy { PlainFieldTestEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val plainFieldTestEntityClient by lazy { PlainFieldTestEntityClient(apiClient = this, requestAdapter = requestAdapter) }
         open val plainFieldTestEntityRepository by lazy { PlainFieldTestEntityRepository(client = plainFieldTestEntityClient) }
-        open val primitiveTestEntityClient by lazy { PrimitiveTestEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val primitiveTestEntityClient by lazy { PrimitiveTestEntityClient(apiClient = this, requestAdapter = requestAdapter) }
         open val primitiveTestEntityRepository by lazy { PrimitiveTestEntityRepository(client = primitiveTestEntityClient) }
-        open val relTestEntityClient by lazy { RelTestEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val relTestEntityClient by lazy { RelTestEntityClient(apiClient = this, requestAdapter = requestAdapter) }
         open val relTestEntityRepository by lazy { RelTestEntityRepository(client = relTestEntityClient) }
-        open val securedEntityClient by lazy { SecuredEntityClient(apiClient = this, requestAdapter = adapter) }
+        open val securedEntityClient by lazy { SecuredEntityClient(apiClient = this, requestAdapter = requestAdapter) }
         open val securedEntityRepository by lazy { SecuredEntityRepository(client = securedEntityClient) }
-        open val userClient by lazy { UserClient(apiClient = this, requestAdapter = adapter) }
+        open val userClient by lazy { UserClient(apiClient = this, requestAdapter = requestAdapter) }
         open val userRepository by lazy { UserRepository(client = userClient) }
-        open val customEndpointControllerClient by lazy { CustomEndpointControllerClient(adapter) }
-        open val testRestControllerClient by lazy { TestRestControllerClient(adapter) }
+        open val customEndpointControllerClient by lazy { CustomEndpointControllerClient(requestAdapter) }
+        open val testRestControllerClient by lazy { TestRestControllerClient(requestAdapter) }
     }
 
     open class AddressClient(
@@ -92,7 +92,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contactAddresses")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/contactAddresses")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/contactAddresses")
     
     
         
@@ -161,7 +161,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contacts")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/contacts")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/contacts")
     
     
         suspend fun readAddress(obj: Contact) =
@@ -180,7 +180,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         suspend fun deleteFromAddress(obj: Contact, childToDelete: Address) =
-            requestAdapter.request.delete(
+            requestAdapter.fetchAdapter.delete(
                 url = "api/contacts/${obj.id}/address/${childToDelete.id}"
             )
         
@@ -201,7 +201,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         suspend fun deleteFromOwner(obj: Contact, childToDelete: User) =
-            requestAdapter.request.delete(
+            requestAdapter.fetchAdapter.delete(
                 url = "api/contacts/${obj.id}/owner/${childToDelete.id}"
             )
     
@@ -223,7 +223,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNameContainingAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNameContaining")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNameContaining")
         }
         
         suspend fun searchFindByNameContainingContactFull(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<ContactFull> {
@@ -244,7 +244,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNameContainingContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNameContaining")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNameContaining")
         }
         
         
@@ -262,7 +262,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNamesAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNames")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNames")
         }
         
         suspend fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? {
@@ -279,7 +279,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNamesContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/contacts/search/findByNames")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNames")
         }
         
         
@@ -298,7 +298,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchContactsByRegexAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/contactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/contactsByRegex")
         }
         
         suspend fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
@@ -316,7 +316,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchContactsByRegexContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/contactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/contactsByRegex")
         }
         
         
@@ -335,7 +335,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchSecuredContactsByRegexAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/securedContactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/securedContactsByRegex")
         }
         
         suspend fun searchSecuredContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
@@ -353,7 +353,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchSecuredContactsByRegexContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/search/securedContactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/securedContactsByRegex")
         }
     }
     
@@ -406,7 +406,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/ignoredSearchEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/ignoredSearchEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/ignoredSearchEntities")
     
     
         
@@ -463,7 +463,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/plainFieldTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/plainFieldTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/plainFieldTestEntities")
     
     
         
@@ -520,7 +520,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/primitiveTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/primitiveTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/primitiveTestEntities")
     
     
         
@@ -539,7 +539,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByInt32Allowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/primitiveTestEntities/search/findByInt32")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/primitiveTestEntities/search/findByInt32")
         }
         
         
@@ -606,7 +606,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/relTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/relTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/relTestEntities")
     
     
         suspend fun readManyToMany(obj: RelTestEntity) =
@@ -634,7 +634,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         suspend fun deleteFromManyToMany(obj: RelTestEntity, childToDelete: User) =
-            requestAdapter.request.delete(
+            requestAdapter.fetchAdapter.delete(
                 url = "api/relTestEntities/${obj.id}/manyToMany/${childToDelete.id}"
             )
         
@@ -655,7 +655,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         suspend fun deleteFromManyToOneOptional(obj: RelTestEntity, childToDelete: User) =
-            requestAdapter.request.delete(
+            requestAdapter.fetchAdapter.delete(
                 url = "api/relTestEntities/${obj.id}/manyToOneOptional/${childToDelete.id}"
             )
         
@@ -703,7 +703,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         suspend fun deleteFromOneToMany(obj: RelTestEntity, childToDelete: User) =
-            requestAdapter.request.delete(
+            requestAdapter.fetchAdapter.delete(
                 url = "api/relTestEntities/${obj.id}/oneToMany/${childToDelete.id}"
             )
         
@@ -724,7 +724,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         suspend fun deleteFromOneToOneOptional(obj: RelTestEntity, childToDelete: User) =
-            requestAdapter.request.delete(
+            requestAdapter.fetchAdapter.delete(
                 url = "api/relTestEntities/${obj.id}/oneToOneOptional/${childToDelete.id}"
             )
         
@@ -798,7 +798,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/securedEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/securedEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/securedEntities")
     
     
         
@@ -855,7 +855,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/users")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.request, "api", "/api/users")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/users")
     
     
         suspend fun readContacts(obj: User) =
@@ -890,7 +890,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
             )
         
         suspend fun deleteFromContacts(obj: User, childToDelete: Contact) =
-            requestAdapter.request.delete(
+            requestAdapter.fetchAdapter.delete(
                 url = "api/users/${obj.id}/contacts/${childToDelete.id}"
             )
     
@@ -906,7 +906,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindUserByNameAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.request, "/api", "GET", "/api/users/search/findUserByName")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/users/search/findUserByName")
         }
         
         

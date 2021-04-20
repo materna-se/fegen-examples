@@ -23,7 +23,7 @@
 
 import {apiClient, setupTest} from "../util";
 import {expect} from "chai";
-import {login} from "./util";
+import {loggedIn} from "./util";
 
 describe("Custom Endpoint Security", () => {
 
@@ -38,17 +38,17 @@ describe("Custom Endpoint Security", () => {
     });
 
     it("allows secured custom endpoint with user parameter for reader", async () => {
-        await login("reader", "pwd");
-        expect(await apiClient.testRestControllerClient.isSecuredEndpointAllowed("user")).to.eq(true);
+        const loggedInClient = await loggedIn("reader", "pwd");
+        expect(await loggedInClient.testRestControllerClient.isSecuredEndpointAllowed("user")).to.eq(true);
     });
 
     it("forbids secured custom endpoint with admin parameter for reader", async () => {
-        await login("reader", "pwd");
-        expect(await apiClient.testRestControllerClient.isSecuredEndpointAllowed("admin")).to.eq(false);
+        const loggedInClient = await loggedIn("reader", "pwd");
+        expect(await loggedInClient.testRestControllerClient.isSecuredEndpointAllowed("admin")).to.eq(false);
     });
 
     it("allows secured custom endpoint with admin parameter for admin", async () => {
-        await login("admin", "pwd");
-        expect(await apiClient.testRestControllerClient.isSecuredEndpointAllowed("admin")).to.eq(true);
+        const loggedInClient = await loggedIn("admin", "pwd");
+        expect(await loggedInClient.testRestControllerClient.isSecuredEndpointAllowed("admin")).to.eq(true);
     });
 });

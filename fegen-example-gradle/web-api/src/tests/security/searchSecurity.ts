@@ -21,7 +21,7 @@
  */
 import { expect } from "chai";
 import {apiClient, setupTest} from "../util";
-import {login} from "./util";
+import {loggedIn} from "./util";
 
 
 describe("Search Security", () => {
@@ -38,13 +38,13 @@ describe("Search Security", () => {
     });
 
     it("forbids secured repository search for reader", async () => {
-        await login("reader", "pwd");
-        expect(await apiClient.primitiveTestEntityClient.isSearchFindByInt32Allowed()).to.eq(false);
+        const loggedInClient = await loggedIn("reader", "pwd");
+        expect(await loggedInClient.primitiveTestEntityClient.isSearchFindByInt32Allowed()).to.eq(false);
     });
 
     it("allows secured repository search for admin", async () => {
-        await login("admin", "pwd");
-        expect(await apiClient.primitiveTestEntityClient.isSearchFindByInt32Allowed()).to.eq(true);
+        const loggedInClient = await loggedIn("admin", "pwd");
+        expect(await loggedInClient.primitiveTestEntityClient.isSearchFindByInt32Allowed()).to.eq(true);
     });
 
     it("allows unsecured custom search for anonymous", async () => {
@@ -56,13 +56,13 @@ describe("Search Security", () => {
     });
 
     it("forbids secured custom search for reader", async () => {
-        await login("reader", "pwd");
-        expect(await apiClient.contactClient.isSearchSecuredContactsByRegexAllowed()).to.eq(false);
+        const loggedInClient = await loggedIn("reader", "pwd");
+        expect(await loggedInClient.contactClient.isSearchSecuredContactsByRegexAllowed()).to.eq(false);
     });
 
     it("allows secured custom search for admin", async () => {
-        await login("admin", "pwd");
-        expect(await apiClient.contactClient.isSearchSecuredContactsByRegexAllowed()).to.eq(true);
+        const loggedInClient = await loggedIn("admin", "pwd");
+        expect(await loggedInClient.contactClient.isSearchSecuredContactsByRegexAllowed()).to.eq(true);
     });
 
 })

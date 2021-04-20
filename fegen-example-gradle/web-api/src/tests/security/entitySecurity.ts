@@ -21,7 +21,7 @@
  */
 import {apiClient, setupTest} from "../util";
 import {expect} from "chai";
-import {login} from "./util";
+import {loggedIn} from "./util";
 
 describe("Entity Security", () => {
 
@@ -46,8 +46,8 @@ describe("Entity Security", () => {
     });
 
     it("returns read permissions for secured entity if reader", async () => {
-        await login("reader", "pwd");
-        const allowedMethods = await apiClient.securedEntityClient.allowedMethods();
+        const loggedInClient = await loggedIn("reader", "pwd");
+        const allowedMethods = await loggedInClient.securedEntityClient.allowedMethods();
         expect(allowedMethods.readAll).to.eq(true);
         expect(allowedMethods.readOne).to.eq(true);
         expect(allowedMethods.create).to.eq(false);
@@ -56,8 +56,8 @@ describe("Entity Security", () => {
     });
 
     it("returns create permissions for secured entity if writer", async () => {
-        await login("writer", "pwd");
-        const allowedMethods = await apiClient.securedEntityClient.allowedMethods();
+        const loggedInClient = await loggedIn("writer", "pwd");
+        const allowedMethods = await loggedInClient.securedEntityClient.allowedMethods();
         expect(allowedMethods.readAll).to.eq(true);
         expect(allowedMethods.readOne).to.eq(true);
         expect(allowedMethods.create).to.eq(true);
@@ -66,8 +66,8 @@ describe("Entity Security", () => {
     });
 
     it("returns all permissions for secured entity if admin", async () => {
-        await login("admin", "pwd");
-        const allowedMethods = await apiClient.securedEntityClient.allowedMethods();
+        const loggedInClient = await loggedIn("admin", "pwd");
+        const allowedMethods = await loggedInClient.securedEntityClient.allowedMethods();
         expect(allowedMethods.readAll).to.eq(true);
         expect(allowedMethods.readOne).to.eq(true);
         expect(allowedMethods.create).to.eq(true);

@@ -3,16 +3,14 @@ import {RequestAdapter, stringHelper, isEndpointCallAllowed, Items, ApiHateoasOb
 
 export class TestRestControllerClient {
 
-    private readonly requestAdapter = new RequestAdapter();
+    private readonly requestAdapter: RequestAdapter;
     
-    constructor(requestAdapter?: RequestAdapter) {
-        if (requestAdapter) {
-            this.requestAdapter = requestAdapter;
-        }
+    constructor(requestAdapter: RequestAdapter) {
+        this.requestAdapter = requestAdapter;
     }
     
     public async cyclicPojo(body: CyclicTestPojoA): Promise<CyclicTestPojoA>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/cyclicPojo`;
     
@@ -43,11 +41,11 @@ export class TestRestControllerClient {
     
     public isCyclicPojoAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/cyclicPojo`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async mixed(int32: number, body: PrimitiveTestEntityNew, long64: number): Promise<PrimitiveTestEntity>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/mixedCreate/${int32}`;
     
@@ -79,11 +77,11 @@ export class TestRestControllerClient {
     
     public isMixedAllowed(int32: number): Promise<boolean> {
         const url = `/api/custom/testController/mixedCreate/${int32}`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async noBody(int32: number, long64: number): Promise<PrimitiveTestEntity>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/noBodyCreate/${int32}`;
     
@@ -111,11 +109,11 @@ export class TestRestControllerClient {
     
     public isNoBodyAllowed(int32: number): Promise<boolean> {
         const url = `/api/custom/testController/noBodyCreate/${int32}`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async noPathVariable(body: PrimitiveTestEntityNew, long64: number): Promise<PrimitiveTestEntity>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/noPathVariableCreate`;
     
@@ -147,11 +145,11 @@ export class TestRestControllerClient {
     
     public isNoPathVariableAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/noPathVariableCreate`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async noRequestParam(int32: number, body: PrimitiveTestEntityNew): Promise<PrimitiveTestEntity>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/noRequestParamCreate/${int32}`;
     
@@ -183,11 +181,11 @@ export class TestRestControllerClient {
     
     public isNoRequestParamAllowed(int32: number): Promise<boolean> {
         const url = `/api/custom/testController/noRequestParamCreate/${int32}`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async pathVariable(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string): Promise<PrimitiveTestEntity>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/pathVariableCreate/${int32}/${long64Custom}/${intMinusBillion}/${stringText}/${booleanTrue}/${dateCustom}`;
     
@@ -215,11 +213,11 @@ export class TestRestControllerClient {
     
     public isPathVariableAllowed(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string): Promise<boolean> {
         const url = `/api/custom/testController/pathVariableCreate/${int32}/${long64Custom}/${intMinusBillion}/${stringText}/${booleanTrue}/${dateCustom}`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async pojoAsBodyAndListReturnValue(body: ComplexTestPojo): Promise<ComplexTestPojo[]>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/pojoAsBodyAndListReturnValue`;
     
@@ -250,11 +248,11 @@ export class TestRestControllerClient {
     
     public isPojoAsBodyAndListReturnValueAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/pojoAsBodyAndListReturnValue`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async pojoAsBodyAndReturnValue(body: ComplexTestPojo): Promise<ComplexTestPojo>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/pojoAsBodyAndSingleReturnValue`;
     
@@ -285,11 +283,11 @@ export class TestRestControllerClient {
     
     public isPojoAsBodyAndReturnValueAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/pojoAsBodyAndSingleReturnValue`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async pojoListAsBody(body: PrimitiveTestPojo[]): Promise<PrimitiveTestPojo[]>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/pojoListAsBody`;
     
@@ -320,11 +318,11 @@ export class TestRestControllerClient {
     
     public isPojoListAsBodyAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/pojoListAsBody`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async pojosAsReturnValue(): Promise<PrimitiveTestPojo[]>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/pojosAsReturnValue`;
     
@@ -351,11 +349,11 @@ export class TestRestControllerClient {
     
     public isPojosAsReturnValueAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/pojosAsReturnValue`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async recursivePojo(body: RecursiveTestPojo): Promise<RecursiveTestPojo>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/recursivePojo`;
     
@@ -386,11 +384,11 @@ export class TestRestControllerClient {
     
     public isRecursivePojoAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/recursivePojo`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async requestParam(int32: number, long64Custom: number, intMinusBillion: number, stringText: string, booleanTrue: boolean, dateCustom: string, optionalIntNull?: number, optionalIntBillion?: number, dateTime2000_1_1_12_30?: string): Promise<PrimitiveTestEntity>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/requestParamCreate`;
     
@@ -418,11 +416,11 @@ export class TestRestControllerClient {
     
     public isRequestParamAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/requestParamCreate`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async responseBody(body: PrimitiveTestEntityNew): Promise<PrimitiveTestEntity>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/requestBodyCreate`;
     
@@ -454,11 +452,11 @@ export class TestRestControllerClient {
     
     public isResponseBodyAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/requestBodyCreate`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
     }
     
     public async returnBoolean(): Promise<boolean>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/returnBoolean`;
     
@@ -485,11 +483,11 @@ export class TestRestControllerClient {
     
     public isReturnBooleanAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/returnBoolean`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async returnInteger(): Promise<number>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/returnInteger`;
     
@@ -516,11 +514,11 @@ export class TestRestControllerClient {
     
     public isReturnIntegerAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/returnInteger`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async returnList(): Promise<Items<PrimitiveTestEntity>>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/returnList`;
     
@@ -553,11 +551,11 @@ export class TestRestControllerClient {
     
     public isReturnListAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/returnList`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async returnPaged(page?: number, size?: number, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC"): Promise<PagedItems<PrimitiveTestEntity>>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/returnPaged`;
     
@@ -591,11 +589,11 @@ export class TestRestControllerClient {
     
     public isReturnPagedAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/returnPaged`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async returnString(): Promise<string>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/returnString`;
     
@@ -622,11 +620,11 @@ export class TestRestControllerClient {
     
     public isReturnStringAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/returnString`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async returnStringList(): Promise<Items<string>>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/returnStringList`;
     
@@ -653,11 +651,11 @@ export class TestRestControllerClient {
     
     public isReturnStringListAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/returnStringList`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async returnVoid(): Promise<void>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/returnVoid`;
     
@@ -680,11 +678,11 @@ export class TestRestControllerClient {
     
     public isReturnVoidAllowed(): Promise<boolean> {
         const url = `/api/custom/testController/returnVoid`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "GET", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "GET", url);
     }
     
     public async securedEndpoint(pathParam: string, queryParam: number): Promise<string>  {
-        const request = this.requestAdapter.getRequest();
+        const request = this.requestAdapter.fetchAdapter;
     
         const baseUrl = `/api/custom/testController/securedEndpoint/${pathParam}`;
     
@@ -711,6 +709,6 @@ export class TestRestControllerClient {
     
     public isSecuredEndpointAllowed(pathParam: string): Promise<boolean> {
         const url = `/api/custom/testController/securedEndpoint/${pathParam}`;
-        return isEndpointCallAllowed(this.requestAdapter.getRequest(), "/api", "PUT", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "PUT", url);
     }
 }

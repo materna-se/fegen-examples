@@ -21,4 +21,4 @@
  */
 import {ApiClient} from "web-api";
 
-export default new ApiClient(undefined, "");
+export default new ApiClient();

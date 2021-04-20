@@ -19,10 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import fetch from "node-fetch";
+import * as fetchCookie from "fetch-cookie";
 import {BASE_URL} from "../util";
+import {ApiClient} from "../../ApiClient";
+import { FetchAdapter } from "@materna-se/fegen-runtime";
 
-export const login = async (username: string, password: string) => {
-    const response = await window.fetch(`${BASE_URL}api/login`, {
+export const loggedIn = async (username: string, password: string) => {
+    const fetchFn = fetchCookie(fetch);
+
+    const response = await fetchFn(`${BASE_URL}api/login`, {
         method: "POST",
         headers: {
             "Authorization": `Basic ${btoa(`${username}:${password}`)}`
@@ -31,4 +37,5 @@ export const login = async (username: string, password: string) => {
     if (!response.ok) {
         throw new Error(`Failed to log in: Server returned code ${response.status}`);
     }
+    return new ApiClient(new FetchAdapter(BASE_URL, fetchFn));
 }

@@ -19,22 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import { FetchAdapter } from "@materna-se/fegen-runtime";
 import fetch from "node-fetch";
-import * as fetchCookie from "fetch-cookie";
 import {ApiClient} from "../ApiClient";
 
 export const BASE_URL = "http://localhost:8080/"
 
-export const apiClient = new ApiClient(undefined, BASE_URL);
-
-function setupFetch() {
-    // Use fetchCookie on order for authorization to work.
-    // A new instance is created each time, so sessions are not retained between tests
-    // @ts-ignore Types do not match exactly, but good enough for FeGen
-    window.fetch = fetchCookie(fetch);
-}
+export const apiClient = new ApiClient(new FetchAdapter(BASE_URL, fetch));
 
 export async function setupTest() {
-    setupFetch()
     await fetch("http://localhost:8080/api/setupTest", { method: "POST" });
 }

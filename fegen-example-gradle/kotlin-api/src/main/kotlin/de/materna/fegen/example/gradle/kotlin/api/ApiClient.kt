@@ -17,8 +17,16 @@ import com.fasterxml.jackson.databind.SerializationFeature
         val requestAdapter: RequestAdapter
         
         init {
-            fetchAdapter.mapper.registerModule(JavaTimeModule())
-            fetchAdapter.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            val javaTimeExists = try {
+                Class.forName("java.time.Instant", false, this.javaClass.getClassLoader())
+                true
+            } catch (ex: ClassNotFoundException) {
+                false
+            }
+            if (javaTimeExists) {
+                fetchAdapter.mapper.registerModule(JavaTimeModule())
+                fetchAdapter.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            }
             fetchAdapter.mapper.registerKotlinModule()
             requestAdapter = RequestAdapter(fetchAdapter)
         }

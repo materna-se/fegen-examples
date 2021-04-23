@@ -41,7 +41,7 @@ export class ApiClient {
 export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/contactAddresses", "addresses", apiClient, requestAdapter);
+        super("/api/contactAddresses", "addresses", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
@@ -82,7 +82,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/contactAddresses");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/contactAddresses");
     }
 
   
@@ -94,7 +94,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
 export class ContactClient extends BaseClient<ApiClient, ContactNew, Contact> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/contacts", "contacts", apiClient, requestAdapter);
+        super("/api/contacts", "contacts", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         this.readAddressProjection = this.readAddressProjection.bind(this);
@@ -143,15 +143,15 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     }
   
     public async deleteFromAddress(returnType: Contact, childToDelete: Address) {
-        await this._requestAdapter.fetchAdapter.delete(`api/contacts/${returnType.id}/address/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/contacts/${returnType.id}/address/${childToDelete.id}`);
     }
     
     public async deleteFromOwner(returnType: Contact, childToDelete: User) {
-        await this._requestAdapter.fetchAdapter.delete(`api/contacts/${returnType.id}/owner/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/contacts/${returnType.id}/owner/${childToDelete.id}`);
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/contacts");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/contacts");
     }
 
   
@@ -228,7 +228,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
             parameters["size"] = `${size}`;
         }
             
-        const url = stringHelper.appendParams("api/contacts/search/findByNameContaining", parameters);
+        const url = stringHelper.appendParams("/api/contacts/search/findByNameContaining", parameters);
     
         const response = await this._requestAdapter.fetchAdapter.get(url);
         const responseObj = ((await response.json()) as ApiHateoasObjectReadMultiple<T[]>);
@@ -243,13 +243,13 @@ return {
     }
     
     public async isSearchFindByNameContainingAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNameContaining");
+        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "//api", "GET", "//api/contacts/search/findByNameContaining");
     }
 
 public async searchFindByNames<T extends Contact>(firstName: string, lastName: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<T | undefined> {
     const parameters: {[key: string]: string | number | boolean | undefined} = {firstName, lastName};
         
-    const url = stringHelper.appendParams("api/contacts/search/findByNames", parameters);
+    const url = stringHelper.appendParams("/api/contacts/search/findByNames", parameters);
 
     const response = await this._requestAdapter.fetchAdapter.get(url);
     const responseObj = ((await response.json()) as T);
@@ -258,13 +258,13 @@ public async searchFindByNames<T extends Contact>(firstName: string, lastName: s
 }
 
 public async isSearchFindByNamesAllowed(): Promise<boolean> {
-    return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNames");
+    return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "//api", "GET", "//api/contacts/search/findByNames");
 }
 
     public async searchContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
         const parameters: {[key: string]: string | number | boolean | undefined} = {nameRegex};
             
-        const url = stringHelper.appendParams("api/search/contactsByRegex", parameters);
+        const url = stringHelper.appendParams("/api/search/contactsByRegex", parameters);
     
         const response = await this._requestAdapter.fetchAdapter.get(url);
         const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
@@ -278,13 +278,13 @@ return {
     }
     
     public async isSearchContactsByRegexAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "/api", "GET", "/api/search/contactsByRegex");
+        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "//api", "GET", "//api/search/contactsByRegex");
     }
 
     public async searchSecuredContactsByRegex<T extends Contact>(nameRegex: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "firstName,ASC" | "firstName,DESC" | "lastName,ASC" | "lastName,DESC"): Promise<Items<T>> {
         const parameters: {[key: string]: string | number | boolean | undefined} = {nameRegex};
             
-        const url = stringHelper.appendParams("api/search/securedContactsByRegex", parameters);
+        const url = stringHelper.appendParams("/api/search/securedContactsByRegex", parameters);
     
         const response = await this._requestAdapter.fetchAdapter.get(url);
         const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
@@ -298,14 +298,14 @@ return {
     }
     
     public async isSearchSecuredContactsByRegexAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "/api", "GET", "/api/search/securedContactsByRegex");
+        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "//api", "GET", "//api/search/securedContactsByRegex");
     }
 }
 
 export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSearchEntityNew, IgnoredSearchEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/ignoredSearchEntities", "ignoredSearchEntities", apiClient, requestAdapter);
+        super("/api/ignoredSearchEntities", "ignoredSearchEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
@@ -340,7 +340,7 @@ export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSear
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/ignoredSearchEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/ignoredSearchEntities");
     }
 
   
@@ -352,7 +352,7 @@ export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSear
 export class PlainFieldTestEntityClient extends BaseClient<ApiClient, PlainFieldTestEntityNew, PlainFieldTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/plainFieldTestEntities", "plainFieldTestEntities", apiClient, requestAdapter);
+        super("/api/plainFieldTestEntities", "plainFieldTestEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
@@ -395,7 +395,7 @@ export class PlainFieldTestEntityClient extends BaseClient<ApiClient, PlainField
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/plainFieldTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/plainFieldTestEntities");
     }
 
   
@@ -407,7 +407,7 @@ export class PlainFieldTestEntityClient extends BaseClient<ApiClient, PlainField
 export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTestEntityNew, PrimitiveTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/primitiveTestEntities", "primitiveTestEntities", apiClient, requestAdapter);
+        super("/api/primitiveTestEntities", "primitiveTestEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
@@ -458,7 +458,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/primitiveTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/primitiveTestEntities");
     }
 
   
@@ -467,7 +467,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     public async searchFindByInt32<T extends PrimitiveTestEntity>(intValue: number, projection?: string, sort?: "id,ASC" | "id,DESC" | "booleanTrue,ASC" | "booleanTrue,DESC" | "date2000_6_12,ASC" | "date2000_6_12,DESC" | "int32,ASC" | "int32,DESC" | "intMinusBillion,ASC" | "intMinusBillion,DESC" | "long64,ASC" | "long64,DESC" | "stringText,ASC" | "stringText,DESC"): Promise<Items<T>> {
         const parameters: {[key: string]: string | number | boolean | undefined} = {intValue};
             
-        const url = stringHelper.appendParams("api/primitiveTestEntities/search/findByInt32", parameters);
+        const url = stringHelper.appendParams("/api/primitiveTestEntities/search/findByInt32", parameters);
     
         const response = await this._requestAdapter.fetchAdapter.get(url);
         const responseObj = ((await response.json()) as ApiHateoasObjectBase<T[]>);
@@ -481,14 +481,14 @@ return {
     }
     
     public async isSearchFindByInt32Allowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "/api", "GET", "/api/primitiveTestEntities/search/findByInt32");
+        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "//api", "GET", "//api/primitiveTestEntities/search/findByInt32");
     }
 }
 
 export class RelTestEntityClient extends BaseClient<ApiClient, RelTestEntityNew, RelTestEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/relTestEntities", "relTestEntities", apiClient, requestAdapter);
+        super("/api/relTestEntities", "relTestEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         this.readManyToManyProjection = this.readManyToManyProjection.bind(this);
@@ -545,31 +545,31 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
     }
   
     public async deleteFromManyToMany(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.fetchAdapter.delete(`api/relTestEntities/${returnType.id}/manyToMany/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/relTestEntities/${returnType.id}/manyToMany/${childToDelete.id}`);
     }
     
     public async deleteFromManyToOneOptional(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.fetchAdapter.delete(`api/relTestEntities/${returnType.id}/manyToOneOptional/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/relTestEntities/${returnType.id}/manyToOneOptional/${childToDelete.id}`);
     }
     
     public async deleteFromManyToOneRequired(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.fetchAdapter.delete(`api/relTestEntities/${returnType.id}/manyToOneRequired/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/relTestEntities/${returnType.id}/manyToOneRequired/${childToDelete.id}`);
     }
     
     public async deleteFromOneToMany(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.fetchAdapter.delete(`api/relTestEntities/${returnType.id}/oneToMany/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/relTestEntities/${returnType.id}/oneToMany/${childToDelete.id}`);
     }
     
     public async deleteFromOneToOneOptional(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.fetchAdapter.delete(`api/relTestEntities/${returnType.id}/oneToOneOptional/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/relTestEntities/${returnType.id}/oneToOneOptional/${childToDelete.id}`);
     }
     
     public async deleteFromOneToOneRequired(returnType: RelTestEntity, childToDelete: User) {
-        await this._requestAdapter.fetchAdapter.delete(`api/relTestEntities/${returnType.id}/oneToOneRequired/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/relTestEntities/${returnType.id}/oneToOneRequired/${childToDelete.id}`);
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/relTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/relTestEntities");
     }
 
   
@@ -779,7 +779,7 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
 export class SecuredEntityClient extends BaseClient<ApiClient, SecuredEntityNew, SecuredEntity> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/securedEntities", "securedEntities", apiClient, requestAdapter);
+        super("/api/securedEntities", "securedEntities", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         
@@ -814,7 +814,7 @@ export class SecuredEntityClient extends BaseClient<ApiClient, SecuredEntityNew,
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/securedEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/securedEntities");
     }
 
   
@@ -826,7 +826,7 @@ export class SecuredEntityClient extends BaseClient<ApiClient, SecuredEntityNew,
 export class UserClient extends BaseClient<ApiClient, UserNew, User> {
 
     constructor(apiClient: ApiClient, requestAdapter: RequestAdapter){
-        super("api/users", "users", apiClient, requestAdapter);
+        super("/api/users", "users", apiClient, requestAdapter);
         this.readOne = this.readOne.bind(this);
         this.readProjection = this.readProjection.bind(this);
         this.readContactsProjection = this.readContactsProjection.bind(this);
@@ -860,11 +860,11 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     }
   
     public async deleteFromContacts(returnType: User, childToDelete: Contact) {
-        await this._requestAdapter.fetchAdapter.delete(`api/users/${returnType.id}/contacts/${childToDelete.id}`);
+        await this._requestAdapter.fetchAdapter.delete(`/api/users/${returnType.id}/contacts/${childToDelete.id}`);
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "api", "/api/users");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/users");
     }
 
   
@@ -913,7 +913,7 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     public async searchFindUserByName<T extends User>(name: string, projection?: string, sort?: "id,ASC" | "id,DESC" | "name,ASC" | "name,DESC"): Promise<T | undefined> {
         const parameters: {[key: string]: string | number | boolean | undefined} = {name};
             
-        const url = stringHelper.appendParams("api/users/search/findUserByName", parameters);
+        const url = stringHelper.appendParams("/api/users/search/findUserByName", parameters);
     
         const response = await this._requestAdapter.fetchAdapter.get(url);
         const responseObj = ((await response.json()) as T);
@@ -922,6 +922,6 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     }
     
     public async isSearchFindUserByNameAllowed(): Promise<boolean> {
-        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "/api", "GET", "/api/users/search/findUserByName");
+        return isEndpointCallAllowed(this._requestAdapter.fetchAdapter, "//api", "GET", "//api/users/search/findUserByName");
     }
 }

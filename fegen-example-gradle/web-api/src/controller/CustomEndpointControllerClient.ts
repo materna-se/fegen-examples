@@ -42,7 +42,7 @@ export class CustomEndpointControllerClient {
     
     public isCreateContactAllowed(): Promise<boolean> {
         const url = `/api/custom/contacts/create`;
-        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "//api", "POST", url);
     }
     
     public async createOrUpdateContact(userName: string, firstName: string, lastName: string, number: string, street: string, zip: string, city: string, country: string): Promise<Contact>  {
@@ -74,6 +74,6 @@ export class CustomEndpointControllerClient {
     
     public isCreateOrUpdateContactAllowed(): Promise<boolean> {
         const url = `/api/custom/contacts/createOrUpdate`;
-        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "/api", "POST", url);
+        return isEndpointCallAllowed(this.requestAdapter.fetchAdapter, "//api", "POST", url);
     }
 }

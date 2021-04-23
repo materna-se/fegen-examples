@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         init {
             val javaTimeExists = try {
+                // Check that java.time exists, first. Might not be the case e.g. on android
                 Class.forName("java.time.Instant", false, this.javaClass.getClassLoader())
                 true
             } catch (ex: ClassNotFoundException) {
@@ -58,7 +59,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: AddressBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/contactAddresses"
+            createURI = "/api/contactAddresses"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -77,7 +78,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/contactAddresses",
+                url = "/api/contactAddresses",
                 embeddedPropName = "addresses",
                 projectionName = projectionName,
                 page = page,
@@ -88,7 +89,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<Address, AddressDto>(
             id = id,
-            uri = "api/contactAddresses"
+            uri = "/api/contactAddresses"
         )
     
     
@@ -98,9 +99,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: Address) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contactAddresses")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/contactAddresses")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/contactAddresses")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/contactAddresses")
     
     
         
@@ -115,7 +116,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: ContactBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/contacts"
+            createURI = "/api/contacts"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -141,7 +142,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/contacts",
+                url = "/api/contacts",
                 embeddedPropName = "contacts",
                 projectionName = projectionName,
                 page = page,
@@ -152,14 +153,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<Contact, ContactDto>(
             id = id,
-            uri = "api/contacts"
+            uri = "/api/contacts"
         )
     
     
         suspend fun readOneContactFull(id: Long) =
             requestAdapter.readProjection<ContactFull, ContactFullDto>(
                 id = id,
-                uri = "api/contacts",
+                uri = "/api/contacts",
                 projectionName = "full"
             )
     
@@ -167,9 +168,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: Contact) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/contacts")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/contacts")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/contacts")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/contacts")
     
     
         suspend fun readAddress(obj: Contact) =
@@ -189,7 +190,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromAddress(obj: Contact, childToDelete: Address) =
             requestAdapter.fetchAdapter.delete(
-                url = "api/contacts/${obj.id}/address/${childToDelete.id}"
+                url = "/api/contacts/${obj.id}/address/${childToDelete.id}"
             )
         
         
@@ -210,12 +211,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromOwner(obj: Contact, childToDelete: User) =
             requestAdapter.fetchAdapter.delete(
-                url = "api/contacts/${obj.id}/owner/${childToDelete.id}"
+                url = "/api/contacts/${obj.id}/owner/${childToDelete.id}"
             )
     
         suspend fun searchFindByNameContaining(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<Contact> {
         
-            val url = "api/contacts/search/findByNameContaining".appendParams(
+            val url = "/api/contacts/search/findByNameContaining".appendParams(
                 "name" to name
             )
         
@@ -231,12 +232,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNameContainingAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNameContaining")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/contacts/search/findByNameContaining")
         }
         
         suspend fun searchFindByNameContainingContactFull(name: String, page: Int? = null, size: Int? = null, sort: String? = null): PagedItems<ContactFull> {
         
-            val url = "api/contacts/search/findByNameContaining".appendParams(
+            val url = "/api/contacts/search/findByNameContaining".appendParams(
                 "name" to name
             )
         
@@ -252,14 +253,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNameContainingContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNameContaining")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/contacts/search/findByNameContaining")
         }
         
         
         
         suspend fun searchFindByNames(firstName: String, lastName: String): Contact? {
         
-            val url = "api/contacts/search/findByNames".appendParams(
+            val url = "/api/contacts/search/findByNames".appendParams(
                 "firstName" to firstName,
                     "lastName" to lastName
             )
@@ -270,12 +271,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNamesAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNames")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/contacts/search/findByNames")
         }
         
         suspend fun searchFindByNamesContactFull(firstName: String, lastName: String): ContactFull? {
         
-            val url = "api/contacts/search/findByNames".appendParams(
+            val url = "/api/contacts/search/findByNames".appendParams(
                 "firstName" to firstName,
                     "lastName" to lastName
             )
@@ -287,14 +288,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByNamesContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/contacts/search/findByNames")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/contacts/search/findByNames")
         }
         
         
         
         suspend fun searchContactsByRegex(nameRegex: String): List<Contact> {
         
-            val url = "api/search/contactsByRegex".appendParams(
+            val url = "/api/search/contactsByRegex".appendParams(
                 "nameRegex" to nameRegex
             )
         
@@ -306,12 +307,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchContactsByRegexAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/contactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/search/contactsByRegex")
         }
         
         suspend fun searchContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
         
-            val url = "api/search/contactsByRegex".appendParams(
+            val url = "/api/search/contactsByRegex".appendParams(
                 "nameRegex" to nameRegex
             )
         
@@ -324,14 +325,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchContactsByRegexContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/contactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/search/contactsByRegex")
         }
         
         
         
         suspend fun searchSecuredContactsByRegex(nameRegex: String): List<Contact> {
         
-            val url = "api/search/securedContactsByRegex".appendParams(
+            val url = "/api/search/securedContactsByRegex".appendParams(
                 "nameRegex" to nameRegex
             )
         
@@ -343,12 +344,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchSecuredContactsByRegexAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/securedContactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/search/securedContactsByRegex")
         }
         
         suspend fun searchSecuredContactsByRegexContactFull(nameRegex: String): List<ContactFull> {
         
-            val url = "api/search/securedContactsByRegex".appendParams(
+            val url = "/api/search/securedContactsByRegex".appendParams(
                 "nameRegex" to nameRegex
             )
         
@@ -361,7 +362,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchSecuredContactsByRegexContactFullAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/search/securedContactsByRegex")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/search/securedContactsByRegex")
         }
     }
     
@@ -372,7 +373,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: IgnoredSearchEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/ignoredSearchEntities"
+            createURI = "/api/ignoredSearchEntities"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -391,7 +392,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/ignoredSearchEntities",
+                url = "/api/ignoredSearchEntities",
                 embeddedPropName = "ignoredSearchEntities",
                 projectionName = projectionName,
                 page = page,
@@ -402,7 +403,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<IgnoredSearchEntity, IgnoredSearchEntityDto>(
             id = id,
-            uri = "api/ignoredSearchEntities"
+            uri = "/api/ignoredSearchEntities"
         )
     
     
@@ -412,9 +413,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: IgnoredSearchEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/ignoredSearchEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/ignoredSearchEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/ignoredSearchEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/ignoredSearchEntities")
     
     
         
@@ -429,7 +430,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: PlainFieldTestEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/plainFieldTestEntities"
+            createURI = "/api/plainFieldTestEntities"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -448,7 +449,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/plainFieldTestEntities",
+                url = "/api/plainFieldTestEntities",
                 embeddedPropName = "plainFieldTestEntities",
                 projectionName = projectionName,
                 page = page,
@@ -459,7 +460,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<PlainFieldTestEntity, PlainFieldTestEntityDto>(
             id = id,
-            uri = "api/plainFieldTestEntities"
+            uri = "/api/plainFieldTestEntities"
         )
     
     
@@ -469,9 +470,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: PlainFieldTestEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/plainFieldTestEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/plainFieldTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/plainFieldTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/plainFieldTestEntities")
     
     
         
@@ -486,7 +487,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: PrimitiveTestEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/primitiveTestEntities"
+            createURI = "/api/primitiveTestEntities"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -505,7 +506,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/primitiveTestEntities",
+                url = "/api/primitiveTestEntities",
                 embeddedPropName = "primitiveTestEntities",
                 projectionName = projectionName,
                 page = page,
@@ -516,7 +517,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<PrimitiveTestEntity, PrimitiveTestEntityDto>(
             id = id,
-            uri = "api/primitiveTestEntities"
+            uri = "/api/primitiveTestEntities"
         )
     
     
@@ -526,16 +527,16 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: PrimitiveTestEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/primitiveTestEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/primitiveTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/primitiveTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/primitiveTestEntities")
     
     
         
     
         suspend fun searchFindByInt32(intValue: Int): List<PrimitiveTestEntity> {
         
-            val url = "api/primitiveTestEntities/search/findByInt32".appendParams(
+            val url = "/api/primitiveTestEntities/search/findByInt32".appendParams(
                 "intValue" to intValue
             )
         
@@ -547,7 +548,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindByInt32Allowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/primitiveTestEntities/search/findByInt32")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/primitiveTestEntities/search/findByInt32")
         }
         
         
@@ -560,7 +561,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: RelTestEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/relTestEntities"
+            createURI = "/api/relTestEntities"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -586,7 +587,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/relTestEntities",
+                url = "/api/relTestEntities",
                 embeddedPropName = "relTestEntities",
                 projectionName = projectionName,
                 page = page,
@@ -597,14 +598,14 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<RelTestEntity, RelTestEntityDto>(
             id = id,
-            uri = "api/relTestEntities"
+            uri = "/api/relTestEntities"
         )
     
     
         suspend fun readOneFullRelTestEntity(id: Long) =
             requestAdapter.readProjection<FullRelTestEntity, FullRelTestEntityDto>(
                 id = id,
-                uri = "api/relTestEntities",
+                uri = "/api/relTestEntities",
                 projectionName = "full"
             )
     
@@ -612,9 +613,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: RelTestEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/relTestEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/relTestEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/relTestEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/relTestEntities")
     
     
         suspend fun readManyToMany(obj: RelTestEntity) =
@@ -643,7 +644,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromManyToMany(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.fetchAdapter.delete(
-                url = "api/relTestEntities/${obj.id}/manyToMany/${childToDelete.id}"
+                url = "/api/relTestEntities/${obj.id}/manyToMany/${childToDelete.id}"
             )
         
         
@@ -664,7 +665,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromManyToOneOptional(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.fetchAdapter.delete(
-                url = "api/relTestEntities/${obj.id}/manyToOneOptional/${childToDelete.id}"
+                url = "/api/relTestEntities/${obj.id}/manyToOneOptional/${childToDelete.id}"
             )
         
         
@@ -712,7 +713,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromOneToMany(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.fetchAdapter.delete(
-                url = "api/relTestEntities/${obj.id}/oneToMany/${childToDelete.id}"
+                url = "/api/relTestEntities/${obj.id}/oneToMany/${childToDelete.id}"
             )
         
         
@@ -733,7 +734,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromOneToOneOptional(obj: RelTestEntity, childToDelete: User) =
             requestAdapter.fetchAdapter.delete(
-                url = "api/relTestEntities/${obj.id}/oneToOneOptional/${childToDelete.id}"
+                url = "/api/relTestEntities/${obj.id}/oneToOneOptional/${childToDelete.id}"
             )
         
         
@@ -764,7 +765,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: SecuredEntityBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/securedEntities"
+            createURI = "/api/securedEntities"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -783,7 +784,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/securedEntities",
+                url = "/api/securedEntities",
                 embeddedPropName = "securedEntities",
                 projectionName = projectionName,
                 page = page,
@@ -794,7 +795,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<SecuredEntity, SecuredEntityDto>(
             id = id,
-            uri = "api/securedEntities"
+            uri = "/api/securedEntities"
         )
     
     
@@ -804,9 +805,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: SecuredEntity) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/securedEntities")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/securedEntities")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/securedEntities")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/securedEntities")
     
     
         
@@ -821,7 +822,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun create(obj: UserBase) = requestAdapter.createObject(
             newObject = obj,
-            createURI = "api/users"
+            createURI = "/api/users"
         )
     
         suspend fun readAll(page: Int? = null, size: Int? = null, sort: String? = null) =
@@ -840,7 +841,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
                 type: TypeReference<ApiHateoasPage<U, T>>
         ) =
             requestAdapter.doPageRequest<T, U>(
-                url = "api/users",
+                url = "/api/users",
                 embeddedPropName = "users",
                 projectionName = projectionName,
                 page = page,
@@ -851,7 +852,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun readOne(id: Long) = requestAdapter.readProjection<User, UserDto>(
             id = id,
-            uri = "api/users"
+            uri = "/api/users"
         )
     
     
@@ -861,9 +862,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
     
         suspend fun delete(obj: User) = requestAdapter.deleteObject(obj)
     
-        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "api/users")
+        suspend fun delete(id: Long) = requestAdapter.deleteObject(id, "/api/users")
         
-        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "api", "/api/users")
+        suspend fun allowedMethods(): EntitySecurity = EntitySecurity.fetch(requestAdapter.fetchAdapter, "/api", "//api/users")
     
     
         suspend fun readContacts(obj: User) =
@@ -899,12 +900,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
         
         suspend fun deleteFromContacts(obj: User, childToDelete: Contact) =
             requestAdapter.fetchAdapter.delete(
-                url = "api/users/${obj.id}/contacts/${childToDelete.id}"
+                url = "/api/users/${obj.id}/contacts/${childToDelete.id}"
             )
     
         suspend fun searchFindUserByName(name: String): User? {
         
-            val url = "api/users/search/findUserByName".appendParams(
+            val url = "/api/users/search/findUserByName".appendParams(
                 "name" to name
             )
         
@@ -914,7 +915,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
         }
         
         suspend fun isSearchFindUserByNameAllowed(): Boolean {
-            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "/api", "GET", "/api/users/search/findUserByName")
+            return isEndpointCallAllowed(requestAdapter.fetchAdapter, "//api", "GET", "//api/users/search/findUserByName")
         }
         
         

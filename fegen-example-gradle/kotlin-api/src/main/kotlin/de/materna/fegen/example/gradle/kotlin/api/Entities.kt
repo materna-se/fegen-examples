@@ -74,7 +74,7 @@ data class AddressBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(AddressLinks(mapOf(
-        "self" to ApiNavigationLink("api/contactAddresses/$id", false)
+        "self" to ApiNavigationLink("/api/contactAddresses/$id", false)
     )))
 }
 
@@ -233,9 +233,9 @@ data class Address(
       * Don't use this method in production code.
       */
      fun toDto(id: Long) = toDto(ContactLinks(mapOf(
-         "self" to ApiNavigationLink("api/contacts/$id", false),
-"address" to ApiNavigationLink("api/contacts/$id/address", false),
-         "owner" to ApiNavigationLink("api/contacts/$id/owner", false)
+         "self" to ApiNavigationLink("/api/contacts/$id", false),
+"address" to ApiNavigationLink("/api/contacts/$id/address", false),
+         "owner" to ApiNavigationLink("/api/contacts/$id/owner", false)
      )))
  }
 
@@ -455,7 +455,7 @@ data class IgnoredSearchEntityBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(IgnoredSearchEntityLinks(mapOf(
-        "self" to ApiNavigationLink("api/ignoredSearchEntities/$id", false)
+        "self" to ApiNavigationLink("/api/ignoredSearchEntities/$id", false)
     )))
 }
 
@@ -564,7 +564,7 @@ data class NoRepoEntityBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(NoRepoEntityLinks(mapOf(
-        "self" to ApiNavigationLink("api/noRepoEntities/$id", false)
+        "self" to ApiNavigationLink("/api/noRepoEntities/$id", false)
     )))
 }
 
@@ -673,7 +673,7 @@ data class NotExportedTestEntityBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(NotExportedTestEntityLinks(mapOf(
-        "self" to ApiNavigationLink("api/notExportedTestEntities/$id", false)
+        "self" to ApiNavigationLink("/api/notExportedTestEntities/$id", false)
     )))
 }
 
@@ -807,7 +807,7 @@ data class PlainFieldTestEntityBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(PlainFieldTestEntityLinks(mapOf(
-        "self" to ApiNavigationLink("api/plainFieldTestEntities/$id", false)
+        "self" to ApiNavigationLink("/api/plainFieldTestEntities/$id", false)
     )))
 }
 
@@ -972,7 +972,7 @@ data class PrimitiveTestEntityBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(PrimitiveTestEntityLinks(mapOf(
-        "self" to ApiNavigationLink("api/primitiveTestEntities/$id", false)
+        "self" to ApiNavigationLink("/api/primitiveTestEntities/$id", false)
     )))
 }
 
@@ -1153,13 +1153,13 @@ data class PrimitiveTestEntity(
       * Don't use this method in production code.
       */
      fun toDto(id: Long) = toDto(RelTestEntityLinks(mapOf(
-         "self" to ApiNavigationLink("api/relTestEntities/$id", false),
-"manyToMany" to ApiNavigationLink("api/relTestEntities/$id/manyToMany", false),
-         "manyToOneOptional" to ApiNavigationLink("api/relTestEntities/$id/manyToOneOptional", false),
-         "manyToOneRequired" to ApiNavigationLink("api/relTestEntities/$id/manyToOneRequired", false),
-         "oneToMany" to ApiNavigationLink("api/relTestEntities/$id/oneToMany", false),
-         "oneToOneOptional" to ApiNavigationLink("api/relTestEntities/$id/oneToOneOptional", false),
-         "oneToOneRequired" to ApiNavigationLink("api/relTestEntities/$id/oneToOneRequired", false)
+         "self" to ApiNavigationLink("/api/relTestEntities/$id", false),
+"manyToMany" to ApiNavigationLink("/api/relTestEntities/$id/manyToMany", false),
+         "manyToOneOptional" to ApiNavigationLink("/api/relTestEntities/$id/manyToOneOptional", false),
+         "manyToOneRequired" to ApiNavigationLink("/api/relTestEntities/$id/manyToOneRequired", false),
+         "oneToMany" to ApiNavigationLink("/api/relTestEntities/$id/oneToMany", false),
+         "oneToOneOptional" to ApiNavigationLink("/api/relTestEntities/$id/oneToOneOptional", false),
+         "oneToOneRequired" to ApiNavigationLink("/api/relTestEntities/$id/oneToOneRequired", false)
      )))
  }
 
@@ -1292,7 +1292,7 @@ data class SecuredEntityBase(
      * Don't use this method in production code.
      */
     fun toDto(id: Long) = toDto(SecuredEntityLinks(mapOf(
-        "self" to ApiNavigationLink("api/securedEntities/$id", false)
+        "self" to ApiNavigationLink("/api/securedEntities/$id", false)
     )))
 }
 
@@ -1405,8 +1405,8 @@ data class SecuredEntity(
       * Don't use this method in production code.
       */
      fun toDto(id: Long) = toDto(UserLinks(mapOf(
-         "self" to ApiNavigationLink("api/users/$id", false),
-"contacts" to ApiNavigationLink("api/users/$id/contacts", false)
+         "self" to ApiNavigationLink("/api/users/$id", false),
+"contacts" to ApiNavigationLink("/api/users/$id/contacts", false)
      )))
  }
 

@@ -25,7 +25,10 @@ import {ApiClient} from "../ApiClient";
 
 export const BASE_URL = "http://localhost:8080/"
 
-export const apiClient = new ApiClient(new FetchAdapter(BASE_URL, fetch));
+export const apiClient = new ApiClient(new FetchAdapter({
+    baseUrl: BASE_URL,
+    fetchImpl: fetch
+}));
 
 export async function setupTest() {
     await fetch("http://localhost:8080/api/setupTest", { method: "POST" });

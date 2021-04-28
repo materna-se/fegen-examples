@@ -23,19 +23,25 @@ import fetch from "node-fetch";
 import * as fetchCookie from "fetch-cookie";
 import {BASE_URL} from "../util";
 import {ApiClient} from "../../ApiClient";
-import { FetchAdapter } from "@materna-se/fegen-runtime";
+import { FetchAdapter, Interceptor } from "@materna-se/fegen-runtime";
 
 export const loggedIn = async (username: string, password: string) => {
     const fetchFn = fetchCookie(fetch);
 
-    const response = await fetchFn(`${BASE_URL}api/login`, {
-        method: "POST",
-        headers: {
-            "Authorization": `Basic ${btoa(`${username}:${password}`)}`
+    const basicAuthInterceptor: Interceptor = (url, options, execution) => {
+        options = {
+            ...options,
+            headers: {
+                ...options?.headers,
+                Authorization: `Basic ${btoa(`${username}:${password}`)}`
+            }
         }
-    });
-    if (!response.ok) {
-        throw new Error(`Failed to log in: Server returned code ${response.status}`);
+        return execution(url, options);
     }
-    return new ApiClient(new FetchAdapter(BASE_URL, fetchFn));
+
+    return new ApiClient(new FetchAdapter({
+        baseUrl: BASE_URL,
+        interceptors: [basicAuthInterceptor],
+        fetchImpl: fetchFn
+    }));
 }

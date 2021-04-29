@@ -82,7 +82,7 @@ export class AddressClient extends BaseClient<ApiClient, AddressNew, Address> {
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/contactAddresses");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/contactAddresses");
     }
 
   
@@ -151,7 +151,7 @@ public async readProjectionsContactFull(page?: number, size?: number, sort?: "id
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/contacts");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/contacts");
     }
 
   
@@ -340,7 +340,7 @@ export class IgnoredSearchEntityClient extends BaseClient<ApiClient, IgnoredSear
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/ignoredSearchEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/ignoredSearchEntities");
     }
 
   
@@ -395,7 +395,7 @@ export class PlainFieldTestEntityClient extends BaseClient<ApiClient, PlainField
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/plainFieldTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/plainFieldTestEntities");
     }
 
   
@@ -458,7 +458,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/primitiveTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/primitiveTestEntities");
     }
 
   
@@ -569,7 +569,7 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/relTestEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/relTestEntities");
     }
 
   
@@ -641,21 +641,21 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
         );
     }
     
-    public async readManyToOneRequired(obj: RelTestEntityDto): Promise<User | undefined> {
+    public async readManyToOneRequired(obj: RelTestEntityDto): Promise<User> {
         return this.readManyToOneRequiredProjection<User>(obj);
     }
     
-    public async readManyToOneRequiredProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection | undefined> {
+    public async readManyToOneRequiredProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection> {
         return this.readManyToOneRequiredProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readManyToOneRequiredProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+    public async readManyToOneRequiredProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T> {
         const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.manyToOneRequired);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
         const response = await this._requestAdapter.fetchAdapter.get(fullUrl);
-        if(response.status === 404) { return undefined; }
+        
         if(!response.ok){ throw response; }
         
         const result = (await response.json()) as T;
@@ -741,21 +741,21 @@ public async readProjectionsRelTestEntityBaseProjection(page?: number, size?: nu
         );
     }
     
-    public async readOneToOneRequired(obj: RelTestEntityDto): Promise<User | undefined> {
+    public async readOneToOneRequired(obj: RelTestEntityDto): Promise<User> {
         return this.readOneToOneRequiredProjection<User>(obj);
     }
     
-    public async readOneToOneRequiredProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection | undefined> {
+    public async readOneToOneRequiredProjectionUserBaseProjection(obj: RelTestEntityDto): Promise<UserBaseProjection> {
         return this.readOneToOneRequiredProjection<UserBaseProjection>(obj, "baseProjection");
     }
     
-    public async readOneToOneRequiredProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T | undefined> {
+    public async readOneToOneRequiredProjection<T extends Dto>(obj: RelTestEntityDto, projection?: string): Promise<T> {
         const hasProjection = !!projection;
         let fullUrl = apiHelper.removeParamsFromNavigationHref(obj._links.oneToOneRequired);
         fullUrl = hasProjection ? `${fullUrl}?projection=${projection}` : fullUrl;
     
         const response = await this._requestAdapter.fetchAdapter.get(fullUrl);
-        if(response.status === 404) { return undefined; }
+        
         if(!response.ok){ throw response; }
         
         const result = (await response.json()) as T;
@@ -814,7 +814,7 @@ export class SecuredEntityClient extends BaseClient<ApiClient, SecuredEntityNew,
     
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/securedEntities");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/securedEntities");
     }
 
   
@@ -864,7 +864,7 @@ export class UserClient extends BaseClient<ApiClient, UserNew, User> {
     }
   
     public allowedMethods(): Promise<EntitySecurity> {
-        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "//api/users");
+        return EntitySecurity.fetch(this._requestAdapter.fetchAdapter, "/api", "/api/users");
     }
 
   

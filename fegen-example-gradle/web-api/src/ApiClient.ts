@@ -2,7 +2,9 @@
 
 import {
     BaseClient, RequestAdapter, FetchAdapter,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ApiHateoasObjectBase, ApiHateoasObjectReadMultiple, Items, PagedItems, ApiNavigationLinks,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     apiHelper, stringHelper, Dto, Entity, EntitySecurity, isEndpointCallAllowed
 } from '@materna-se/fegen-runtime';
 import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PlainFieldTestEntityNew, PlainFieldTestEntityDto, PlainFieldTestEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';

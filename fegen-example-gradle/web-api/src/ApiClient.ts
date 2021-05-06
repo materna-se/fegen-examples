@@ -8,7 +8,6 @@ import {
     apiHelper, stringHelper, Dto, Entity, EntitySecurity, isEndpointCallAllowed
 } from '@materna-se/fegen-runtime';
 import { AddressNew, AddressDto, Address, ContactNew, ContactDto, Contact, IgnoredSearchEntityNew, IgnoredSearchEntityDto, IgnoredSearchEntity, PlainFieldTestEntityNew, PlainFieldTestEntityDto, PlainFieldTestEntity, PrimitiveTestEntityNew, PrimitiveTestEntityDto, PrimitiveTestEntity, RelTestEntityNew, RelTestEntityDto, RelTestEntity, SecuredEntityNew, SecuredEntityDto, SecuredEntity, UserNew, UserDto, User } from './Entities';
-import {  } from './Entities';
 import { AddressBaseProjection, ContactBaseProjection, ContactFull, FullRelTestEntity, IgnoredSearchEntityBaseProjection, NoRepoEntityBaseProjection, NotExportedTestEntityBaseProjection, PlainFieldTestEntityBaseProjection, PrimitiveTestEntityBaseProjection, RelTestEntityBaseProjection, SecuredEntityBaseProjection, UserBaseProjection } from './Entities';
 import { CustomEndpointControllerClient } from './controller/CustomEndpointControllerClient';
 import { TestRestControllerClient } from './controller/TestRestControllerClient';
@@ -425,7 +424,8 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             long64: base.long64 !== undefined ? base.long64 : 0,
             optionalIntBillion: base.optionalIntBillion !== undefined ? base.optionalIntBillion : 0,
             optionalIntNull: base.optionalIntNull !== undefined ? base.optionalIntNull : 0,
-            stringText: base.stringText !== undefined ? base.stringText : ""
+            stringText: base.stringText !== undefined ? base.stringText : "",
+            testEnum: base.testEnum !== undefined ? base.testEnum : "TEST1"
         }
     }
   
@@ -441,6 +441,7 @@ export class PrimitiveTestEntityClient extends BaseClient<ApiClient, PrimitiveTe
             optionalIntBillion: obj.optionalIntBillion,
             optionalIntNull: obj.optionalIntNull,
             stringText: obj.stringText,
+            testEnum: obj.testEnum,
             _links: obj._links
         };
     }

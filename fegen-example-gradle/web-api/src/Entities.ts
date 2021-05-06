@@ -3,7 +3,7 @@
 import { ApiNavigationLink } from '@materna-se/fegen-runtime';
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface AddressNew {
@@ -79,7 +79,7 @@ export interface UserBaseProjection extends User {
 }
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface ContactNew {
@@ -136,7 +136,7 @@ export interface FullRelTestEntity extends RelTestEntity {
 }
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface IgnoredSearchEntityNew {
@@ -166,7 +166,7 @@ export interface IgnoredSearchEntity extends IgnoredSearchEntityDto {
 
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface NoRepoEntityNew {
@@ -196,7 +196,7 @@ export interface NoRepoEntity extends NoRepoEntityDto {
 
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface NotExportedTestEntityNew {
@@ -231,7 +231,7 @@ export interface OtherEmbeddableTestEntity {
 }
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface PlainFieldTestEntityNew {
@@ -269,7 +269,7 @@ export interface PlainFieldTestEntity extends PlainFieldTestEntityDto {
 
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface PrimitiveTestEntityNew {
@@ -282,6 +282,7 @@ export interface PrimitiveTestEntityNew {
     optionalIntBillion: number | null
     optionalIntNull: number | null
     stringText: string
+    testEnum: TestEnum
     
 }
 
@@ -299,6 +300,7 @@ export interface PrimitiveTestEntityDto {
     optionalIntBillion: number | null
     optionalIntNull: number | null
     stringText: string
+    testEnum: TestEnum
     _links: {
         self: ApiNavigationLink
         
@@ -315,7 +317,7 @@ export interface PrimitiveTestEntity extends PrimitiveTestEntityDto {
 
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface RelTestEntityNew {
@@ -359,7 +361,7 @@ export interface RelTestEntity extends RelTestEntityDto {
 
 
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface SecuredEntityNew {
@@ -388,8 +390,12 @@ export interface SecuredEntity extends SecuredEntityDto {
 }
 
 
+export type TestEnum = "TEST1"
+    | "TEST2"
+    | "TEST3";
+
 /**
- * This type is used for creaing this domain type. It can be created in the frontend
+ * This type is used for creating this domain type. It can be created in the frontend
  * (in order to store it to the backend, for example) as it does neither have mandatory `_links` nor `id`.
  */
 export interface UserNew {

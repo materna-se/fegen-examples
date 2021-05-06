@@ -28,16 +28,17 @@ describe("Data types", () => {
 
     beforeEach(setupTest);
 
-    const defaultEntity = {
+    const defaultEntity: PrimitiveTestEntityNew = {
         booleanTrue: true,
-            date2000_6_12: "2000-06-12",
+        date2000_6_12: "2000-06-12",
         dateTime2000_1_1_12_30: "2000-01-01T12:30:00",
         int32: 32,
         intMinusBillion: -1_000_000_000,
         long64: 64,
         optionalIntBillion: 1_000_000_000,
         optionalIntNull: null,
-        stringText: "text"
+        stringText: "text",
+        testEnum: "TEST1"
     };
 
     it("can be read", async () => {
@@ -56,7 +57,8 @@ describe("Data types", () => {
             long64: -1_000_000_000_000_000,
             optionalIntBillion: null,
             optionalIntNull: 0,
-            stringText: "27"
+            stringText: "27",
+            testEnum: "TEST3"
         };
         const createReturn = await apiClient.primitiveTestEntityClient.create(entity);
         const testEntities = (await apiClient.primitiveTestEntityClient.readAll(0, 999)).items;
@@ -83,7 +85,8 @@ describe("Data types", () => {
             long64: 0,
             optionalIntBillion: null,
             optionalIntNull: null,
-            stringText: ""
+            stringText: "",
+            testEnum: "TEST1"
         };
 
         assertNonNullable(obj.booleanTrue);

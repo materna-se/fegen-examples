@@ -49,7 +49,7 @@ open class SpringBackgroundStart : DefaultTask() {
         val taskFinishSemaphore = Semaphore(0)
         thread { errorReaderThread(process) }
         thread { outputReaderThread(process, state, taskFinishSemaphore, outputBuffer) }
-        val timeout = !taskFinishSemaphore.tryAcquire(30, TimeUnit.SECONDS)
+        val timeout = !taskFinishSemaphore.tryAcquire(2, TimeUnit.MINUTES)
         if (timeout || state.get().taskFailed()) {
             Thread.sleep(1000)
             if (timeout) {

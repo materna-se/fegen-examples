@@ -19,11 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {apiClient, setupTest} from "./util";
-import {expect} from "chai";
-import {
-    PrimitiveTestEntityNew
-} from "../Entities";
+import { apiClient, setupTest } from "./util";
+import { expect } from "chai";
+import { PrimitiveTestEntityNew } from "../Entities";
 
 describe("Custom endpoint", () => {
 
@@ -38,7 +36,8 @@ describe("Custom endpoint", () => {
         long64: -6515164854,
         optionalIntBillion: null,
         optionalIntNull: -51651964,
-        stringText: "27"
+        stringText: "27",
+        testEnum: "TEST1"
     };
 
     it("calls custom endpoint", async () => {

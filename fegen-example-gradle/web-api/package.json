@@ -8,7 +8,7 @@
     "build": "npm run clean && npm run compileTypescript",
     "compileTypescript": "tsc",
     "clean": "shx rm -rf dist",
-    "test": "npm run compileTypescript && mocha -r ts-node/register -r jsdom-global/register src/tests/*.ts src/tests/**/*"
+    "test": "npm run compileTypescript && mocha --timeout 10000 -r ts-node/register -r jsdom-global/register src/tests/*.ts src/tests/**/*"
   },
   "license": "MIT",
   "dependencies": {

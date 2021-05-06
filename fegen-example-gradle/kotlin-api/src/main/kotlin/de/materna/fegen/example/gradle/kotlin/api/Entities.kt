@@ -896,6 +896,7 @@ data class PrimitiveTestEntityBase(
     val intMinusBillion: Int = 0,
     val long64: Long = 0L,
     val stringText: String = "",
+    val testEnum: TestEnum = TestEnum.TEST1,
     val dateTime2000_1_1_12_30: LocalDateTime? = null,
     val optionalIntBillion: Int? = null,
     val optionalIntNull: Int? = null,
@@ -913,6 +914,7 @@ data class PrimitiveTestEntityBase(
         private var optionalIntBillion: Int? = null,
         private var optionalIntNull: Int? = null,
         private var stringText: String = "",
+        private var testEnum: TestEnum = TestEnum.TEST1,
         private var _links: PrimitiveTestEntityLinks? = null
     ) {
 
@@ -927,6 +929,7 @@ data class PrimitiveTestEntityBase(
             base.optionalIntBillion,
             base.optionalIntNull,
             base.stringText,
+            base.testEnum,
             base._links
         )
 
@@ -940,8 +943,9 @@ data class PrimitiveTestEntityBase(
         fun optionalIntBillion(optionalIntBillion: Int?) = apply { this.optionalIntBillion = optionalIntBillion }
         fun optionalIntNull(optionalIntNull: Int?) = apply { this.optionalIntNull = optionalIntNull }
         fun stringText(stringText: String) = apply { this.stringText = stringText }
+        fun testEnum(testEnum: TestEnum) = apply { this.testEnum = testEnum }
         fun _links(_links: PrimitiveTestEntityLinks) = apply { this._links = _links }
-        fun build() = PrimitiveTestEntityBase(id, booleanTrue, date2000_6_12, int32, intMinusBillion, long64, stringText, dateTime2000_1_1_12_30, optionalIntBillion, optionalIntNull, _links)
+        fun build() = PrimitiveTestEntityBase(id, booleanTrue, date2000_6_12, int32, intMinusBillion, long64, stringText, testEnum, dateTime2000_1_1_12_30, optionalIntBillion, optionalIntNull, _links)
     }
 
     fun toBuilder() = Builder(this)
@@ -963,7 +967,8 @@ data class PrimitiveTestEntityBase(
         long64 = long64, 
         optionalIntBillion = optionalIntBillion, 
         optionalIntNull = optionalIntNull, 
-        stringText = stringText,
+        stringText = stringText, 
+        testEnum = testEnum,
         _links = _links
     )
     
@@ -1008,6 +1013,7 @@ data class PrimitiveTestEntityDto(
     val optionalIntBillion: Int?,
     val optionalIntNull: Int?,
     val stringText: String,
+    val testEnum: TestEnum,
 
     override val _links: PrimitiveTestEntityLinks
 ): ApiDto<PrimitiveTestEntity> {
@@ -1022,7 +1028,8 @@ data class PrimitiveTestEntityDto(
             long64 = long64, 
             optionalIntBillion = optionalIntBillion, 
             optionalIntNull = optionalIntNull, 
-            stringText = stringText,
+            stringText = stringText, 
+            testEnum = testEnum,
             _links = _links
         )
 }
@@ -1042,6 +1049,7 @@ data class PrimitiveTestEntity(
     val optionalIntBillion: Int?,
     val optionalIntNull: Int?,
     val stringText: String,
+    val testEnum: TestEnum,
 
     override val _links: PrimitiveTestEntityLinks
 ): ApiObj<PrimitiveTestEntityDto> {
@@ -1058,6 +1066,7 @@ data class PrimitiveTestEntity(
             optionalIntBillion = optionalIntBillion,
             optionalIntNull = optionalIntNull,
             stringText = stringText,
+            testEnum = testEnum,
             _links = _links
         )
 }
@@ -1350,6 +1359,12 @@ data class SecuredEntity(
         )
 }
 
+
+enum class TestEnum {
+    TEST1,
+    TEST2,
+    TEST3
+}
 
 
  /**

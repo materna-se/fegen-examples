@@ -69,6 +69,9 @@ class PrimitiveTestEntity {
     @Column(nullable = true)
     var dateTime2000_1_1_12_30: LocalDateTime? = LocalDateTime.of(2000, 1, 1, 12, 30)
 
+    @Column(nullable = false)
+    var testEnum: TestEnum = TestEnum.TEST1
+
     @Projection(name = "baseProjection", types = [PrimitiveTestEntity::class])
     interface BaseProjection {
         val id: Long
@@ -81,5 +84,6 @@ class PrimitiveTestEntity {
         val booleanTrue: Boolean
         val date2000_6_12: LocalDate
         val dateTime2000_1_1_12_30: LocalDateTime?
+        val testEnum: TestEnum
     }
 }

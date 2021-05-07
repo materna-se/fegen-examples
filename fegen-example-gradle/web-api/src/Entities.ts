@@ -390,9 +390,8 @@ export interface SecuredEntity extends SecuredEntityDto {
 }
 
 
-export type TestEnum = "TEST1"
-    | "TEST2"
-    | "TEST3";
+export const TEST_ENUM_VARIANTS = ["TEST1", "TEST2", "TEST3"] as const;
+export type TestEnum = typeof TEST_ENUM_VARIANTS[number];
 
 /**
  * This type is used for creating this domain type. It can be created in the frontend

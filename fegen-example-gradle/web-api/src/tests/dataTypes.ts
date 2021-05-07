@@ -21,7 +21,7 @@
  */
 import {apiClient, setupTest} from "./util";
 import { expect } from "chai";
-import {FullRelTestEntity, PrimitiveTestEntityNew} from "../Entities";
+import { FullRelTestEntity, PrimitiveTestEntityNew, TEST_ENUM_VARIANTS } from "../Entities";
 
 
 describe("Data types", () => {
@@ -95,6 +95,10 @@ describe("Data types", () => {
         assertNonNullable(obj.intMinusBillion);
         assertNonNullable(obj.long64);
         assertNonNullable(obj.stringText);
+    });
+
+    it("provides array of enum variants", () => {
+        expect(TEST_ENUM_VARIANTS).to.deep.equal(["TEST1", "TEST2", "TEST3"]);
     });
 
     // Test nullability of fields of FullRelTestEntity
